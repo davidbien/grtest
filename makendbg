@@ -1,0 +1,15 @@
+
+ndebug.flg: gr_test.exe
+	sleep 2
+	touch ndebug.flg
+
+gr_test.exe: _gr_test.o debug.flg
+	g++ -O2 -o gr_test.exe _gr_test.o
+
+_gr_test.o: _gr_test.cpp _graph.h _gr_inc.h _gr_trt.h _gr_def.h _gr_safe.h _gr_type.h \
+            _gr_dtor.h _gr_copy.h _gr_iter.h _gr_sitr.h _gr_pitr.h _gr_titr.h \
+            makendbg debug.flg
+	g++ -I /dv/stl32 -I /usr/include/g++ -D__NDEBUG_THROW -DNDEBUG -O2 -c -o _gr_test.o _gr_test.cpp
+
+dbgthrw.o: dbgthrw.cpp _dbghtrw.h makefile ndebug.flg
+  g++ -I /dv/stl32 -I /usr/include/g++ -D__NDEBUG_THROW -DNDEBUG -O2 -c -o dbgthrw.o dbgthrw.cpp
