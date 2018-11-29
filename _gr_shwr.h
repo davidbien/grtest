@@ -36,34 +36,34 @@ public:
   } 
 
   // This accesses the constructable object within the _graph_link.
-  _TyShadowEl & RElObject() __STL_NOTHROW
+  _TyShadowEl & RElObject() __STLP_NOTHROW
   {
     return m_tElShadow;
   }
 
   // Element access:
-  _TyLinkEl & REl() __STL_NOTHROW
+  _TyLinkEl & REl() __STLP_NOTHROW
   {
     return m_tElShadow.REl();
   }
-  const _TyLinkEl & REl() const __STL_NOTHROW
+  const _TyLinkEl & REl() const __STLP_NOTHROW
   {
     return m_tElShadow.REl();
   }
-  _TyLinkEl & RElNonConst() __STL_NOTHROW
+  _TyLinkEl & RElNonConst() __STLP_NOTHROW
   {
     return m_tElShadow.RElNonConst();
   }
-  const _TyLinkEl & RElConst() const __STL_NOTHROW
+  const _TyLinkEl & RElConst() const __STLP_NOTHROW
   {
     return m_tElShadow.RElConst();
   }
 
-  operator _TyLinkEl & () __STL_NOTHROW 
+  operator _TyLinkEl & () __STLP_NOTHROW 
   {
     return RElNonConst();
   }
-  operator const _TyLinkEl & () const __STL_NOTHROW 
+  operator const _TyLinkEl & () const __STLP_NOTHROW 
   { 
     return RElConst(); 
   }
@@ -136,62 +136,62 @@ public:
   {
   }
 
-  _TyShadowEl & RElObject() __STL_NOTHROW
+  _TyShadowEl & RElObject() __STLP_NOTHROW
   {
     return m_tElShadow;
   }
 
   // Element access:
-  _TyNodeEl & REl() __STL_NOTHROW
+  _TyNodeEl & REl() __STLP_NOTHROW
   {
     return m_tElShadow.REl();
   }
-  const _TyNodeEl & REl() const __STL_NOTHROW
+  const _TyNodeEl & REl() const __STLP_NOTHROW
   {
     return m_tElShadow.REl();
   }
-  _TyNodeEl & RElNonConst() __STL_NOTHROW
+  _TyNodeEl & RElNonConst() __STLP_NOTHROW
   {
     return m_tElShadow.RElNonConst();
   }
-  const _TyNodeEl & RElConst() const __STL_NOTHROW
+  const _TyNodeEl & RElConst() const __STLP_NOTHROW
   {
     return m_tElShadow.RElConst();
   }
 
-  operator _TyNodeEl & () __STL_NOTHROW 
+  operator _TyNodeEl & () __STLP_NOTHROW 
   { 
     return RElNonConst(); 
   }
-  operator const _TyNodeEl & () const __STL_NOTHROW 
+  operator const _TyNodeEl & () const __STLP_NOTHROW 
   { 
     return RElConst(); 
   }
 
   // child/parent typed link list access:
-  _TyGraphLink **           PPGLChildHead() __STL_NOTHROW
+  _TyGraphLink **           PPGLChildHead() __STLP_NOTHROW
   {
     return (_TyGraphLink**)PPGLBChildHead();
   }
-  _TyGraphLink * const *    PPGLChildHead() const __STL_NOTHROW
+  _TyGraphLink * const *    PPGLChildHead() const __STLP_NOTHROW
   {
     return (_TyGraphLink* const *)PPGLBChildHead();
   }
 
-  _TyGraphLink **     PPGLParentHead() __STL_NOTHROW
+  _TyGraphLink **     PPGLParentHead() __STLP_NOTHROW
   {
     return (_TyGraphLink**)PPGLBParentHead();
   }
-  _TyGraphLink * const *  PPGLParentHead() const __STL_NOTHROW
+  _TyGraphLink * const *  PPGLParentHead() const __STLP_NOTHROW
   {
     return (_TyGraphLink* const *)PPGLBParentHead();
   }
 
-  _TyGraphLink **     PPGLRelationHead( bool _fChild ) __STL_NOTHROW
+  _TyGraphLink **     PPGLRelationHead( bool _fChild ) __STLP_NOTHROW
   {
     return (_TyGraphLink**)PPGLBRelationHead( _fChild );
   }
-  _TyGraphLink * const *      PPGLRelationHead( bool _fChild ) const __STL_NOTHROW
+  _TyGraphLink * const *      PPGLRelationHead( bool _fChild ) const __STLP_NOTHROW
   {
     return (_TyGraphLink* const *)PPGLBRelationHead( _fChild );  
   }

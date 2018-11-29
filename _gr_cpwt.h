@@ -109,7 +109,7 @@ public:
     _RElInt()._TyShadowElement::_TyShadowElement( _r );
   }
 
-  t_TyShadowObject *  PSO() const __STL_NOTHROW
+  t_TyShadowObject *  PSO() const __STLP_NOTHROW
   {
     return static_cast< t_TyShadowObject* >( m_psos );
   }
@@ -165,7 +165,7 @@ public:
   }
 
 protected:
-  _TyShadowElement & _RElInt() const __STL_NOTHROW
+  _TyShadowElement & _RElInt() const __STLP_NOTHROW
   {
     return *((_TyShadowElement*)m_cpEl);
   }

@@ -22,6 +22,11 @@ struct _gfi_unfinished_node_hash_el
 {
   int         m_iVisitOrder;
   _TyGNIndex  m_iRemainingLinks;
+	_gfi_unfinished_node_hash_el()
+		: m_iVisitOrder(0),
+		m_iRemainingLinks(0)
+	{
+	}
 };
 
 // Use a most base class that does not include the allocator - this let's us get the compiler's
@@ -72,14 +77,14 @@ public:
   typedef t_TyGraphLinkBase   _TyGraphLinkBase;
 
   typedef t_TyAllocator                     _TyAllocatorAsPassed;
-  typedef _TyAllocUNBase::_TyAllocatorType  _TyUnfinishedArrayAllocator;
+  typedef typename _TyAllocUNBase::_TyAllocatorType  _TyUnfinishedArrayAllocator;
 
   _graph_fwd_iter_base_base(  t_TyGraphNodeBase * _pgnbCur,
                               t_TyGraphLinkBase * _pglbCur,
                               bool _fClosedDirected,
                               bool _fDirectionDown,
                               t_TyAllocator const & _rAlloc,
-                              bool ) __STL_NOTHROW
+                              bool ) _STLP_NOTHROW
     : _TyAllocUNBase( _rAlloc )
   {
     m_pgnbCur = _pgnbCur;
@@ -88,29 +93,29 @@ public:
     m_fDirectionDown = _fDirectionDown;
   }
 
-  _graph_fwd_iter_base_base( _TyThis const & _r, bool )  __STL_NOTHROW
+  _graph_fwd_iter_base_base( _TyThis const & _r, bool )  _STLP_NOTHROW
     : _TyAllocUNBase( _r.get_allocator() ),
       _TyBase( _r )
   {
   }
 
-  bool  FInitialized() const __STL_NOTHROW  { return true; }
-  void  _Init() const __STL_NOTHROW         { }
+  bool  FInitialized() const _STLP_NOTHROW  { return true; }
+  void  _Init() const _STLP_NOTHROW         { }
   
-  t_TyGraphNodeBase * PGNBCur() const __STL_NOTHROW { return m_pgnbCur; }
-  t_TyGraphLinkBase * PGLBCur() const __STL_NOTHROW { return m_pglbCur; }
+  t_TyGraphNodeBase * PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
+  t_TyGraphLinkBase * PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
 
-  void SetPGNBCur( t_TyGraphNodeBase *  _pgnbCur ) __STL_NOTHROW
+  void SetPGNBCur( t_TyGraphNodeBase *  _pgnbCur ) _STLP_NOTHROW
   {
     m_pgnbCur = _pgnbCur;
   }
-  void SetPGLBCur( t_TyGraphLinkBase *  _pglbCur ) __STL_NOTHROW
+  void SetPGLBCur( t_TyGraphLinkBase *  _pglbCur ) _STLP_NOTHROW
   {
     m_pglbCur = _pglbCur;
   }
 
   // We are comparing positions not options.
-  bool  operator == ( _TyThis const & _r ) const __STL_NOTHROW
+  bool  operator == ( _TyThis const & _r ) const _STLP_NOTHROW
   {
     return m_pglbCur == _r.m_pglbCur && m_pgnbCur == _r.m_pgnbCur;
   }
@@ -119,7 +124,7 @@ public:
 template < class t_TyGraphEl >
 struct _gr_select_always : public unary_function< t_TyGraphEl const *, bool >
 {
-  bool  operator () ( t_TyGraphEl const * ) const __STL_NOTHROW
+  bool  operator () ( t_TyGraphEl const * ) const _STLP_NOTHROW
   {
     return true;
   }
@@ -151,7 +156,7 @@ public:
   {
   }
 
-  bool  operator () ( t_TyGraphEl const * _pge ) const __STL_NOTHROW
+  bool  operator () ( t_TyGraphEl const * _pge ) const _STLP_NOTHROW
   {
     return m_comp( _pge->RElConst(), m_rv );
   }
@@ -190,7 +195,7 @@ public:
     return *this;
   }
 
-  bool  operator () ( t_TyGraphEl const * _pge ) const __STL_NOTHROW
+  bool  operator () ( t_TyGraphEl const * _pge ) const _STLP_NOTHROW
   {
     return m_comp( _pge->RElConst(), m_v );
   }
@@ -230,9 +235,9 @@ public:
 
   typedef hash_map< t_TyGraphNodeBase*, _TyUnfinishedNodeHashEl, _gr_hash_ptr< t_TyGraphNodeBase* >,
                     equal_to< t_TyGraphNodeBase* >, t_TyAllocator > _TyUnfinishedNodes;
-  static const _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_GITR_INITSIZENODES;
-  typedef _TyUnfinishedNodes::iterator    _TyUNIter;
-  typedef _TyUnfinishedNodes::value_type  _TyUNValType;
+  static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_GITR_INITSIZENODES;
+  typedef typename _TyUnfinishedNodes::iterator    _TyUNIter;
+  typedef typename _TyUnfinishedNodes::value_type  _TyUNValType;
 
   _TyUnfinishedNodes  m_nodesUnfinished;
   bool m_fNodeToBeRemoved; // throw-safe state management.
@@ -246,9 +251,9 @@ public:
 
   typedef hash_set< t_TyGraphLinkBase*, _gr_hash_ptr< t_TyGraphLinkBase* >,
                     equal_to< t_TyGraphLinkBase* >, t_TyAllocator > _TyVisitedLinks;
-  static const _TyVisitedLinks::size_type ms_stInitSizeLinks = __GR_GITR_INITSIZELINKS;
-  typedef _TyVisitedLinks::iterator       _TyVLIter;
-  typedef _TyVisitedLinks::value_type     _TyVLValType;
+  static const typename _TyVisitedLinks::size_type ms_stInitSizeLinks = __GR_GITR_INITSIZELINKS;
+  typedef typename _TyVisitedLinks::iterator       _TyVLIter;
+  typedef typename _TyVisitedLinks::value_type     _TyVLValType;
 
   _TyVisitedLinks     m_linksVisitedDown;
   _TyVisitedLinks     m_linksVisitedUp;
@@ -397,7 +402,7 @@ public:
     }
   }
 
-  ~_graph_fwd_iter_base() __STL_NOTHROW
+  ~_graph_fwd_iter_base() _STLP_NOTHROW
   {
     if ( m_punStart )
     {
@@ -405,7 +410,7 @@ public:
     }
   }
 
-  bool FInitialized() const __STL_NOTHROW
+  bool FInitialized() const _STLP_NOTHROW
   {
     return m_fInitialized;
   }
@@ -425,7 +430,7 @@ public:
     _Init();
   }
 
-  pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* > PairCurObjs() const __STL_NOTHROW
+  pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* > PairCurObjs() const _STLP_NOTHROW
   {
     // Return the current object(s) to the caller:
     return pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* >( m_pgnbCur, m_pglbCur );
@@ -505,7 +510,7 @@ public:
   
 protected:
 
-  void  _ClearState() __STL_NOTHROW
+  void  _ClearState() _STLP_NOTHROW
   {
     m_iCurVisitOrder = 0;
     m_nodesUnfinished.clear();
@@ -586,7 +591,7 @@ protected:
     m_punEnd = m_punStart + stN;
     m_punCur = m_punStart + ( _r.m_punCur - _r.m_punStart );
   }
-  void  _ClearNodeArray() __STL_NOTHROW
+  void  _ClearNodeArray() _STLP_NOTHROW
   {
     if ( m_punStart )
     {
@@ -600,12 +605,12 @@ protected:
     return m_nodesUnfinished.insert( _rvt );
   }
 
-  void _RemoveNode( _TyUNIter const & _rit ) __STL_NOTHROW
+  void _RemoveNode( _TyUNIter const & _rit ) _STLP_NOTHROW
   {
     m_nodesUnfinished.erase( _rit );
   }
 
-  bool  _FAtUnfinishedNode() const __STL_NOTHROW 
+  bool  _FAtUnfinishedNode() const _STLP_NOTHROW 
   { 
     if ( !m_iContexts && m_punStart )
     {
@@ -644,7 +649,7 @@ protected:
     assert( pib.second );
     return pib.first;
   }
-  void  _RemoveLink( _TyVLIter const & _rit ) __STL_NOTHROW
+  void  _RemoveLink( _TyVLIter const & _rit ) _STLP_NOTHROW
   {
     // Remove in the opposite direction:
     // _RVLGet( !m_fDirectionDown ).erase( _rit ); avoid aliasing
@@ -658,7 +663,7 @@ protected:
     }
   }
 
-  bool  _FVisitedLink( t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
+  bool  _FVisitedLink( t_TyGraphLinkBase * _pglb ) _STLP_NOTHROW
   {
     // If we are doing a controlled iteration then must first check if we are to
     //  iterate this link:
@@ -682,7 +687,7 @@ protected:
       return vlit != m_linksVisitedUp.end();
     }
   }
-  void  _ClearVisitedLinks() __STL_NOTHROW
+  void  _ClearVisitedLinks() _STLP_NOTHROW
   {
     // We are finished processing unfinished nodes in one direction - no longer need
     //  the visited links:
@@ -696,7 +701,7 @@ protected:
     }
   }
 
-  t_TyGraphLinkBase * _PGLBFindUnvisitedLink( t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
+  t_TyGraphLinkBase * _PGLBFindUnvisitedLink( t_TyGraphLinkBase * _pglb ) _STLP_NOTHROW
   {
     for( ; _pglb && _FVisitedLink( _pglb ); 
           _pglb = _pglb->PGLBGetNextRelation( m_fDirectionDown ) )
@@ -769,7 +774,7 @@ protected:
       // If we are doing a closed-directed iteration then we are done.
       // Otherwise check the hash for unfinished nodes:
       if ( m_fClosedDirected || 
-           m_nodesUnfinished.size() == m_fNodeToBeRemoved )
+           ( !!m_nodesUnfinished.size() == m_fNodeToBeRemoved ) )
       {
         if ( m_fClosedDirected )
         {
@@ -795,13 +800,13 @@ protected:
       }
       else
       {
-        __STL_TRY
+        _STLP_TRY
         {
           // Unfinished nodes left to process in the opposite direction:
           _ProcessUnfinishedNodes();
         }
         // Restore state on throw - allows correct transition to occur next time:
-        __STL_UNWIND( ( ( m_punStart = punStartDealloc ), ( m_punEnd = punEndDealloc ) ) );
+        _STLP_UNWIND( ( ( m_punStart = punStartDealloc ), ( m_punEnd = punEndDealloc ) ) );
         // NO THROWING AFTER THIS.
       }
 
@@ -830,16 +835,16 @@ protected:
   _ProcessUnfinishedNodes()
   {
     assert( !m_punStart );
-    assert( m_nodesUnfinished.size() > m_fNodeToBeRemoved );
+    assert( m_nodesUnfinished.size() > ( m_fNodeToBeRemoved ? 1 : 0 ) );
 
     // We have nodes in the opposite direction to process - they are in {m_nodesUnfinished}.
     // Allocate an array of _TyUnfinishedNodeArrayEl objects and fill with the hash - then
     //  sort by visit time.
-    allocate_n( m_punStart, m_nodesUnfinished.size() - m_fNodeToBeRemoved ); // throws.
+    allocate_n( m_punStart, m_nodesUnfinished.size() - ( m_fNodeToBeRemoved ? 1 : 0 ) ); // throws.
     _ProcessUnfinishedNodesNoThrow();
   }
 
-  void _ProcessUnfinishedNodesNoThrow() __STL_NOTHROW
+  void _ProcessUnfinishedNodesNoThrow() _STLP_NOTHROW
   {
     // NO THROWING WITHIN THIS METHOD - loss of state.
     m_punEnd = m_punStart + m_nodesUnfinished.size() - m_fNodeToBeRemoved;
@@ -1006,7 +1011,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           }
           else
           {
-            __STL_TRY // We can't assume that this method doesn't throw.
+            _STLP_TRY // We can't assume that this method doesn't throw.
             {
               // NOTE: In order to be throw-safe, the derived object ( which supplied 
               //  m_pmfnNotifyUnfinished - and is calling this method ) must handle
@@ -1017,7 +1022,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
               //  opposite direction.
               pvtUN->second.m_iRemainingLinks = (this->*m_pmfnNotifyUnfinished)( true, pgnbNextNode, PGLBCur() );
             }
-            __STL_UNWIND( _RemoveNode( pibUnfinished.first ) ); // Restore state and re-throw.
+            _STLP_UNWIND( _RemoveNode( pibUnfinished.first ) ); // Restore state and re-throw.
           }
           assert( pvtUN->second.m_iRemainingLinks );
         }
@@ -1038,7 +1043,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
         if ( pvtUN->second.m_iRemainingLinks )
         {
           m_fNodeToBeRemoved = false;
-          __STL_TRY
+          _STLP_TRY
           {
             // If this throws then we will be in an inconsistent state - unless we remove any new 
             //  unfinished node:
@@ -1079,7 +1084,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
         if ( pglbNextRel )
         {
           // push the next context on the context stack.
-          __STL_TRY
+          _STLP_TRY
           {
             _PushContext( pglbNextRel );  // throws - if we throw maintain current state.
           }
@@ -1111,7 +1116,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
         }
         else
         {
-          __STL_TRY
+          _STLP_TRY
           {
             _NextContext(); // throws.
           }
@@ -1239,13 +1244,25 @@ struct _graph_iter
 {
 private:
   typedef t_TyBaseClass                                       _TyBase;
+  typedef _graph_iter_const_base<	t_TyGraphNode,
+	  t_TyGraphLink,
+	  t_TyFIsConstIterator >	_tyConstIterBase;
   typedef _graph_iter<  t_TyGraphNode, t_TyGraphLink, 
                         t_TyBaseClass, t_TyFIsConstIterator, 
                         t_fControlledLinkIteration,
                         t_TyLinkSelect >                      _TyThis;
 public:
 
-  typedef _TyBase         _TyIterBase;  // This type supported by all graph iterators.
+  typedef typename _tyConstIterBase::node_reference node_reference;
+  typedef typename _tyConstIterBase::link_reference link_reference;
+  typedef typename _tyConstIterBase::node_pointer node_pointer;
+  typedef typename _tyConstIterBase::link_pointer link_pointer;
+  typedef typename _tyConstIterBase::_TyGraphNodeCQ _TyGraphNodeCQ;
+  typedef typename _tyConstIterBase::_TyGraphLinkCQ _TyGraphLinkCQ;
+  typedef typename _tyConstIterBase::_TyGraphNode _TyGraphNode;
+  typedef typename _tyConstIterBase::_TyGraphLink _TyGraphLink;
+  typedef typename _tyConstIterBase::_TyGraphNodeBaseBase  _TyGraphNodeBaseBase;
+  typedef typename _tyConstIterBase::_TyGraphLinkBaseBase  _TyGraphLinkBaseBase;
   typedef t_TyLinkSelect  _TyLinkSelect;
 
   typedef _graph_iter<  t_TyGraphNode, t_TyGraphLink, 
@@ -1280,10 +1297,11 @@ public:
     }
   }
 
+#if 0 // This doesn't work under MSVC so we will rearchitect.
   // Allow initialization with either const or non-const self - but check whether transfer
   //  of const-ness is ok.  
   template < class t__TyBaseClass, class t__TyFIsConst >
-  _graph_iter( _graph_iter< _TyGraphNode, _TyGraphLink, 
+  _graph_iter( _graph_iter< typename t__TyBaseClass::_TyGraphNode, typename t__TyBaseClass::_TyGraphLink,
                             t__TyBaseClass, t__TyFIsConst,
                             t_fControlledLinkIteration, t_TyLinkSelect > const & _r )
     : _TyBase( _r, !t_fControlledLinkIteration ),
@@ -1300,11 +1318,30 @@ public:
       }
     }
   }
+#else 0
+	template < class t_tyGraphIter >
+	_graph_iter( t_tyGraphIter const & _r )
+		: _TyBase(_r, !t_fControlledLinkIteration),
+			m_lsSelectLink(_r.m_lsSelectLink)
+	{
+		__TRANSFER_CONST( typename t_tyGraphIter::_TyFIsConstIterator, t_TyFIsConstIterator );
 
-  // Special initialization allows graph to transform const->non-const. 
+		if (t_fControlledLinkIteration)
+		{
+			m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
+			if (!FInitialized() && (m_pgnbCur || m_pglbCur))
+			{
+				_Init();
+			}
+		}
+	}
+#endif 0
+
+#if 0 // This is not working under MSVC.
+	// Special initialization allows graph to transform const->non-const. 
   // ( doesn't check const transfer ).
   template < class t__TyBaseClass, class t__TyFIsConst >
-  _graph_iter(  _graph_iter<  _TyGraphNode, _TyGraphLink, 
+  _graph_iter(  _graph_iter<  typename t__TyBaseClass::_TyGraphNode, typename t__TyBaseClass::_TyGraphLink,
                               t__TyBaseClass, t__TyFIsConst,
                               t_fControlledLinkIteration, t_TyLinkSelect > const & _r,
                 __gr_const_cast_iter )
@@ -1320,35 +1357,53 @@ public:
       }
     }
   }
-
-  bool  QueryLink( _TyGraphLinkBaseBase * _pglb )
+#else 0
+	// Special initialization allows graph to transform const->non-const. 
+	// ( doesn't check const transfer ).
+	template < class t_TyGraphIter >
+	_graph_iter(t_TyGraphIter const & _r,
+		__gr_const_cast_iter)
+		: _TyBase(_r, !t_fControlledLinkIteration),
+			m_lsSelectLink(_r.m_lsSelectLink)
+	{
+		if (t_fControlledLinkIteration)
+		{
+			m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
+			if (!FInitialized() && (m_pgnbCur || m_pglbCur))
+			{
+				_Init();
+			}
+		}
+	}
+#endif 0
+  bool  QueryLink( typename _tyConstIterBase::_TyGraphLinkBaseBase * _pglb )
   {
     return m_lsSelectLink( static_cast< _TyGraphLink * >( _pglb ) );
   }
 
-  _TyGraphNodeCQ *  PGNCur() const __STL_NOTHROW
+  _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
   {
     return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( PGNBCur() ) );
   }
-  _TyGraphLinkCQ *  PGLCur() const __STL_NOTHROW
+  _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
   {
     return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
-  node_reference    RNodeEl() const __STL_NOTHROW
+  node_reference    RNodeEl() const _STLP_NOTHROW
   {
     return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
   }
   // note: may not have a link!
-  link_reference    RLinkEl() const __STL_NOTHROW
+  link_reference    RLinkEl() const _STLP_NOTHROW
   {
     return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
-  pair< link_pointer, node_pointer >  PairCur() const __STL_NOTHROW
+  pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
     return pair< link_pointer, node_pointer >( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
   }
@@ -1358,7 +1413,7 @@ public:
   bool
   operator == ( _graph_iter<  _TyGraphNode, _TyGraphLink, 
                   t__TyBaseClass, t__TyFIsConst,
-                  t_fControlledLinkIteration, t_TyLinkSelect > const & _r ) const __STL_NOTHROW
+                  t_fControlledLinkIteration, t_TyLinkSelect > const & _r ) const _STLP_NOTHROW
   {
     return _TyBase::operator == ( _r );
   }

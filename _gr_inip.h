@@ -85,25 +85,25 @@ public:
   {
   }
   
-  bool FAtBeg() const __STL_NOTHROW
+  bool FAtBeg() const _STLP_NOTHROW
   {
     return !PGNBCur() && !PGLBCur() && !m_fProcessedGraphFooter;
   }
-  bool FAtEnd() const __STL_NOTHROW
+  bool FAtEnd() const _STLP_NOTHROW
   {
     return !PGNBCur() && !PGLBCur() && m_fProcessedGraphFooter;
   }
 
-  _TyGraphNodeBase *  PGNBCur() const __STL_NOTHROW { return m_pgnbCur; }
-  _TyGraphLinkBase *  PGLBCur() const __STL_NOTHROW { return m_pglbCur; }
+  _TyGraphNodeBase *  PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
+  _TyGraphLinkBase *  PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
 
 protected:
 
-  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) __STL_NOTHROW
+  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _STLP_NOTHROW
   {
     m_pgnbCur = _pgnb;
   }
-  void SetPGLBCur( _TyGraphLinkBase * _pglb ) __STL_NOTHROW
+  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _STLP_NOTHROW
   {
     m_pglbCur = _pglb;
   }
@@ -321,6 +321,7 @@ private:
             t_TyGraphLink, t_TyInputStream,
             t_TyBaseInputIter, t_TyFIsConstIterator >           _TyThis;
   typedef t_TyBaseInputIter                                     _TyBase;
+  typedef _graph_iter_const_base<  t_TyGraphNode, t_TyGraphLink, t_TyFIsConstIterator > _tyConstIterBase;
 public:
 
   typedef _TyBase               _TyIterBase;  // This type supported by all graph iterators.
@@ -334,6 +335,17 @@ public:
   typedef typename _TyInputStream::_TyInitArg _TyInitArg;
   typedef typename _TyInputStream::_TyIONodeEl _TyIONodeEl;
   typedef typename _TyInputStream::_TyIOLinkEl _TyIOLinkEl;
+
+  typedef typename _TyBase::_TyGraphNodeCQ _TyGraphNodeCQ;
+  typedef typename _TyBase::_TyGraphLinkCQ _TyGraphLinkCQ;
+  typedef typename _tyConstIterBase::node_reference node_reference;
+  typedef typename _tyConstIterBase::link_reference link_reference;
+  typedef typename _tyConstIterBase::node_pointer node_pointer;
+  typedef typename _tyConstIterBase::link_pointer link_pointer;
+  typedef typename _tyConstIterBase::_TyGraphNode _TyGraphNode;
+  typedef typename _tyConstIterBase::_TyGraphLink _TyGraphLink;
+  typedef typename _tyConstIterBase::_TyGraphNodeBaseBase  _TyGraphNodeBaseBase;
+  typedef typename _tyConstIterBase::_TyGraphLinkBaseBase  _TyGraphLinkBaseBase;
 
   _TyInputStream  m_is; // The input stream object.
 
@@ -354,29 +366,29 @@ public:
   {
   }
 
-  _TyGraphNodeCQ *  PGNCur() const __STL_NOTHROW
+  _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
   {
     return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( PGNBCur() ) );
   }
-  _TyGraphLinkCQ *  PGLCur() const __STL_NOTHROW
+  _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
   {
     return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
-  node_reference    RNodeEl() const __STL_NOTHROW
+  node_reference    RNodeEl() const _STLP_NOTHROW
   {
     return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
   }
   // note: may not have a link!
-  link_reference    RLinkEl() const __STL_NOTHROW
+  link_reference    RLinkEl() const _STLP_NOTHROW
   {
     return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
-  pair< link_pointer, node_pointer >  PairCur() const __STL_NOTHROW
+  pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
     return pair< link_pointer, node_pointer >
       ( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
@@ -388,9 +400,6 @@ public:
   }
     
 protected:
-
-  typedef typename t_TyGraphNode::_TyGraphNodeBaseBase  _TyGraphNodeBaseBase;
-  typedef typename t_TyGraphLink::_TyGraphLinkBaseBase  _TyGraphLinkBaseBase;
 
   void  _ReadNode( _TyGraphNodeBaseBase * _pgnb )
   {

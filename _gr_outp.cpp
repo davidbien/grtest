@@ -5,10 +5,11 @@
 // Declare constants for Intel compile.
 
 #include "_gr_inc.h"
+#include <time.h>
 
 __DGRAPH_BEGIN_NAMESPACE
 
-#ifndef __ICL
+#if 0
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucDirectionUp;
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucDirectionDown;
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucContextPush;

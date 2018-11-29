@@ -4,15 +4,15 @@
 
 // Graph test stuff.
 
-#ifdef _MSC_VER
+#if 0 //def _MSC_VER
 #include <stdlib.h>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
 #endif _MSC_VER
 
-#include <alloc.h>
+#include <memory>
 
-typedef std::__allocator< char, std::malloc_alloc >	_TyMallocAllocator;
+typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
 
 // A NOTE ON MEMORY LEAKS:
 // I attempted to make everything use the malloc allocator, which coupled
@@ -21,13 +21,15 @@ typedef std::__allocator< char, std::malloc_alloc >	_TyMallocAllocator;
 // I have provided my own implementation that is templatized by allocator type,
 //  but this did not propagate to all instances of __Named_exception.
 
-#include "dgraph/_gr_inc.h"
-
-__DGRAPH_USING_NAMESPACE
+#include "_gr_inc.h"
 
 #include <time.h>
-#include <fstream.h>
-#include "dgraph/_gr_tst0.h"
+#include <fstream>
+#include <iostream>
+#include <_alloc.c>
+
+__DGRAPH_USING_NAMESPACE
+#include "_gr_tst0.h"
 
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
 int gs_iNodesAllocated = 0;
@@ -41,7 +43,7 @@ print_time( const char * _cpMesg, time_t * _ptStart )
 {
 	time_t	tCur;
 	time( &tCur );
-	cout << "[" << ( tCur - *_ptStart ) << "]:" << _cpMesg;
+	cout << "[" << ptrdiff_t( tCur - *_ptStart ) << "]:" << _cpMesg;
 	cout.flush();
 }
 
@@ -170,7 +172,7 @@ test_dump( t_TyGraph const & _rg, const char * _cpFileName, time_t * _ptStart )
 
 #ifndef __NDEBUG_THROW
 	unsigned uHit;
-	unsigned uPossible;
+	size_t uPossible;
 	_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
 	cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 	_throw_object_base::ms_tsb.report_unhit( cout );
@@ -266,7 +268,7 @@ bool
 test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad, 
 								const char * _cpFileName, time_t * _ptStart )
 {
-	fstream fsOut( _cpFileName, ios::in | ios::out | ios::binary );
+	fstream fsOut( _cpFileName, ios::in | ios::out | ios::trunc | ios::binary );
 	fsOut.seekp( 0 );
 
 	if ( try_save( _rgSave, fsOut ) )
@@ -275,7 +277,7 @@ test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad,
 
 #ifndef __NDEBUG_THROW
 		unsigned uHit;
-		unsigned uPossible;
+		size_t uPossible;
 		_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
 		cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 		_throw_object_base::ms_tsb.report_unhit( cout );
@@ -380,6 +382,7 @@ main( int argc, char ** argv )
 			typedef dgraph< int, int, false, _TyAllocator > _TyGraph;
 			_TyGraph g;
 			g.replace_random( iNumNodes, iNumExtraLinks, iRandSeed );
+			// 1000 2000 1241
 			// g.replace_random( 15000, 15000, 823 );
 	    // g.replace_random( 160000, 160000, 823 );
 			// g.replace_random( 10, 10, 1000 );
@@ -472,13 +475,13 @@ main( int argc, char ** argv )
 			_TyGraph &	gCopy = g;
 #endif __TEST_COPY
 
-			test_dump( gCopy, "graph.txt", &tStart );
+			test_dump( gCopy, "C:\\dv\\dgraph\\graph.txt", &tStart );
 			typedef dgraph< int, int, true, _TyAllocator > _TyGraphSafe;
 			_TyGraphSafe gsCopyLoaded;
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.reset_hit_once();
 #endif !__NDEBUG_THROW
-			while ( !test_saveload( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
+			while ( !test_saveload( gCopy, gsCopyLoaded, "C:\\dv\\dgraph\\graph.bin", &tStart ) )
 				;
 
 			// Copy the graph to a graph of doubles:
@@ -487,10 +490,10 @@ main( int argc, char ** argv )
 			_TyGraphDoubleSafe gdCopy;
 			while ( !test_copy( gdCopy, g, &tStart ) )
 				;
-			test_dump( gdCopy, "dgraph.txt", &tStart );
+			test_dump( gdCopy, "C:\\dv\\dgraph\\dgraph.txt", &tStart );
 			typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
 			_TyGraphDouble gdCopyLoaded;
-			while( !test_saveload( gdCopy, gdCopyLoaded, "dgraph.bin", &tStart ) )
+			while( !test_saveload( gdCopy, gdCopyLoaded, "C:\\dv\\dgraph\\dgraph.bin", &tStart ) )
 				;
 #endif __TEST_COPY
 
@@ -506,7 +509,9 @@ main( int argc, char ** argv )
 			__ThrowOLEFAIL( CreateStreamOnHGlobal( NULL, TRUE, &pis ) );
 			g.save( pis );
 			print_time( "main(): After OLE save.\n", &tStart );
-			__ThrowOLEFAIL( pis->Seek( 0ll, STREAM_SEEK_SET, 0 ) );
+			LARGE_INTEGER liSeek0;
+			liSeek0.QuadPart = 0ll;
+			__ThrowOLEFAIL( pis->Seek( liSeek0, STREAM_SEEK_SET, 0 ) );
 			_TyGraph	gLoadOLE;
 			gLoadOLE.replace_load( pis );
 			print_time( "main(): After OLE load.\n", &tStart );
@@ -550,7 +555,7 @@ main( int argc, char ** argv )
 #ifndef __NDEBUG_THROW
 	cout << "Num throws [" << _throw_object_base::ms_tsb.m_uNumThrows << "].\n";
 	unsigned uHit;
-	unsigned uPossible;
+	size_t uPossible;
 	_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
 	cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 	_throw_object_base::ms_tsb.report_unhit( cout );

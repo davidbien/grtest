@@ -16,7 +16,9 @@ private:
 public:
   typedef typename t_TyGraph::_TyGraphNode _TyGraphNode;
   typedef typename t_TyGraph::_TyGraphLink _TyGraphLink;
-  _TyGraphNode ** m_rgpgn;
+	typedef typename t_TyGraph::_TyNodeEl _TyNodeEl;
+	typedef typename t_TyGraph::_TyLinkEl _TyLinkEl;
+	_TyGraphNode ** m_rgpgn;
 
   t_TyGraph &     m_rg;
   size_t          m_stNodes;
@@ -67,13 +69,12 @@ public:
   {
     for ( size_t _st = 0; _st < m_stNodes; ++_st )
     {
-      m_rgpgn[ _st ] = m_rg.__STL_TEMPLATE create_node1
-        < const size_t & >( _st );
+			m_rgpgn[_st] = m_rg.create_node1( (_TyNodeEl)_st );
     }
   }
 
   size_t
-  _rand( int _iAmong )
+  _rand( size_t _iAmong )
   {
     return rand() % _iAmong;
   }
@@ -86,7 +87,7 @@ public:
     {
       size_t stNode = _rand( _st ); // Choose among the current nodes.
       assert( stNode < _st );
-      _TyGraphLink *  pgl = m_rg.create_link1( _st );
+			_TyGraphLink *  pgl = m_rg.create_link1((_TyLinkEl)_st);
 
       if ( _rand( 2 ) == 0 )
       {
@@ -115,7 +116,7 @@ public:
         }
         while( stNode1 == stNode2 );
 
-        _TyGraphLink *  pgl = m_rg.create_link1( _st );
+        _TyGraphLink *  pgl = m_rg.create_link1( (_TyLinkEl)_st );
 
         if ( _rand( 2 ) == 0 )
         {

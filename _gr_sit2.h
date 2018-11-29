@@ -31,14 +31,14 @@ protected:
 
 	_TyGraphConnectionLink	m_gclNode;	// link from graph-object to this object.
 
-	void	_Reference( _TyGraphNodeBase * _pgnbCur ) __STL_NOTHROW
+	void	_Reference( _TyGraphNodeBase * _pgnbCur ) __STLP_NOTHROW
 	{
 		assert( !PGNSCur() );		// should always have valid or NULL value when graph connection is not referencing.
 		m_pgnbCur = _pgnbCur;		// No throw after this.
 		PGNSCur()->PushConnection( &m_gclNode );	// Crash here ? Perhaps you mixed non-safe and safe graphs.
 	}
 
-	void	_Dereference() __STL_NOTHROW
+	void	_Dereference() __STLP_NOTHROW
 	{
 		if ( PGNBCur() )
 		{
@@ -48,13 +48,13 @@ protected:
 
 	// The graph node to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_node_deinit() __STL_NOTHROW
+	void	_node_deinit() __STLP_NOTHROW
 	{
 		assert( PGNBCur() );
 		_TyIterBase::Clear();
 	}
 
-	void	_init() __STL_NOTHROW
+	void	_init() __STLP_NOTHROW
 	{
 		m_gclNode.m_pvConnection = (void*)this;
 		m_gclNode.m_egclType = s_egclGraphNodeIterator;
@@ -62,7 +62,7 @@ protected:
 
 public:
 
-	explicit _graph_node_iterator_base_safe(	t_TyGraphNodeSafe * _pgnbCur ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe(	t_TyGraphNodeSafe * _pgnbCur ) __STLP_NOTHROW
 		: _TyIterBase( 0 )	// In case of throw.
 	{
 		_init();
@@ -74,9 +74,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TySafeNodeIter >
-	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_node_iterator_base_safe( const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		:	_TyIterBase( 0 )
 	{
@@ -89,9 +89,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TySafeNodeIter >
-	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, __false_type ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_node_iterator_base_safe( const _TyThis & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe( const _TyThis & _r, __false_type ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		:	_TyIterBase( 0 )
 	{
@@ -113,9 +113,9 @@ public:
 	//	see if the code gets larger ( or slower ). Of course it is very safe to initialize 
 	//	with a non-safe iterator that iterates safe graph nodes.
 	template < class t_TyNodeIter >
-	explicit _graph_node_iterator_base_safe(	const t_TyNodeIter & _r ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe(	const t_TyNodeIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_node_iterator_base_safe(	const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_node_iterator_base_safe(	const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		:	_TyIterBase( 0 )
 	{
@@ -126,18 +126,18 @@ public:
 		}
 	}
 
-	~_graph_node_iterator_base_safe() __STL_NOTHROW
+	~_graph_node_iterator_base_safe() __STLP_NOTHROW
 	{
 		_Dereference();
 	}
 
-	void	Clear() __STL_NOTHROW
+	void	Clear() __STLP_NOTHROW
 	{
 		_Dereference();
 		_TyIterBase::Clear();
 	}
 
-	t_TyGraphNodeSafe *			PGNSCur() const __STL_NOTHROW
+	t_TyGraphNodeSafe *			PGNSCur() const __STLP_NOTHROW
 	{
 		return static_cast< t_TyGraphNodeSafe * >( m_pgnbCur );
 	}
@@ -145,16 +145,16 @@ public:
 #ifdef __STL_MEMBER_TEMPLATES
 	// Once again this can be misused when multiple graph types ( safe and non-safe ) are mixed.
 	template < class t_TyNodeIter >
-	_TyThis &	operator = ( const t_TyNodeIter & _r ) __STL_NOTHROW
+	_TyThis &	operator = ( const t_TyNodeIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	_TyThis &	operator = ( const _TyThis & _r ) __STL_NOTHROW
+	_TyThis &	operator = ( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 	{
 		SetPGNBCur( _r.PGNBCur() );
 		return *this;
 	}
 
-	void			SetPGNBCur( _TyGraphNodeBase * _pgnbCur ) __STL_NOTHROW
+	void			SetPGNBCur( _TyGraphNodeBase * _pgnbCur ) __STLP_NOTHROW
 	{	
 		if ( PGNBCur() )
 		{
@@ -172,7 +172,7 @@ public:
 	}
 
 	// Set to value of passed non-NULL node - assume currently populated link - won't throw.
-	void			SetPGNBCur_Populated( t_TyGraphNodeBase * _pgnb ) __STL_NOTHROW
+	void			SetPGNBCur_Populated( t_TyGraphNodeBase * _pgnb ) __STLP_NOTHROW
 	{
 		assert( m_gclNode );
 		assert( _pgnb );
@@ -184,15 +184,15 @@ public:
 	// Set to value of passed iterator - assume currently populated link - won't throw.
 	// Typesafe problem when multiple graph types ( safe and non-safe ) are mixed.
 	template < class t_TyNodeIter >
-	void			Set_Populated( const t_TyNodeIter & _r ) __STL_NOTHROW
+	void			Set_Populated( const t_TyNodeIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	void			Set_Populated( const _TyThis & _r ) __STL_NOTHROW
+	void			Set_Populated( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 	{
 		SetPGNBCur_Populated( _r.PGNBCur() );
 	}
 
-	void					GoParent( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoParent( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		assert( m_pgnbCur );
 		// Remove the reference to the current node and re-use it to reference the
@@ -201,7 +201,7 @@ public:
 		_TyIterBase::GoParent( _u );
 		PGNSCur()->PushConnection( &m_gclNode );
 	}
-	void					GoChild( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoChild( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		assert( m_pgnbCur );
 		// Remove the reference to the current node and re-use it to reference the
@@ -213,7 +213,7 @@ public:
 
 	// relation operators:
 	// Re-declare so that gets overridden methods:
-	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STL_NOTHROW
+	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			GoChild( _u );
@@ -246,13 +246,13 @@ protected:
 
 	_TyGraphConnectionLink	m_gclObj;	// link from graph-object to this object.
 
-	void	_init( ) __STL_NOTHROW
+	void	_init( ) __STLP_NOTHROW
 	{
 		m_gclObj.m_ppvConnection = (void*)this;
 		m_gclObj.m_egclType = s_egclLinkPositionIterator;
 	}
 
-	void	_PushConnection( _TyGraphLinkBase ** _ppglbCur ) __STL_NOTHROW
+	void	_PushConnection( _TyGraphLinkBase ** _ppglbCur ) __STLP_NOTHROW
 	{
 		t_TyGraphLinkSafe *	_pgls;
 		t_TyGraphNodeSafe *	_pgns;
@@ -268,14 +268,14 @@ protected:
 
 	}
 
-	void	_Reference( _TyGraphLinkBase ** _ppglbCur ) __STL_NOTHROW
+	void	_Reference( _TyGraphLinkBase ** _ppglbCur ) __STLP_NOTHROW
 	{
 		assert( !PPGLBCur() );
 		_PushConnection( _ppglbCur );
 		_TyIterBase::SetPPGLBCur( _ppglbCur );
 	}
 
-	void	_Dereference() __STL_NOTHROW
+	void	_Dereference() __STLP_NOTHROW
 	{
 		if ( PPGLBCur() )
 		{
@@ -285,7 +285,7 @@ protected:
 
 	// The graph node to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_node_deinit() __STL_NOTHROW
+	void	_node_deinit() __STLP_NOTHROW
 	{
 		assert( PPGLBCur() );
 #ifndef NDEBUG
@@ -300,7 +300,7 @@ protected:
 
 	// The graph link to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_link_deinit() __STL_NOTHROW
+	void	_link_deinit() __STLP_NOTHROW
 	{
 		assert( PPGLBCur() );
 #ifndef NDEBUG
@@ -321,7 +321,7 @@ protected:
 
 	// Initialize with child/parent position - if this iterator is located at the head
 	//	of either list then the node located at that head must be supplied ( else crash ).
-	explicit _graph_link_pos_iterator_base_safe( _TyGraphLinkBase ** _ppglbCur ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( _TyGraphLinkBase ** _ppglbCur ) __STLP_NOTHROW
 		: _TyIterBase( 0 )
 	{
 		_init();
@@ -334,9 +334,9 @@ protected:
 // Init with an iterator that has an allocator:
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
-	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{
@@ -349,9 +349,9 @@ protected:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
-	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, __false_type ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, __false_type ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{
@@ -362,9 +362,9 @@ protected:
 // Init with a reference to an iterator and a different allocator:
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
-	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{
@@ -377,14 +377,14 @@ protected:
 
 public:
 
-	void	Clear() __STL_NOTHROW
+	void	Clear() __STLP_NOTHROW
 	{
 		_Dereference();
 		_TyIterBase::Clear();
 	}
 
 // Accessors:
-	void		SetPPGLBCur( _TyGraphLinkBase ** _ppglbCur ) __STL_NOTHROW
+	void		SetPPGLBCur( _TyGraphLinkBase ** _ppglbCur ) __STLP_NOTHROW
 	{
 		if ( PPGLBCur() )
 		{ 
@@ -402,7 +402,7 @@ public:
 	}
 
 	// Set a non-NULL <_pglbCur> into an iterator:
-	void		SetPPGLBCur_Populated( _TyGraphLinkBase ** _ppglbCur ) __STL_NOTHROW
+	void		SetPPGLBCur_Populated( _TyGraphLinkBase ** _ppglbCur ) __STLP_NOTHROW
 	{	
 		assert( _ppglbCur );
 		if ( PPGLBCur() )
@@ -419,7 +419,7 @@ public:
 
 	// Node operations - these are the same as the node iterator:
 
-	void					GoParent( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoParent( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		if ( *m_ppglbCur )
 		{
@@ -444,7 +444,7 @@ public:
 		}
 	}
 
-	void					GoChild( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoChild( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		if ( *m_ppglbCur )
 		{
@@ -468,7 +468,7 @@ public:
 										//	certainly isn't well defined - which child would we go to ?
 		}
 	}
-	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STL_NOTHROW
+	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			GoChild( _u );
@@ -479,7 +479,7 @@ public:
 	// Link operations:
 	// The safe iterator gives enough info to compute the number of parents
 	//	before the tail position appropriately:
-	_TyGNIndex	UParentsBefore() const __STL_NOTHROW
+	_TyGNIndex	UParentsBefore() const __STLP_NOTHROW
 	{
 		t_TyGraphLinkSafe *	_pgls;
 		t_TyGraphNodeSafe *	_pgns;
@@ -493,7 +493,7 @@ public:
 			return 0;
 		}
 	}
-	void				NextParent() __STL_NOTHROW
+	void				NextParent() __STLP_NOTHROW
 	{
 		m_gclObj.remove_link();
 		_TyIterBase::NextParent();
@@ -502,7 +502,7 @@ public:
 			_TyGraphLinkBase::PGLBGetThisFromPPGLBNextChild( m_ppglbCur ) );
 		_pgls->PushConnection( &m_gclObj );
 	}
-	void				PrevParent() __STL_NOTHROW
+	void				PrevParent() __STLP_NOTHROW
 	{
 		m_gclObj.remove_link();
 		_TyIterBase::PrevParent();
@@ -510,7 +510,7 @@ public:
 		_PushConnection( m_ppglbCur );
 	}
 
-	_TyGNIndex	UChildrenBefore() const __STL_NOTHROW
+	_TyGNIndex	UChildrenBefore() const __STLP_NOTHROW
 	{
 		t_TyGraphLinkSafe *	_pgls;
 		t_TyGraphNodeSafe *	_pgns;
@@ -524,7 +524,7 @@ public:
 			return 0;
 		}
 	}
-	void				NextChild() __STL_NOTHROW
+	void				NextChild() __STLP_NOTHROW
 	{
 		m_gclObj.remove_link();
 		_TyIterBase::NextChild();
@@ -533,21 +533,21 @@ public:
 			_TyGraphLinkBase::PGLBGetThisFromPPGLBNextChild( m_ppglbCur ) );
 		_pgls->PushConnection( &m_gclObj );
 	}
-	void				PrevChild() __STL_NOTHROW
+	void				PrevChild() __STLP_NOTHROW
 	{
 		m_gclObj.remove_link();
 		_TyIterBase::PrevChild();
 		// This may be a graph node:
 		_PushConnection( m_ppglbCur );
 	}
-	void				NextRelation( bool _fChild ) __STL_NOTHROW
+	void				NextRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			NextChild();
 		else						
 			NextParent();
 	}
-	void					PrevRelation( bool _fChild ) __STL_NOTHROW
+	void					PrevRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			PrevChild();
@@ -559,40 +559,40 @@ public:
 #warning Think this code needs updating.
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkIterator >
-	void	ExchangeSiblingParents( t_TyLinkIterator const & _rSiblingParent ) const __STL_NOTHROW
+	void	ExchangeSiblingParents( t_TyLinkIterator const & _rSiblingParent ) const __STLP_NOTHROW
 	{
 		assert( PGLBCur() != _rSiblingParent.PGLBCur() );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingParent.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeParents( PGLBCur(), _rSiblingParent.PGLBCur() );
 	}
 	template < class t_TyLinkIterator >
-	void	ExchangeSiblingChildren( t_TyLinkIterator const & _rSiblingChild ) const __STL_NOTHROW
+	void	ExchangeSiblingChildren( t_TyLinkIterator const & _rSiblingChild ) const __STLP_NOTHROW
 	{
 		assert( _rSiblingChild.PGLBCur() != PGLBCur() );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingChild.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeChildren( PGLBCur(), _rSiblingChild.PGLBCur() );
 	}
 #else __STL_MEMBER_TEMPLATES
-	void	ExchangeSiblingParents( _TyThis const & _rSiblingParent ) const __STL_NOTHROW
+	void	ExchangeSiblingParents( _TyThis const & _rSiblingParent ) const __STLP_NOTHROW
 	{
 		assert( &_rSiblingParent != this );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingParent.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeParents( PGLBCur(), _rSiblingParent.PGLBCur() );
 	}
-	void	ExchangeSiblingChildren( _TyThis const & _rSiblingChild ) const __STL_NOTHROW
+	void	ExchangeSiblingChildren( _TyThis const & _rSiblingChild ) const __STLP_NOTHROW
 	{
 		assert( &_rSiblingChild != this );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingChild.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeChildren( PGLBCur(), _rSiblingChild.PGLBCur() );
 	}
 
-	void	ExchangeSiblingParents( _TyLinkIdentIter const & _rlpiSiblingParent ) const __STL_NOTHROW
+	void	ExchangeSiblingParents( _TyLinkIdentIter const & _rlpiSiblingParent ) const __STLP_NOTHROW
 	{
 		assert( &_rSiblingParent != this );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingParent.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeParents( PGLBCur(), _rSiblingParent.PGLBCur() );
 	}
-	void	ExchangeSiblingChildren( _TyLinkIdentIter const & _rlpiSiblingChild ) const __STL_NOTHROW
+	void	ExchangeSiblingChildren( _TyLinkIdentIter const & _rlpiSiblingChild ) const __STLP_NOTHROW
 	{
 		assert( &_rSiblingChild != this );
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingChild.PGLBCur()->m_pgnbNodeChild );
@@ -602,19 +602,19 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIterator >
-	_TyThis & operator = ( t_TyLinkPosIterator const & _r ) __STL_NOTHROW
+	_TyThis & operator = ( t_TyLinkPosIterator const & _r ) __STLP_NOTHROW
 	{
 		SetPPGLBCur( _r.PPGLBCur() );
 		return *this;
 	}
 
 	template < class t_TyLinkPosIterator >
-	void	SetToParent( t_TyLinkPosIterator const & _r ) __STL_NOTHROW
+	void	SetToParent( t_TyLinkPosIterator const & _r ) __STLP_NOTHROW
 	{
 		SetPPGLBCur_Populated( _r.PPGLBCur_Parent() );
 	}
 	template < class t_TyLinkPosIterator >
-	void	SetToChild( t_TyLinkPosIterator const & _r ) __STL_NOTHROW
+	void	SetToChild( t_TyLinkPosIterator const & _r ) __STLP_NOTHROW
 	{
 		SetPPGLBCur_Populated( _r.PPGLBCur_Child() );
 	}
@@ -642,20 +642,20 @@ protected:
 
 	_TyGraphConnectionLink	m_gclLink;	// pointer to link from graph-object to this object.
 
-	void	_init() __STL_NOTHROW
+	void	_init() __STLP_NOTHROW
 	{
 		m_gclLink.m_ppvConnection = (void*)this;
 		m_gclLink.m_egclType = s_egclGraphLinkIdentIterator;
 	}
 
-	void	_Reference( _TyGraphLinkBase * _pglbCur ) __STL_NOTHROW
+	void	_Reference( _TyGraphLinkBase * _pglbCur ) __STLP_NOTHROW
 	{
 		assert( !PGLSCur() );
 		m_pglbCur = _pglbCur;
 		PGLSCur()->PushConnection( &m_gclLink );	// Crash here ? Perhaps you mixed non-safe and safe graphs.
 	}
 
-	void	_Dereference() __STL_NOTHROW
+	void	_Dereference() __STLP_NOTHROW
 	{
 		if ( PGLSCur() )
 		{
@@ -665,7 +665,7 @@ protected:
 
 	// The graph link to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_link_deinit() __STL_NOTHROW
+	void	_link_deinit() __STLP_NOTHROW
 	{
 		assert( PGLBCur() );
 		_TyIterBase::Clear();
@@ -675,7 +675,7 @@ public:
 
 	typedef _graph_link_ident_iterator_base_notsafe< _TyGraphNodeBase, _TyGraphLinkBase >	_TyIdentPosIter;
 
-	explicit _graph_link_ident_iterator_base_safe(	const _TyGraphLinkBase * _pglbCur ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe(	const _TyGraphLinkBase * _pglbCur ) __STLP_NOTHROW
 		:	_TyIterBase( 0 )
 	{
 		_init();
@@ -688,9 +688,9 @@ public:
 // Init with iterator that has an allocator:
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
-	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{ 
@@ -703,9 +703,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
-	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r, __false_type ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, __false_type ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{ 
@@ -716,9 +716,9 @@ public:
 // Init with iterator and allocator:
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
-	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r ) __STL_NOTHROW
+	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyIterBase( 0 )
 	{ 
@@ -729,18 +729,18 @@ public:
 		}
 	}
 
-	void	Clear() __STL_NOTHROW
+	void	Clear() __STLP_NOTHROW
 	{
 		_Dereference();
 		_TyIterBase::Clear();
 	}
 
-	t_TyGraphLinkSafe *	PGLSCur() const __STL_NOTHROW
+	t_TyGraphLinkSafe *	PGLSCur() const __STLP_NOTHROW
 	{
 		return static_cast< t_TyGraphLinkSafe * >( m_pglbCur );
 	}
 
-	void		SetPGLBCur( _TyGraphLinkBase * _pglbCur ) __STL_NOTHROW
+	void		SetPGLBCur( _TyGraphLinkBase * _pglbCur ) __STLP_NOTHROW
 	{
 		if ( PGLSCur() )
 		{ 
@@ -758,7 +758,7 @@ public:
 	}
 
 	// Set a non-NULL <_pglbCur> into a populated iterator:
-	void		SetPGLBCur_Populated( _TyGraphLinkBase * _pglbCur ) __STL_NOTHROW
+	void		SetPGLBCur_Populated( _TyGraphLinkBase * _pglbCur ) __STLP_NOTHROW
 	{	
 		assert( PGLSCur() );
 		assert( _pglbCur );
@@ -768,19 +768,19 @@ public:
 	}
 
 	// Node operations - these are the same as the node iterator:
-	void					GoParent( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoParent( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::GoParent( _u );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
-	void					GoChild( _TyGNIndex _u ) __STL_NOTHROW
+	void					GoChild( _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::GoChild( _u );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
-	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STL_NOTHROW
+	void					GoRelation( bool _fChild, _TyGNIndex _u ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			GoChild( _u );
@@ -789,39 +789,39 @@ public:
 	}
 
 	// Link operations:
-	void				NextParent() __STL_NOTHROW
+	void				NextParent() __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::NextParent( );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
-	void				PrevParent() __STL_NOTHROW
+	void				PrevParent() __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::PrevParent( );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
 
-	void				NextChild() __STL_NOTHROW
+	void				NextChild() __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::NextChild( );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
-	void				PrevChild() __STL_NOTHROW
+	void				PrevChild() __STLP_NOTHROW
 	{
 		m_gclLink.remove_link();
 		_TyIterBase::PrevChild( );
 		PGLSCur()->PushConnection( &m_gclLink );
 	}
-	void					NextRelation( bool _fChild ) __STL_NOTHROW
+	void					NextRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			NextChild();
 		else						
 			NextParent();
 	}
-	void					PrevRelation( bool _fChild ) __STL_NOTHROW
+	void					PrevRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			PrevChild();
@@ -830,7 +830,7 @@ public:
 	}
 
 	template < class t_TyLinkIter >
-	bool operator == ( t_TyLinkIter const & _r ) const __STL_NOTHROW
+	bool operator == ( t_TyLinkIter const & _r ) const __STLP_NOTHROW
 	{
 		return PGLBCur() == _r.PGLBCur();
 	}
@@ -885,7 +885,7 @@ private:
 
 protected:
 
-	void	_InitConnLink( t_TyPathNodeSafe * _ppns ) __STL_NOTHROW
+	void	_InitConnLink( t_TyPathNodeSafe * _ppns ) __STLP_NOTHROW
 	{
 		_ppns->m_gclNode.m_pvConnection = (void*)_ppns;
 		_ppns->m_gclNode.m_pvConnectionContainer = (void*)this;
@@ -893,7 +893,7 @@ protected:
 		_ppns->m_gclLink.m_pvConnectionContainer = (void*)this;
 	}
 
-	void	_UpdateConnLink( t_TyPathNodeSafe & _rpns ) __STL_NOTHROW
+	void	_UpdateConnLink( t_TyPathNodeSafe & _rpns ) __STLP_NOTHROW
 	{
 		_rpns.m_gclLink.remove_link();
 		_rpns.m_gclNode.remove_link();
@@ -1216,7 +1216,7 @@ protected:
 	}
 
 	// Re-reference each path node to be connected to <_pvReference>:
-	void	_ReReferencePath( void * _pvReference ) __STL_NOTHROW
+	void	_ReReferencePath( void * _pvReference ) __STLP_NOTHROW
 	{
 		for (	_TyPathNodeBase ** _pppnbStart = &m_ppnbHead;
 					_pppnbStart != m_pppnbTail;
@@ -1227,7 +1227,7 @@ protected:
 		}
 	}
 
-	void	_DestroyPath( _TyPathNodeBase ** _pppnbStart ) __STL_NOTHROW
+	void	_DestroyPath( _TyPathNodeBase ** _pppnbStart ) __STLP_NOTHROW
 	{
 		_TyPathNodeBase ** _pppnbOldTail = m_pppnbTail;
 		m_pppnbTail = _pppnbStart;
@@ -1257,7 +1257,7 @@ protected:
 
 	// The graph node to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_node_deinit( _TyGraphConnectionLink * _pgclNode ) __STL_NOTHROW
+	void	_node_deinit( _TyGraphConnectionLink * _pgclNode ) __STLP_NOTHROW
 	{
 		t_TyPathNodeSafe *	_ppnsDeinit = static_cast< t_TyPathNodeSafe * >( _pgclNode->m_pvConnection );
 		assert( &( _ppnsDeinit->m_gclNode ) == _pgclNode );
@@ -1266,7 +1266,7 @@ protected:
 
 	// The graph link to which this iterator is connected is being deinitialized.
 	// We don't need to unlink the connection link.
-	void	_link_deinit( _TyGraphConnectionLink * _pgclLink ) __STL_NOTHROW
+	void	_link_deinit( _TyGraphConnectionLink * _pgclLink ) __STLP_NOTHROW
 	{
 		t_TyPathNodeSafe *	_ppnsDeinit = static_cast< t_TyPathNodeSafe * >( _pgclLink->m_pvConnection );
 		assert( &( _ppnsDeinit->m_gclLink ) == _pgclLink );
@@ -1275,7 +1275,7 @@ protected:
 
 public:
 
-	explicit _graph_path_iterator_base_safe( t_TyPathNodeSafeAllocator const & _allocPathNode ) __STL_NOTHROW
+	explicit _graph_path_iterator_base_safe( t_TyPathNodeSafeAllocator const & _allocPathNode ) __STLP_NOTHROW
 		:	_TyBaseAllocPathNode( _allocPathNode ),
 			_TyBase( _allocPathNode )
 	{
@@ -1344,9 +1344,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class _TyPathIter >
-	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r, __false_type ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	explicit _graph_path_iterator_base_safe( _TyThis const & _r, __false_type ) __STL_NOTHROW
+	explicit _graph_path_iterator_base_safe( _TyThis const & _r, __false_type ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 		: _TyBaseAllocPathNode( _r._GetPNAllocatorAsPassed() ),
 			_TyBase( _r._GetPNAllocatorAsPassed() )
@@ -1354,17 +1354,17 @@ public:
 		// This does not copy the path - just gets the allocators.
 	}
 
-	~_graph_path_iterator_base_notsafe() __STL_NOTHROW
+	~_graph_path_iterator_base_notsafe() __STLP_NOTHROW
 	{
 		_DestroyPath( &m_ppnbHead );
 	}
 
 // Allocator access:
-	_TyPathNodeSafeAllocator const &	_GetPNSAllocator() const __STL_NOTHROW
+	_TyPathNodeSafeAllocator const &	_GetPNSAllocator() const __STLP_NOTHROW
 	{
 		return _TyBaseAllocPathNode::get_allocator();
 	}
-	t_TyPathNodeSafeAllocator					_GetPNAllocatorAsPassed() const __STL_NOTHROW
+	t_TyPathNodeSafeAllocator					_GetPNAllocatorAsPassed() const __STLP_NOTHROW
 	{
 		return _TyBaseAllocPathNode::get_allocator_as_passed();
 	}
@@ -1379,41 +1379,41 @@ public:
 		_OverwritePath( _r );
 	}
 
-	const _TyGraphNodeBase *			PGNBCur() const __STL_NOTHROW
+	const _TyGraphNodeBase *			PGNBCur() const __STLP_NOTHROW
 	{
 		return m_ppnbHead->m_pgnbNode;
 	}
 
 	// This method let's us transfer our state to a link identity iterator:
-	const _TyGraphLinkBase *			PGLBCur() const __STL_NOTHROW
+	const _TyGraphLinkBase *			PGLBCur() const __STLP_NOTHROW
 	{
 		return m_ppnbHead->m_pglbLink;
 	}
 
 	// This method let's us transfer our state to a link position iterator:
-	const _TyGraphLinkBase **			PPGLBCur_Parent() const __STL_NOTHROW
+	const _TyGraphLinkBase **			PPGLBCur_Parent() const __STLP_NOTHROW
 	{
 		return m_ppnbHead->m_pglbLink->PPGLBGetThisParent();
 	}
-	const _TyGraphLinkBase **			PPGLBCur_Child() const __STL_NOTHROW
+	const _TyGraphLinkBase **			PPGLBCur_Child() const __STLP_NOTHROW
 	{
 		return m_ppnbHead->m_pglbLink->PPGLBGetThisChild();
 	}
 
 	// Return according to direction of tip of iterator:
-	const _TyGraphLinkBase **			PPGLBCur() const __STL_NOTHROW
+	const _TyGraphLinkBase **			PPGLBCur() const __STLP_NOTHROW
 	{
 		return m_ppnbHead->m_pglbLink->m_pgnbNodeChild == m_ppnbHead->m_pgnbNode ? 
 			PPGLBCur_Child() : PPGLBCur_Parent();
 	}
 
 	// Test if empty:
-	bool operator ! () const __STL_NOTHROW
+	bool operator ! () const __STLP_NOTHROW
 	{
 		return !m_ppnbHead;
 	}
 
-	void	Clear() __STL_NOTHROW
+	void	Clear() __STLP_NOTHROW
 	{
 		_DestroyPath( &m_ppnbHead );
 	}
@@ -1440,14 +1440,14 @@ public:
 	}
 
 	// Link operations:
-	void				NextParent() __STL_NOTHROW
+	void				NextParent() __STLP_NOTHROW
 	{
 		// Advance the iterator to the next parent:
 		m_ppnbHead->m_pglbLink = m_ppnbHead->m_pglbLink->PGLBGetNextParent();
 		m_ppnbHead->m_pgnbNode = m_ppnbHead->m_pglbLink->m_pgnbNodeParent;
 		_UpdateConnLink( static_cast< t_TyPathNodeSafe * >( m_ppnbHead ) );
 	}
-	void				PrevParent() __STL_NOTHROW
+	void				PrevParent() __STLP_NOTHROW
 	{
 		// Advance the iterator to the previous parent:
 		m_ppnbHead->m_pglbLink = m_ppnbHead->m_pglbLink->PGLBGetPrevParent();
@@ -1455,28 +1455,28 @@ public:
 		_UpdateConnLink( static_cast< t_TyPathNodeSafe * >( m_ppnbHead ) );
 	}
 
-	void				NextChild() __STL_NOTHROW
+	void				NextChild() __STLP_NOTHROW
 	{
 		// Advance the iterator to the next child:
 		m_ppnbHead->m_pglbLink = m_ppnbHead->m_pglbLink->PGLBGetNextChild();
 		m_ppnbHead->m_pgnbNode = m_ppnbHead->m_pglbLink->m_pgnbNodeChild;
 		_UpdateConnLink( static_cast< t_TyPathNodeSafe * >( m_ppnbHead ) );
 	}
-	void				PrevChild() __STL_NOTHROW
+	void				PrevChild() __STLP_NOTHROW
 	{
 		// Advance the iterator to the previous child:
 		m_ppnbHead->m_pglbLink = m_ppnbHead->m_pglbLink->PGLBGetPrevChild();
 		m_ppnbHead->m_pgnbNode = m_ppnbHead->m_pglbLink->m_pgnbNodeChild;
 		_UpdateConnLink( static_cast< t_TyPathNodeSafe * >( m_ppnbHead ) );
 	}
-	void					NextRelation( bool _fChild ) __STL_NOTHROW
+	void					NextRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			NextChild();
 		else						
 			NextParent();
 	}
-	void					PrevRelation( bool _fChild ) __STL_NOTHROW
+	void					PrevRelation( bool _fChild ) __STLP_NOTHROW
 	{
 		if ( _fChild )	
 			PrevChild();
@@ -1488,9 +1488,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class t_TyLinkIter >
-	bool operator == ( t_TyLinkIter const & _r ) const __STL_NOTHROW
+	bool operator == ( t_TyLinkIter const & _r ) const __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	bool operator == ( _TyThis const & _r ) const __STL_NOTHROW
+	bool operator == ( _TyThis const & _r ) const __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 	{
 		return PGLBCur() == _r.PGLBCur();
@@ -1498,9 +1498,9 @@ public:
 
 #ifdef __STL_MEMBER_TEMPLATES
 	template < class _TyIter >
-	_TyThis & operator = ( _TyIter const & _r ) __STL_NOTHROW
+	_TyThis & operator = ( _TyIter const & _r ) __STLP_NOTHROW
 #else __STL_MEMBER_TEMPLATES
-	_TyThis & operator = ( _TyThis const & _r ) __STL_NOTHROW
+	_TyThis & operator = ( _TyThis const & _r ) __STLP_NOTHROW
 #endif __STL_MEMBER_TEMPLATES
 	{
 		// Overwrite the current path with that passed:
@@ -1513,14 +1513,14 @@ public:
 
 	// Swapping with anything other than this should not compile:
 	template < class _TyIter >
-	void	swap( _TyIter & _r ) __STL_NOTHROW
+	void	swap( _TyIter & _r ) __STLP_NOTHROW
 	{
 		___semantic_error_object	error;
 	}
 
 	// Specialize attempt to swap with this - we want this to succeed:
 	template < >
-	void	swap( _TyThis & _r ) __STL_NOTHROW
+	void	swap( _TyThis & _r ) __STLP_NOTHROW
 	{
 		// Need to move through each path and exchange references inside the connection
 		//	link - since link maintains a reference to <this> and <_r>:
@@ -1532,7 +1532,7 @@ public:
 #else __STL_MEMBER_TEMPLATES
 
 	// Non-safe version - programmer can screw up - but it should crash :-)
-	void	swap( _TyThis & _r ) __STL_NOTHROW
+	void	swap( _TyThis & _r ) __STLP_NOTHROW
 	{
 		_ReReferencePath( reinterpret_cast< void *> ( &_r ) );
 		_r._ReReferencePath( reinterpret_cast< void *> ( this ) );
