@@ -7,8 +7,8 @@
 
 // abstract the output stream - allows us to have different types:
 
-#include <istream.h>
-#include <ostream.h>
+#include <istream>
+#include <ostream>
 
 __DGRAPH_BEGIN_NAMESPACE
 

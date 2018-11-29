@@ -97,7 +97,7 @@ public:
   {
   }
 
-  t_TyShadowObject *  PSO() const __STL_NOTHROW
+  t_TyShadowObject *  PSO() const __STLP_NOTHROW
   {
     return static_cast< t_TyShadowObject* >( m_psos );
   }

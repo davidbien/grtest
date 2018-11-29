@@ -370,6 +370,9 @@ private:
 public:
 
   typedef _TyBase _TyOutputStreamBase;
+  typedef typename _TyBase::_TyInitArg _TyInitArg;
+  typedef typename _TyBase::_TyIONodeEl _TyIONodeEl;
+  typedef typename _TyBase::_TyIOLinkEl _TyIOLinkEl;
 
   _binary_output_object(  _TyInitArg _ros, bool _fDirectionDown,
                           _TyIONodeEl const & _rione,

@@ -98,14 +98,14 @@ public:
   // Binary output iterator - this type supports const output to ostream:
   typedef typename _TyGraphTraits::_TyBinaryOstreamIterConst      _TyBinaryOstreamIterConst;
   // Binary output iterator - this type supports input from istream:
-  typedef typename _TyGraphTraits:: __STL_TEMPLATE _get_input_iterator< _TyThis,
+  typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
     typename _TyGraphTraits::_TyBinaryIstreamInput,
     typename _TyGraphTraits::_TyBinaryIstreamIterBase >::_TyBinaryInputIterNonConst _TyBinaryIstreamIterNonConst;
 
 #ifdef __GR_DEFINEOLEIO
   typedef typename _TyGraphTraits::_TyBinaryOLEOutputIterConst      _TyBinaryOLEOutputIterConst;
   // Binary output iterator - this type supports input from istream:
-  typedef typename _TyGraphTraits:: __STL_TEMPLATE _get_input_iterator< _TyThis,
+  typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
     typename _TyGraphTraits::_TyBinaryOLEInputObject,
     typename _TyGraphTraits::_TyBinaryOLEInputIterBase >::_TyBinaryInputIterNonConst  _TyBinaryOLEInputIterNonConst;
 #endif __GR_DEFINEOLEIO
@@ -125,7 +125,7 @@ private:
 
 public:
 
-  explicit dgraph( _TyAllocatorSet const & _rAllocSet = _TyAllocatorSet() ) __STL_NOTHROW
+  explicit dgraph( _TyAllocatorSet const & _rAllocSet = _TyAllocatorSet() ) _STLP_NOTHROW
     : _TyBaseAllocGraphNode( _rAllocSet.m_allocGraphNode ),
       _TyBaseAllocGraphLink( _rAllocSet.m_allocGraphLink ),
       _TyBaseGraph( static_cast< typename _TyAllocatorSet::_TyBaseAllocatorSetSafety const & >( _rAllocSet ) )
@@ -173,15 +173,15 @@ public:
   }
 
  // root node:
-  _TyGraphNode *  get_root() __STL_NOTHROW
+  _TyGraphNode *  get_root() _STLP_NOTHROW
   {
     return static_cast< _TyGraphNode * >( _GetRootNode() );
   }
-  const _TyGraphNode *  get_root() const __STL_NOTHROW
+  const _TyGraphNode *  get_root() const _STLP_NOTHROW
   {
     return static_cast< const _TyGraphNode * >( _GetRootNode() );
   }
-  void set_root_node( _TyGraphNode * _pgn ) __STL_NOTHROW
+  void set_root_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
   {
     _SetRootNode( _pgn );
   }
@@ -191,11 +191,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node()
   {
     _TyGraphNode * pgn = _allocate_node();
-    __STL_TRY
+    _STLP_TRY
     {
 		  _construct_node( pgn );
     }
-    __STL_UNWIND( _deallocate_node( pgn ) );
+    _STLP_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
 
@@ -203,11 +203,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node1( t_TyP1 _p1 )
   {
     _TyGraphNode * pgn = _allocate_node();
-    __STL_TRY
+    _STLP_TRY
     {
-		  _TyThis::__STL_TEMPLATE _construct_node1< t_TyP1 >( pgn, _p1 );
+		  _TyThis::template _construct_node1< t_TyP1 >( pgn, _p1 );
     }
-    __STL_UNWIND( _deallocate_node( pgn ) );
+    _STLP_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
   
@@ -215,11 +215,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node2( t_TyP1 _p1, t_TyP2 _p2 )
   {
     _TyGraphNode * pgn = _allocate_node();
-    __STL_TRY
+    _STLP_TRY
     {
-		  _TyThis::__STL_TEMPLATE _construct_node2< t_TyP1, t_TyP2 >( pgn, _p1, _p2 );
+		  _TyThis::template _construct_node2< t_TyP1, t_TyP2 >( pgn, _p1, _p2 );
     }
-    __STL_UNWIND( _deallocate_node( pgn ) );
+    _STLP_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
 
@@ -227,11 +227,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link()
   {
     _TyGraphLink * pgl = _allocate_link();
-    __STL_TRY
+    _STLP_TRY
     {
 		  _construct_link( pgl );
     }
-    __STL_UNWIND( _deallocate_link( pgl ) );
+    _STLP_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
 
@@ -239,11 +239,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link1( t_TyP1 _p1 )
   {
     _TyGraphLink * pgl = _allocate_link();
-    __STL_TRY
+    _STLP_TRY
     {
-		  _TyThis::__STL_TEMPLATE _construct_link1< t_TyP1 >( pgl, _p1 );
+		  _TyThis::template _construct_link1< t_TyP1 >( pgl, _p1 );
     }
-    __STL_UNWIND( _deallocate_link( pgl ) );
+    _STLP_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
   
@@ -251,11 +251,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link2( t_TyP1 _p1, t_TyP2 _p2 )
   {
     _TyGraphLink * pgl = _allocate_link();
-    __STL_TRY
+    _STLP_TRY
     {
-		  _TyThis::__STL_TEMPLATE _construct_link2< t_TyP1, t_TyP2 >( pgl, _p1, _p2 );
+		  _TyThis::template _construct_link2< t_TyP1, t_TyP2 >( pgl, _p1, _p2 );
     }
-    __STL_UNWIND( _deallocate_link( pgl ) );
+    _STLP_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
 
@@ -266,12 +266,12 @@ public:
   // NOTE: Forward iterators do not have methods to modify the graph - this is because modification
   //  will result in undefined bahavior ( currently potentially even crashing ).
   // When thread-safety is added is issue will be addressed.
-  _TyGraphFwdIterPosConst begin() const __STL_NOTHROW
+  _TyGraphFwdIterPosConst begin() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, true, 
                                     get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst begin() __STL_NOTHROW
+  _TyGraphFwdIterPosNonConst begin() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, true, 
                                         get_base_path_allocator() );
@@ -279,33 +279,33 @@ public:
 
   // rbegin() does not iterate the nodes in reverse - it just starts the iteration
   //  in the up ( parent-wise ) direction.
-  _TyGraphFwdIterPosConst rbegin() const __STL_NOTHROW
+  _TyGraphFwdIterPosConst rbegin() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, false, 
                                     get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst rbegin() __STL_NOTHROW
+  _TyGraphFwdIterPosNonConst rbegin() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, false, 
                                         get_base_path_allocator() );
   }
 
-  _TyGraphFwdIterPosConst end() const __STL_NOTHROW
+  _TyGraphFwdIterPosConst end() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( 0, 0, false, true,
                                     get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst end() __STL_NOTHROW
+  _TyGraphFwdIterPosNonConst end() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  0, 0, false, true, 
                                         get_base_path_allocator() );
   }
 
-  _TyGraphFwdIterPosConst rend() const __STL_NOTHROW
+  _TyGraphFwdIterPosConst rend() const _STLP_NOTHROW
   {
     return end();
   }
-  _TyGraphFwdIterPosNonConst rend() __STL_NOTHROW
+  _TyGraphFwdIterPosNonConst rend() _STLP_NOTHROW
   {
     return end();
   }
@@ -392,8 +392,8 @@ public:
   {
     typedef pair< const_iterator_pos, typename t_TyGraph::const_iterator_pos >  _TyResult;
 
-    const_iterator            itThis = begin();
-    typename t_TyGraph::const_iterator  itOther = _gOther.begin();
+    const_iterator itThis( begin() );
+    typename t_TyGraph::const_iterator itOther = _gOther.begin();
 
     for ( ; 
           !itThis.FAtEnd() && !itOther.FAtEnd();
@@ -570,7 +570,7 @@ public:
                                     __type_to_bool< t_TyFUseSeek >::ms_cfValue, 
                                     false >                                   _TyBinaryOLEInputIterBase;
     // Binary output iterator - this type supports input from istream:
-    typedef typename _TyGraphTraits:: __STL_TEMPLATE _get_input_iterator< _TyThis,
+    typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
       _TyBinaryOLEInputObject,_TyBinaryOLEInputIterBase >::_TyBinaryInputIterNonConst  _TyBinaryOLEInputIterNonConst;
 
     _TyBinaryOLEInputIterNonConst bii( *this, _pis, get_base_path_allocator(), _rione, _riole );
@@ -633,7 +633,7 @@ public:
 
   // Destroy the graph nodes starting at the root.
   void
-  destroy() __STL_NOTHROW
+  destroy() _STLP_NOTHROW
   {
     if ( get_root() )
     {
@@ -646,7 +646,7 @@ public:
   // Destroy all nodes starting at <_pgn>.
   // Note: <_pgn> should NOT be connected to the root - a debug test ensures this.
   void
-  destroy_node( _TyGraphNode * _pgn ) __STL_NOTHROW
+  destroy_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
   {
     assert( _pgn );
     _graph_destroy_struct<_TyThis>  gds( *this, _pgn );
@@ -660,7 +660,7 @@ public:
   // Destroy a single node.
   // If connected then connections are ignored.
   __DGRAPH_STATIC_ALLOC_DECL void
-  destroy_single_node( _TyGraphNode * _pgn ) __STL_NOTHROW
+  destroy_single_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
   {
     assert( _pgn );
     _destruct_node( _pgn );
@@ -669,7 +669,7 @@ public:
 
   // Destroy only the link passed ( i.e. not any connect parent/child ).
   __DGRAPH_STATIC_ALLOC_DECL void
-  destroy_link( _TyGraphLink * _pgl ) __STL_NOTHROW
+  destroy_link( _TyGraphLink * _pgl ) _STLP_NOTHROW
   {
     assert( _pgl );
     _destruct_link( _pgl );
@@ -701,21 +701,21 @@ public:
 // Allocation stuff:
 // accessors:
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator const & get_node_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator const & get_node_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
 #endif __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator &       get_node_allocator_ref() __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator &       get_node_allocator_ref() _STLP_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocatorAsPassed get_node_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocatorAsPassed get_node_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator(); }
 
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator const & get_link_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator const & get_link_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
 #endif __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator &       get_link_allocator_ref() __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator &       get_link_allocator_ref() _STLP_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocatorAsPassed get_link_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST __STL_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocatorAsPassed get_link_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator(); }
 
 // allocation of objects:
@@ -762,14 +762,14 @@ public:
                                 t_TyP1 _p1 )
   {
     _pgn->Init();
-    _TyThis::__STL_TEMPLATE _construct_node_el1< t_TyP1 >( _pgn, _p1 );
+    _TyThis::template _construct_node_el1< t_TyP1 >( _pgn, _p1 );
   }
   template < class t_TyP1, class t_TyP2 >
   static void _construct_node2( _TyGraphNode * _pgn, 
                                 t_TyP1 _p1, t_TyP2 _p2 )
   {
     _pgn->Init();
-    _TyThis::__STL_TEMPLATE _construct_node_el2< t_TyP1, t_TyP2 >( _pgn, _p1, _p2 );
+    _TyThis::template _construct_node_el2< t_TyP1, t_TyP2 >( _pgn, _p1, _p2 );
   }
 
   static void _construct_node_el( _TyGraphNode * _pgn )
@@ -811,14 +811,14 @@ public:
                                 t_TyP1 _p1 )
   {
     _pgl->Init();
-    _TyThis::__STL_TEMPLATE _construct_link_el1< t_TyP1 >( _pgl, _p1 );
+    _TyThis::template _construct_link_el1< t_TyP1 >( _pgl, _p1 );
   }
   template < class t_TyP1, class t_TyP2 >
   static void _construct_link2( _TyGraphLink * _pgl, 
                                 t_TyP1 _p1, t_TyP2 _p2 )
   {
     _pgl->Init();
-    _TyThis::__STL_TEMPLATE _construct_link_el2< t_TyP1, t_TyP2 >( _pgl, _p1, _p2 );
+    _TyThis::template _construct_link_el2< t_TyP1, t_TyP2 >( _pgl, _p1, _p2 );
   }
 
   static void _construct_link_el( _TyGraphLink * _pgl )

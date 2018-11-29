@@ -83,8 +83,8 @@ public:
                     equal_to< _TyGraphNodeBaseReadPtr >, t_TyAllocator > _TyUnfinishedNodes;
   typedef hash_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, _gr_hash_ptr< _TyGraphLinkBaseReadPtr >,
                     equal_to< _TyGraphLinkBaseReadPtr >, t_TyAllocator > _TyUnfinishedLinks;
-  static const _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_INPT_INITSIZENODES;
-  static const _TyUnfinishedLinks::size_type ms_stInitSizeLinks = __GR_INPT_INITSIZELINKS;
+  static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_INPT_INITSIZENODES;
+  static const typename _TyUnfinishedLinks::size_type ms_stInitSizeLinks = __GR_INPT_INITSIZELINKS;
 #else __GR_DSIN_USEHASH
   typedef map<  _TyGraphNodeBaseReadPtr, _TyUnfinishedNode, 
                 less< _TyGraphNodeBaseReadPtr >, t_TyAllocator > _TyUnfinishedNodes;
@@ -261,30 +261,30 @@ public:
     _ClearNodeArray();
   }
   
-  bool FAtBeg() const __STL_NOTHROW
+  bool FAtBeg() const _STLP_NOTHROW
     {
       return !PGNBCur() && !PGLBCur() && !m_fProcessedGraphFooter;
     }
-  bool FAtEnd() const __STL_NOTHROW
+  bool FAtEnd() const _STLP_NOTHROW
     {
       return !PGNBCur() && !PGLBCur() && m_fProcessedGraphFooter;
     }
 
-  _TyGraphNodeBase *  PGNBCur() const __STL_NOTHROW { return m_pgnbCur; }
-  _TyGraphLinkBase *  PGLBCur() const __STL_NOTHROW { return m_pglbCur; }
+  _TyGraphNodeBase *  PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
+  _TyGraphLinkBase *  PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
 
 protected:
 
-  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) __STL_NOTHROW
+  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _STLP_NOTHROW
     {
       m_pgnbCur = _pgnb;
     }
-  void SetPGLBCur( _TyGraphLinkBase * _pglb ) __STL_NOTHROW
+  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _STLP_NOTHROW
     {
       m_pglbCur = _pglb;
     }
 
-  void _ClearNodeArray() __STL_NOTHROW
+  void _ClearNodeArray() _STLP_NOTHROW
     {
       if ( m_punStart )
       {
@@ -292,7 +292,7 @@ protected:
       }
     }
 
-  _TyUnfinishedLinks &  RULGet( bool _fDirectionDown ) __STL_NOTHROW
+  _TyUnfinishedLinks &  RULGet( bool _fDirectionDown ) _STLP_NOTHROW
   {
     return _fDirectionDown ? m_linksUnfinishedDown : m_linksUnfinishedUp;
   }
@@ -306,7 +306,7 @@ protected:
     _TyStreamPos  sp;
     _Tell( sp );
 
-    __STL_TRY
+    _STLP_TRY
     {
       // We check for both context and direction switches so that an input iterator can be kept
       //  "inline" with a forward iterator - this could allow some iteresting transformations:
@@ -315,7 +315,7 @@ protected:
         _Tell( sp ); // Each successful read of a context or direction advances the state.
       }
     }
-    __STL_UNWIND( _Seek( sp ) );
+    _STLP_UNWIND( _Seek( sp ) );
   }
 
   bool  _FReadOne()
@@ -330,7 +330,7 @@ protected:
       SetPGNBCur( m_pglbPopContext->PGNBRelation( !m_fDirectionDown ) );
       SetPGLBCur( m_pglbPopContext );
     }
-    __STL_TRY
+    _STLP_TRY
     {
       typename _binary_rep_tokens< __false_type >::_TyToken uc;
       m_ris._ReadToken( &uc );
@@ -410,7 +410,7 @@ protected:
 
       m_pglbPopContext = 0; // Successful processed the context pop.
     }
-    __STL_UNWIND( if ( m_pglbPopContext )
+    _STLP_UNWIND( if ( m_pglbPopContext )
                   {
                     SetPGNBCur( pgnbSave );
                     SetPGLBCur( pglbSave );
@@ -463,7 +463,7 @@ protected:
     _ProcessUnfinishedNodesNoThrow();
   }
 
-  void _ProcessUnfinishedNodesNoThrow() __STL_NOTHROW
+  void _ProcessUnfinishedNodesNoThrow() _STLP_NOTHROW
   {
     // NO THROWING WITHIN THIS METHOD - loss of state.
     m_punEnd = m_punStart + m_nodesUnfinished.size();
@@ -593,7 +593,7 @@ protected:
   }
 
   void _InsertNewNodeNoThrow( _TyGraphNodeBase * _pgnbNew,
-                              _TyGraphLinkBase ** _ppglbPos ) __STL_NOTHROW
+                              _TyGraphLinkBase ** _ppglbPos ) _STLP_NOTHROW
   {
     if ( !m_pgnbNewRoot )
     {
@@ -798,14 +798,14 @@ protected:
       //  {m_pglbConstructedEl}.
     }
     // Need to protect {m_pglbConstructedEl} - must zero if we throw from here on out.
-    __STL_TRY
+    _STLP_TRY
     {
       // Read the footer:
       _ReadLinkFooter( 0 );
     }
     // Since we can throw after constructing the link we need to revert state.
     // Derived should accept zero.
-    __STL_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
+    _STLP_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
                     m_pglbConstructedEl = 0 ) );
   }
 
@@ -846,12 +846,12 @@ protected:
         m_pglbConstructedEl = vtUL.second;  // construction now owned by this object.
       }
       // Need to protect {m_pglbConstructedEl} - must zero if we throw from here on out.
-      __STL_TRY
+      _STLP_TRY
       {
         _ReadLinkFooter( &vtUL );
       }
       // restore state - must accept null:
-      __STL_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
+      _STLP_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
                       m_pglbConstructedEl = 0 ) );
     }
     

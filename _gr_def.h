@@ -40,7 +40,7 @@ template < class t_TyGraphNodeBase >  struct _graph_link_base;
 
 template < class t_TyGraphLinkBase >
 _TyGNIndex
-GLB_UCountParents( const t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
+GLB_UCountParents( const t_TyGraphLinkBase * _pglb ) _STLP_NOTHROW
 {
   _TyGNIndex u = 0;
   for ( ;
@@ -53,7 +53,7 @@ GLB_UCountParents( const t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
 template < class t_TyGraphLinkBase >
 _TyGNIndex
 GLB_UCountParentsBefore(  const t_TyGraphLinkBase * _pglb, 
-                          const t_TyGraphLinkBase ** _ppglbHead ) __STL_NOTHROW
+                          const t_TyGraphLinkBase ** _ppglbHead ) _STLP_NOTHROW
 {
   // Walk the head to the element - this let's the end element work correctly ( _pglb == 0 ).
   _TyGNIndex u = 0;
@@ -66,7 +66,7 @@ GLB_UCountParentsBefore(  const t_TyGraphLinkBase * _pglb,
 
 template < class t_TyGraphLinkBase >
 t_TyGraphLinkBase * const *
-GLB_PPGLBGetNthParent( t_TyGraphLinkBase * const * _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+GLB_PPGLBGetNthParent( t_TyGraphLinkBase * const * _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
 {
   for ( ; _u-- && *_ppglbAfter; _ppglbAfter = &( (*_ppglbAfter)->m_pglbNextParent ) )
     ;
@@ -75,7 +75,7 @@ GLB_PPGLBGetNthParent( t_TyGraphLinkBase * const * _ppglbAfter, _TyGNIndex _u ) 
 
 template < class t_TyGraphLinkBase >
 _TyGNIndex
-GLB_UCountChildren( const t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
+GLB_UCountChildren( const t_TyGraphLinkBase * _pglb ) _STLP_NOTHROW
 {
   _TyGNIndex u = 0;
   for ( ;
@@ -88,7 +88,7 @@ GLB_UCountChildren( const t_TyGraphLinkBase * _pglb ) __STL_NOTHROW
 template < class t_TyGraphLinkBase >
 _TyGNIndex
 GLB_UCountChildrenBefore( const t_TyGraphLinkBase * _pglb, 
-                          const t_TyGraphLinkBase ** _ppglbHead ) __STL_NOTHROW
+                          const t_TyGraphLinkBase ** _ppglbHead ) _STLP_NOTHROW
 {
   // Walk the head to the element - this let's the end element work correctly ( _pglb == 0 ).
   _TyGNIndex u = 0;
@@ -101,7 +101,7 @@ GLB_UCountChildrenBefore( const t_TyGraphLinkBase * _pglb,
 
 template < class t_TyGraphLinkBase >
 t_TyGraphLinkBase * const *
-GLB_PPGLBGetNthChild( t_TyGraphLinkBase * const * _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+GLB_PPGLBGetNthChild( t_TyGraphLinkBase * const * _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
 {
   for ( ; _u-- && *_ppglbAfter; _ppglbAfter = &( (*_ppglbAfter)->m_pglbNextChild ) )
     ;
@@ -132,12 +132,12 @@ public:
   typedef t_TyGraphNodeBase   _TyGraphNodeBase;
   typedef _TyThis             _TyGraphLinkBase;
 
-  void  Init() __STL_NOTHROW
+  void  Init() _STLP_NOTHROW
   {
     // Nothing to be done - all should be initialized by user.
   }
 
-  bool  FIsConstructed() const __STL_NOTHROW
+  bool  FIsConstructed() const _STLP_NOTHROW
   {
     // Currently a link is constructed ( i.e. the construction of the link is owned
     //  by the graph ) when it has both a parent and a child node connected to it.
@@ -146,15 +146,15 @@ public:
     return m_pgnbNodeParent && m_pgnbNodeChild;
   }
 
-  void        SetParentNode( t_TyGraphNodeBase *  _pgnbNodeParent ) __STL_NOTHROW
+  void        SetParentNode( t_TyGraphNodeBase *  _pgnbNodeParent ) _STLP_NOTHROW
   {
     m_pgnbNodeParent = _pgnbNodeParent;
   }
-  void        SetChildNode( t_TyGraphNodeBase * _pgnbNodeChild ) __STL_NOTHROW
+  void        SetChildNode( t_TyGraphNodeBase * _pgnbNodeChild ) _STLP_NOTHROW
   {
     m_pgnbNodeChild = _pgnbNodeChild;
   }
-  void        SetRelationNode( bool _fChild, t_TyGraphNodeBase *  _pgnbNode ) __STL_NOTHROW
+  void        SetRelationNode( bool _fChild, t_TyGraphNodeBase *  _pgnbNode ) _STLP_NOTHROW
   {
     if ( _fChild )
       SetChildNode( _pgnbNode );
@@ -162,37 +162,37 @@ public:
       SetParentNode( _pgnbNode );
   }
 
-  t_TyGraphNodeBase * PGNBParent() const __STL_NOTHROW
+  t_TyGraphNodeBase * PGNBParent() const _STLP_NOTHROW
   {
     return m_pgnbNodeParent;
   }
-  t_TyGraphNodeBase * PGNBChild() const __STL_NOTHROW
+  t_TyGraphNodeBase * PGNBChild() const _STLP_NOTHROW
   {
     return m_pgnbNodeChild;
   }
-  t_TyGraphNodeBase * PGNBRelation( bool _fChild ) const __STL_NOTHROW
+  t_TyGraphNodeBase * PGNBRelation( bool _fChild ) const _STLP_NOTHROW
   {
     return _fChild ? m_pgnbNodeChild : m_pgnbNodeParent;
   }
 
-  _TyGNIndex  UCountParents() const __STL_NOTHROW
+  _TyGNIndex  UCountParents() const _STLP_NOTHROW
   {
     return GLB_UCountParents( this );
   }
 
   // Operations:
-  _TyGNIndex  UParentsBefore() const __STL_NOTHROW
+  _TyGNIndex  UParentsBefore() const _STLP_NOTHROW
   {
     return GLB_UCountParentsBefore( this, m_pgnbNodeChild->PPGLBParentHead() );
   }
 
   static _TyThis * const *  
-  PPGLBGetNthParent( _TyThis * const * _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+  PPGLBGetNthParent( _TyThis * const * _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
   {
     return GLB_PPGLBGetNthParent( _ppglbAfter, _u );
   }
   static _TyThis ** 
-  PPGLBGetNthParent( _TyThis ** _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+  PPGLBGetNthParent( _TyThis ** _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
   {
     return const_cast< _TyThis ** >( GLB_PPGLBGetNthParent( _ppglbAfter, _u ) );
   }
@@ -205,37 +205,37 @@ public:
   }
 
   // Return the address of the next parent in the list.
-  _TyThis * const * PPGLBGetNextParent() const __STL_NOTHROW
+  _TyThis * const * PPGLBGetNextParent() const _STLP_NOTHROW
   {
     return &m_pglbNextParent;
   }
-  _TyThis **  PPGLBGetNextParent() __STL_NOTHROW
+  _TyThis **  PPGLBGetNextParent() _STLP_NOTHROW
   {
     return &m_pglbNextParent;
   }
-  _TyThis *   PGLBGetNextParent() const __STL_NOTHROW
+  _TyThis *   PGLBGetNextParent() const _STLP_NOTHROW
   {
     return m_pglbNextParent;
   }
   // Return the address of the pointer to this graph link in the parent list.
-  _TyThis **  PPGLBGetThisParent() const __STL_NOTHROW
+  _TyThis **  PPGLBGetThisParent() const _STLP_NOTHROW
   {
     return m_ppglbPrevNextParent;
   }
   // Return the previous graph link in the parent list.
-  _TyThis *   PGLBGetPrevParent() const __STL_NOTHROW
+  _TyThis *   PGLBGetPrevParent() const _STLP_NOTHROW
   {
     return reinterpret_cast< const _TyThis * >( 
       reinterpret_cast< char* >(m_ppglbPrevNextParent) - 
         offsetof(_TyThis,m_pglbNextParent) );
   }
   // Return the pointer to the address of the previous element in the parent list.
-  _TyThis **  PPGLBGetPrevParent() const __STL_NOTHROW
+  _TyThis **  PPGLBGetPrevParent() const _STLP_NOTHROW
   {
     return PGLBGetPrevParent()->m_ppglbPrevNextParent;
   }
 
-  void      InsertParent( _TyThis ** _ppglbBefore ) __STL_NOTHROW
+  void      InsertParent( _TyThis ** _ppglbBefore ) _STLP_NOTHROW
   {
     m_ppglbPrevNextParent = _ppglbBefore;
     m_pglbNextParent = *_ppglbBefore;
@@ -245,7 +245,7 @@ public:
     }
     *_ppglbBefore = this;
   }
-  void      InsertParentAssume( _TyThis ** _ppglbBefore ) __STL_NOTHROW
+  void      InsertParentAssume( _TyThis ** _ppglbBefore ) _STLP_NOTHROW
   {
     m_ppglbPrevNextParent = _ppglbBefore;
     m_pglbNextParent = *_ppglbBefore;
@@ -254,14 +254,14 @@ public:
   }
   // Append the parent list to the given tail of some parent list - used to move parent
   //  lists to nodes enmass:
-  void      AppendParentListToTail( _TyThis ** _ppglbTail ) __STL_NOTHROW
+  void      AppendParentListToTail( _TyThis ** _ppglbTail ) _STLP_NOTHROW
   {
     assert( !*_ppglbTail ); // Must be tail.
     m_ppglbPrevNextParent = _ppglbTail;
     *_ppglbTail = this;
   }
 
-  void      RemoveParent( ) const __STL_NOTHROW
+  void      RemoveParent( ) const _STLP_NOTHROW
   {
     if ( m_pglbNextParent )
     {
@@ -270,7 +270,7 @@ public:
     *m_ppglbPrevNextParent = m_pglbNextParent;
   }
 
-  void      RemoveParentAssume( ) const __STL_NOTHROW
+  void      RemoveParentAssume( ) const _STLP_NOTHROW
   {
     m_pglbNextParent->m_ppglbPrevNextParent = m_ppglbPrevNextParent;
     *m_ppglbPrevNextParent = m_pglbNextParent;
@@ -281,12 +281,10 @@ public:
   // Actually <_ppglbParentBefore> can be after <_ppglbParentAfter> as long as <_ppglbParentBefore>
   //  is not the tail of the list.
   static void   ExchangeParentsOrdered( _TyThis * _pglbParentBefore, 
-                                        _TyThis * _pglbParentAfter ) __STL_NOTHROW
+                                        _TyThis * _pglbParentAfter )
   {
     if ( !_pglbParentBefore || !_pglbParentAfter )
-    {
       throw _graph_nav_except("_graph_link_base::ExchangeParentsOrdered(): bad parameters.");
-    }
     assert( _pglbParentBefore != _pglbParentAfter );  // not a nop.
     _TyThis ** ppglbPrevNextAfter = _pglbParentAfter->m_ppglbPrevNextParent;
     _pglbParentAfter->m_ppglbPrevNextParent = _pglbParentBefore->m_ppglbPrevNextParent;
@@ -302,8 +300,10 @@ public:
   }
 
   static void   ExchangeParents(  _TyThis * _pglbParentBefore, 
-                                  _TyThis * _pglbParentAfter ) __STL_NOTHROW
+                                  _TyThis * _pglbParentAfter )
   {
+    if ( !_pglbParentBefore || !_pglbParentAfter )
+      throw _graph_nav_except("_graph_link_base::ExchangeParentsOrdered(): bad parameters.");
     assert( _pglbParentBefore != _pglbParentAfter );  // not a nop.
     _TyThis ** ppglbPrevNextAfter = _pglbParentAfter->m_ppglbPrevNextParent;
     _pglbParentAfter->m_ppglbPrevNextParent = _pglbParentBefore->m_ppglbPrevNextParent;
@@ -321,23 +321,23 @@ public:
     _pglbParentBefore->m_pglbNextParent = pglbNextAfter;
   }
 
-  _TyGNIndex  UCountChildren() const __STL_NOTHROW
+  _TyGNIndex  UCountChildren() const _STLP_NOTHROW
   {
     return GLB_UCountChildren( this );
   }
 
-  _TyGNIndex  UChildrenBefore() const __STL_NOTHROW
+  _TyGNIndex  UChildrenBefore() const _STLP_NOTHROW
   {
     return GLB_UCountChildrenBefore( this, m_pgnbNodeParent->PPGLBChildHead() );
   }
 
   static _TyThis * const *  
-  PPGLBGetNthChild( _TyThis * const * _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+  PPGLBGetNthChild( _TyThis * const * _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
   {
     return GLB_PPGLBGetNthChild( _ppglbAfter, _u );
   }
   static _TyThis ** 
-  PPGLBGetNthChild( _TyThis ** _ppglbAfter, _TyGNIndex _u ) __STL_NOTHROW
+  PPGLBGetNthChild( _TyThis ** _ppglbAfter, _TyGNIndex _u ) _STLP_NOTHROW
   {
     return const_cast< _TyThis ** >( GLB_PPGLBGetNthChild( _ppglbAfter, _u ) );
   }
@@ -350,38 +350,38 @@ public:
   }
 
   // Return the address of the next child in the list.
-  _TyThis **  PPGLBGetNextChild() __STL_NOTHROW
+  _TyThis **  PPGLBGetNextChild() _STLP_NOTHROW
   {
     return &m_pglbNextChild;
   }
-  _TyThis * const * PPGLBGetNextChild() const __STL_NOTHROW
+  _TyThis * const * PPGLBGetNextChild() const _STLP_NOTHROW
   {
     return &m_pglbNextChild;
   }
-  _TyThis *   PGLBGetNextChild() const __STL_NOTHROW
+  _TyThis *   PGLBGetNextChild() const _STLP_NOTHROW
   {
     return m_pglbNextChild;
   }
 
   // Return the address of the pointer to this graph link in the child list.
-  _TyThis **  PPGLBGetThisChild() const __STL_NOTHROW
+  _TyThis **  PPGLBGetThisChild() const _STLP_NOTHROW
   {
     return m_ppglbPrevNextChild;
   }
   // Return the previous graph link in the child list.
-  _TyThis * PGLBGetPrevChild() const __STL_NOTHROW
+  _TyThis * PGLBGetPrevChild() const _STLP_NOTHROW
   {
     return reinterpret_cast< _TyThis * >( 
       reinterpret_cast< char* >( m_ppglbPrevNextChild ) - 
         offsetof( _TyThis,m_pglbNextChild ) );
   }
   // Return the pointer to the address of the previous element in the child list.
-  _TyThis **  PPGLBGetPrevChild() const __STL_NOTHROW
+  _TyThis **  PPGLBGetPrevChild() const _STLP_NOTHROW
   {
     return PGLBGetPrevChild()->m_ppglbPrevNextChild;
   }
 
-  void      InsertChild( _TyThis ** _ppglbBefore ) __STL_NOTHROW
+  void      InsertChild( _TyThis ** _ppglbBefore ) _STLP_NOTHROW
   {
     m_ppglbPrevNextChild = _ppglbBefore;
     m_pglbNextChild = *_ppglbBefore;
@@ -391,7 +391,7 @@ public:
     }
     *_ppglbBefore = this;
   }
-  void      InsertChildAssume( _TyThis ** _ppglbBefore ) __STL_NOTHROW
+  void      InsertChildAssume( _TyThis ** _ppglbBefore ) _STLP_NOTHROW
   {
     m_ppglbPrevNextChild = _ppglbBefore;
     m_pglbNextChild = *_ppglbBefore;
@@ -400,14 +400,14 @@ public:
   }
   // Append the child list to the given tail of some child list - used to move child
   //  lists to nodes enmass:
-  void      AppendChildListToTail( _TyThis ** _ppglbTail ) __STL_NOTHROW
+  void      AppendChildListToTail( _TyThis ** _ppglbTail ) _STLP_NOTHROW
   {
     assert( !*_ppglbTail ); // Must be tail.
     m_ppglbPrevNextChild = _ppglbTail;
     *_ppglbTail = this;
   }
 
-  void      RemoveChild( ) const __STL_NOTHROW
+  void      RemoveChild( ) const _STLP_NOTHROW
   {
     if ( m_pglbNextChild )
     {
@@ -415,42 +415,42 @@ public:
     }
     *m_ppglbPrevNextChild = m_pglbNextChild;
   }
-  void      RemoveChildAssume( ) const __STL_NOTHROW
+  void      RemoveChildAssume( ) const _STLP_NOTHROW
   {
     m_pglbNextChild->m_ppglbPrevNextChild = m_ppglbPrevNextChild;
     *m_ppglbPrevNextChild = m_pglbNextChild;
   }
 
 // Relation methods:
-  _TyGNIndex  UCountRelations( bool _fChildren ) const __STL_NOTHROW
+  _TyGNIndex  UCountRelations( bool _fChildren ) const _STLP_NOTHROW
   {
     return _fChildren ? GLB_UCountChildren( this ) : GLB_UCountParents( this );
   }
 
-  _TyThis *   PGLBGetNextRelation( bool _fChild ) const __STL_NOTHROW
+  _TyThis *   PGLBGetNextRelation( bool _fChild ) const _STLP_NOTHROW
   {
     return _fChild ? m_pglbNextChild : m_pglbNextParent;
   }
 
-  _TyThis **  PPGLBGetNextRelation( bool _fChild ) __STL_NOTHROW
+  _TyThis **  PPGLBGetNextRelation( bool _fChild ) _STLP_NOTHROW
   {
     return _fChild ? &m_pglbNextChild : &m_pglbNextParent;
   }
-  _TyThis * const * PPGLBGetNextRelation( bool _fChild ) const __STL_NOTHROW
+  _TyThis * const * PPGLBGetNextRelation( bool _fChild ) const _STLP_NOTHROW
   {
     return _fChild ? &m_pglbNextChild : &m_pglbNextParent;
   }
 
-  _TyThis **  PPGLBGetThisRelation( bool _fChild ) const __STL_NOTHROW
+  _TyThis **  PPGLBGetThisRelation( bool _fChild ) const _STLP_NOTHROW
   {
     return _fChild ? PPGLBGetThisChild() : PPGLBGetThisParent();
   }
 
-  void      InsertRelation( bool _fChild, _TyThis ** _ppglbBefore ) __STL_NOTHROW
+  void      InsertRelation( bool _fChild, _TyThis ** _ppglbBefore ) _STLP_NOTHROW
   {
     _fChild ? InsertChild( _ppglbBefore ) : InsertParent( _ppglbBefore );
   }
-  void      RemoveRelation( bool _fChild ) const __STL_NOTHROW
+  void      RemoveRelation( bool _fChild ) const _STLP_NOTHROW
   {
     _fChild ? RemoveChild() : RemoveParent();
   }
@@ -460,7 +460,7 @@ public:
   // Actually <_ppglbChildBefore> can be after <_ppglbChildAfter> as long as <_ppglbChildBefore>
   //  is not the tail of the list.
   static void   ExchangeChildrenOrdered(  _TyThis * _pglbChildBefore, 
-                                          _TyThis * _pglbChildAfter ) __STL_NOTHROW
+                                          _TyThis * _pglbChildAfter ) _STLP_NOTHROW
   {
     assert( _pglbChildBefore != _pglbChildAfter );  // not a nop.
     _TyThis ** ppglbPrevNextAfter = _pglbChildAfter->m_ppglbPrevNextChild;
@@ -477,7 +477,7 @@ public:
   }
 
   static void   ExchangeChildren( _TyThis * _pglbChildBefore, 
-                                  _TyThis * _pglbChildAfter ) __STL_NOTHROW
+                                  _TyThis * _pglbChildAfter ) _STLP_NOTHROW
   {
     assert( _pglbChildBefore != _pglbChildAfter );  // not a nop.
     _TyThis ** ppglbPrevNextAfter = _pglbChildAfter->m_ppglbPrevNextChild;
@@ -521,24 +521,24 @@ public:
     m_pglbChildren = 0;
   }
 
-  _TyGNIndex    UParents() const __STL_NOTHROW
+  _TyGNIndex    UParents() const _STLP_NOTHROW
   {
     return m_pglbParents ? m_pglbParents->UCountParents() : 0; // tho' m_pglbParents->UCountParents() should work.
   }
-  bool          FParents() const __STL_NOTHROW
+  bool          FParents() const _STLP_NOTHROW
   {
     return !!m_pglbParents;
   }
-  _TyGraphLinkBase **     PPGLBParentHead() __STL_NOTHROW
+  _TyGraphLinkBase **     PPGLBParentHead() _STLP_NOTHROW
   {
     return &m_pglbParents;
   }
-  _TyGraphLinkBase * const *      PPGLBParentHead() const __STL_NOTHROW
+  _TyGraphLinkBase * const *      PPGLBParentHead() const _STLP_NOTHROW
   {
     return &m_pglbParents;
   }
 
-  _TyThis * PGNBGetNthParent( const _TyGNIndex & _u ) const __STL_NOTHROW
+  _TyThis * PGNBGetNthParent( const _TyGNIndex & _u ) const
   {
     _TyGraphLinkBase * const * ppglb = _TyGraphLinkBase::PPGLBGetNthParent( &m_pglbParents, _u );
     if ( !*ppglb )
@@ -554,14 +554,14 @@ public:
   }
   void      AddParent( _TyThis & _rgnbAdd, _TyGraphLinkBase & _rgl,
                       _TyGraphLinkBase *& _rpglInsertBeforeParent,
-                      _TyGraphLinkBase *& _rpglInsertBeforeAddChild ) __STL_NOTHROW
+                      _TyGraphLinkBase *& _rpglInsertBeforeAddChild ) _STLP_NOTHROW
   {
     _rgl.m_pgnbNodeChild = this;
     _rgl.m_pgnbNodeParent = &_rgnbAdd;
     _rgl.InsertChild( &_rpglInsertBeforeAddChild );
     _rgl.InsertParent( &_rpglInsertBeforeParent );
   }
-  void  ExchangeParentsOrdered( _TyGNIndex _uMin, _TyGNIndex _uMax ) const __STL_NOTHROW
+  void  ExchangeParentsOrdered( _TyGNIndex _uMin, _TyGNIndex _uMax ) const _STLP_NOTHROW
   {
     assert( _uMin < _uMax );
     assert( _uMin < UParents() );
@@ -570,7 +570,7 @@ public:
     _TyGraphLinkBase * const * _ppglbMax = _TyGraphLinkBase::PPGLBGetNthParent( _ppglbMin, _uMax - _uMin );
     _TyGraphLinkBase::ExchangeParentsOrdered( *_ppglbMin, *_ppglbMax );
   }
-  void  MoveParentUp( _TyGNIndex _uRemove, _TyGNIndex _uInsert ) __STL_NOTHROW
+  void  MoveParentUp( _TyGNIndex _uRemove, _TyGNIndex _uInsert )
   {
     assert( _uRemove < _uInsert );
     assert( _uRemove < UParents()-1 );  // no-op otherwise.
@@ -588,7 +588,7 @@ public:
       throw _graph_nav_except("_graph_node_base::MoveParentUp(): index beyond end.");
     }
   }
-  void  MoveParentDown( _TyGNIndex _uRemove, _TyGNIndex _uInsert ) __STL_NOTHROW
+  void  MoveParentDown( _TyGNIndex _uRemove, _TyGNIndex _uInsert )
   {
     assert( _uInsert < _uRemove );
     _TyGraphLinkBase ** _ppglbInsert = _TyGraphLinkBase::PPGLBGetNthParent( &m_pglbParents, _uRemove );
@@ -603,7 +603,7 @@ public:
       throw _graph_nav_except("_graph_node_base::MoveParentDown(): index beyond end.");
     }
   }
-  void  MoveParent( const _TyGNIndex & _uRemove, const _TyGNIndex & _uInsert ) __STL_NOTHROW
+  void  MoveParent( const _TyGNIndex & _uRemove, const _TyGNIndex & _uInsert ) _STLP_NOTHROW
   {
     if ( _uRemove < _uInsert )
     {
@@ -616,7 +616,7 @@ public:
   }
   void      RemoveParent( const _TyGNIndex & _uRemove,
                           _TyThis ** _ppgnbRemoved,
-                          _TyGraphLinkBase ** _ppglRemoved ) const __STL_NOTHROW
+                          _TyGraphLinkBase ** _ppglRemoved ) const
   {
     assert( _uRemove < UParents() );
     *_ppglRemoved = *_TyGraphLinkBase::PPGLBGetNthParent( &m_pglbParents, _uRemove );
@@ -631,24 +631,24 @@ public:
     }
   }
 
-  _TyGNIndex    UChildren() const __STL_NOTHROW
+  _TyGNIndex    UChildren() const _STLP_NOTHROW
   {
     return m_pglbChildren ? m_pglbChildren->UCountChildren() : 0;
   }
-  bool          FChildren() const __STL_NOTHROW
+  bool          FChildren() const _STLP_NOTHROW
   {
     return !!m_pglbChildren;
   }
-  _TyGraphLinkBase **           PPGLBChildHead() __STL_NOTHROW
+  _TyGraphLinkBase **           PPGLBChildHead() _STLP_NOTHROW
   {
     return &m_pglbChildren;
   }
-  _TyGraphLinkBase * const *    PPGLBChildHead() const __STL_NOTHROW
+  _TyGraphLinkBase * const *    PPGLBChildHead() const _STLP_NOTHROW
   {
     return &m_pglbChildren;
   }
 
-  _TyThis * PGNBGetNthChild( const _TyGNIndex & _u ) const __STL_NOTHROW
+  _TyThis * PGNBGetNthChild( const _TyGNIndex & _u ) const
   {
     _TyGraphLinkBase * const * ppglb = _TyGraphLinkBase::PPGLBGetNthChild( &m_pglbChildren, _u );
     if ( !*ppglb )
@@ -664,14 +664,14 @@ public:
   }
   void      AddChild( _TyThis & _rgnbAdd, _TyGraphLinkBase & _rgl,
                       _TyGraphLinkBase *& _rpglInsertBeforeChild,
-                      _TyGraphLinkBase *& _rpglInsertBeforeAddParent ) __STL_NOTHROW
+                      _TyGraphLinkBase *& _rpglInsertBeforeAddParent ) _STLP_NOTHROW
   {
     _rgl.m_pgnbNodeParent = this;
     _rgl.m_pgnbNodeChild = &_rgnbAdd;
     _rgl.InsertParent( &_rpglInsertBeforeAddParent );
     _rgl.InsertChild( &_rpglInsertBeforeChild );
   }
-  void  ExchangeChildren( _TyGNIndex _uMin, _TyGNIndex _uMax ) __STL_NOTHROW
+  void  ExchangeChildren( _TyGNIndex _uMin, _TyGNIndex _uMax ) _STLP_NOTHROW
   {
     assert( _uMin < _uMax );
     assert( _uMin < UChildren() );
@@ -680,7 +680,7 @@ public:
     _TyGraphLinkBase ** _ppglbMax = _TyGraphLinkBase::PPGLBGetNthChild( _ppglbMin, _uMax - _uMin );
     _TyGraphLinkBase::ExchangeChildrenOrdered( *_ppglbMin, *_ppglbMax );
   }
-  void  MoveChildUp( _TyGNIndex _uRemove, _TyGNIndex _uInsert ) __STL_NOTHROW
+  void  MoveChildUp( _TyGNIndex _uRemove, _TyGNIndex _uInsert )
   {
     assert( _uRemove < _uInsert );
     assert( _uRemove < UChildren()-1 ); // no-op otherwise.
@@ -696,7 +696,7 @@ public:
       throw _graph_nav_except("_graph_node_base::MoveChildUp(): index beyond end.");
     }
   }
-  void  MoveChildDown( _TyGNIndex _uRemove, _TyGNIndex _uInsert ) __STL_NOTHROW
+  void  MoveChildDown( _TyGNIndex _uRemove, _TyGNIndex _uInsert )
   {
     assert( _uInsert < _uRemove );
     _TyGraphLinkBase ** _ppglbInsert = _TyGraphLinkBase::PPGLBGetNthChild( &m_pglbChildren, _uRemove );
@@ -711,7 +711,7 @@ public:
       throw _graph_nav_except("_graph_node_base::MoveChildDown(): index beyond end.");
     }
   }
-  void      MoveChild( const _TyGNIndex & _uRemove, const _TyGNIndex & _uInsert ) __STL_NOTHROW
+  void      MoveChild( const _TyGNIndex & _uRemove, const _TyGNIndex & _uInsert ) _STLP_NOTHROW
   {
     if ( _uRemove < _uInsert )
     {
@@ -724,7 +724,7 @@ public:
   }
   void      RemoveChild(  const _TyGNIndex & _uRemove,
                           _TyThis ** _ppgnbRemoved,
-                          _TyGraphLinkBase ** _ppglRemoved ) __STL_NOTHROW
+                          _TyGraphLinkBase ** _ppglRemoved )
   {
     assert( _uRemove < UChildren() );
     *_ppglRemoved = *_TyGraphLinkBase::PPGLBGetNthChild( &m_pglbChildren, _uRemove );
@@ -740,20 +740,20 @@ public:
   }
 
   // Relation methods:
-  _TyGNIndex    URelations( bool _fChildren ) const __STL_NOTHROW
+  _TyGNIndex    URelations( bool _fChildren ) const _STLP_NOTHROW
   {
     return _fChildren ? UChildren() : UParents();
   }
-  _TyGNIndex    FRelations( bool _fChildren ) const __STL_NOTHROW
+  _TyGNIndex    FRelations( bool _fChildren ) const _STLP_NOTHROW
   {
     return _fChildren ? FChildren() : FParents();
   }
 
-  _TyGraphLinkBase **     PPGLBRelationHead( bool _fChild ) __STL_NOTHROW
+  _TyGraphLinkBase **     PPGLBRelationHead( bool _fChild ) _STLP_NOTHROW
   {
     return _fChild ? PPGLBChildHead() : PPGLBParentHead();
   }
-  _TyGraphLinkBase * const *      PPGLBRelationHead( bool _fChild ) const __STL_NOTHROW
+  _TyGraphLinkBase * const *      PPGLBRelationHead( bool _fChild ) const _STLP_NOTHROW
   {
     return _fChild ? PPGLBChildHead() : PPGLBParentHead();
   }
@@ -762,7 +762,7 @@ public:
 // Template functions for graph path node:
 template < class t_TyPathNodeBase >
 t_TyPathNodeBase **
-GPNB_PPPNBGetNth( const t_TyPathNodeBase * const * _pppnbAfter, _TyGNIndex _u ) __STL_NOTHROW
+GPNB_PPPNBGetNth( const t_TyPathNodeBase * const * _pppnbAfter, _TyGNIndex _u ) _STLP_NOTHROW
 {
   for ( ; _u--; _pppnbAfter = &( (*_pppnbAfter)->m_ppnbNext ) )
     ;
@@ -771,7 +771,7 @@ GPNB_PPPNBGetNth( const t_TyPathNodeBase * const * _pppnbAfter, _TyGNIndex _u ) 
 
 template < class t_TyPathNodeBase >
 t_TyPathNodeBase **
-GPNB_PPPNBGetNthPrev( const t_TyPathNodeBase * const * _pppnbBefore, _TyGNIndex _u ) __STL_NOTHROW
+GPNB_PPPNBGetNthPrev( const t_TyPathNodeBase * const * _pppnbBefore, _TyGNIndex _u ) _STLP_NOTHROW
 {
   for ( ; _u--; _pppnbBefore = t_TyPathNodeBase::PPPNBGetPrevPrevNext( _pppnbBefore ) )
     ;
@@ -795,61 +795,61 @@ public:
   _TyThis *             m_ppnbNext;     // next in path.
 
   // unsafe constructor:
-  _graph_path_node_base() __STL_NOTHROW
+  _graph_path_node_base() _STLP_NOTHROW
   {
   }
 
-  explicit _graph_path_node_base( _TyThis const & _r ) __STL_NOTHROW
+  explicit _graph_path_node_base( _TyThis const & _r ) _STLP_NOTHROW
     : m_pgnbNode( _r.m_pgnbNode ),
       m_pglbLink( _r.m_pglbLink )
   {
   }
 
 #if 0 // Not a safe constructor - use first ctor - just as unsafe - but advertises as such. 
-  explicit _graph_path_node_base( const t_TyGraphNodeBase * _pgnbNode ) __STL_NOTHROW
+  explicit _graph_path_node_base( const t_TyGraphNodeBase * _pgnbNode ) _STLP_NOTHROW
     : m_pgnbNode( _pgnbNode )
   {
   }
 #endif 0
 
   _graph_path_node_base(  t_TyGraphNodeBase * _pgnbNode,
-                          t_TyGraphLinkBase * _pglbLink ) __STL_NOTHROW
+                          t_TyGraphLinkBase * _pglbLink ) _STLP_NOTHROW
     : m_pgnbNode( _pgnbNode ),
       m_pglbLink( _pglbLink )
   {
   }
 
-  ~_graph_path_node_base() __STL_NOTHROW
+  ~_graph_path_node_base() _STLP_NOTHROW
   {
   }
 
   // These methods are not const safe - they are meant to be used
   //  in the implementation only.
-  static _TyThis *  PGNBGetThisFromPrevNext( const _TyThis * const * _pppnbBefore ) __STL_NOTHROW
+  static _TyThis *  PGNBGetThisFromPrevNext( const _TyThis * const * _pppnbBefore ) _STLP_NOTHROW
   {
     return (_TyThis*)( ((char*)_pppnbBefore) - offsetof( _TyThis, m_ppnbNext ) );
   }
 
-  static _TyThis ** PPPNBGetPrevPrevNext( const _TyThis * const * _pppnbBefore ) __STL_NOTHROW
+  static _TyThis ** PPPNBGetPrevPrevNext( const _TyThis * const * _pppnbBefore ) _STLP_NOTHROW
   {
     return PGNBGetThisFromPrevNext( _pppnbBefore )->m_pppnbPrevNext;
   }
 
   static _TyThis **   PPGPNBGetNth( const _TyThis * const * _pppnbAfter, 
-                                    _TyGNIndex _u ) __STL_NOTHROW
+                                    _TyGNIndex _u ) _STLP_NOTHROW
   {
     return GPNB_PPPNBGetNth( _pppnbAfter, _u );
   }
 
   static _TyThis **   PPGPNBGetNthPrev( const _TyThis * const * _pppnbBefore, 
-                                        _TyGNIndex _u ) __STL_NOTHROW
+                                        _TyGNIndex _u ) _STLP_NOTHROW
   {
     return GPNB_PPPNBGetNthPrev( _pppnbBefore, _u );
   }
 
   static _TyThis **   PPGPNBGetNth( const _TyThis * const * _pppnbHead, 
                                     const _TyThis * const * _pppnbTail, 
-                                    _TyGNIndex _uCount, _TyGNIndex _u ) __STL_NOTHROW
+                                    _TyGNIndex _uCount, _TyGNIndex _u ) _STLP_NOTHROW
   {
     // Choose the fastest way to get the desired node:
     if ( _u > ( _uCount / 2 ) )
@@ -863,7 +863,7 @@ public:
   }
 
   void  insert_node(  _TyThis *& _rpgnBefore,  
-                      _TyThis **& _rpppnbTail ) __STL_NOTHROW
+                      _TyThis **& _rpppnbTail ) _STLP_NOTHROW
   {
     m_pppnbPrevNext = &_rpgnBefore;
     m_ppnbNext = _rpgnBefore;
@@ -880,7 +880,7 @@ public:
   }
 
   // Insert into the middle of the list - assumes 
-  void  insert_node_in_middle( _TyThis *& _rpgnBefore ) __STL_NOTHROW
+  void  insert_node_in_middle( _TyThis *& _rpgnBefore ) _STLP_NOTHROW
   {
     assert( _rpgnBefore );
     m_pppnbPrevNext = &_rpgnBefore;
@@ -890,7 +890,7 @@ public:
   }
 
   // Push this node onto the tail:
-  void  push_back_node( _TyThis **& _rpppnbTail ) __STL_NOTHROW
+  void  push_back_node( _TyThis **& _rpppnbTail ) _STLP_NOTHROW
   {
     m_pppnbPrevNext = _rpppnbTail;
     *_rpppnbTail = this;
@@ -898,7 +898,7 @@ public:
     _rpppnbTail = &m_ppnbNext;
   }
 
-  void  remove_node( _TyThis **& _rpppnbTail ) __STL_NOTHROW
+  void  remove_node( _TyThis **& _rpppnbTail ) _STLP_NOTHROW
   {
     if ( m_ppnbNext )
     {
@@ -911,13 +911,13 @@ public:
     }
   }
 
-  void  remove_node_in_middle( ) __STL_NOTHROW
+  void  remove_node_in_middle( ) _STLP_NOTHROW
   {
     m_ppnbNext->m_pppnbPrevNext = m_pppnbPrevNext;
     *m_pppnbPrevNext = m_ppnbNext;
   }
 
-  void operator = ( const _TyThis & _r ) __STL_NOTHROW
+  void operator = ( const _TyThis & _r ) _STLP_NOTHROW
   {
     m_pglbLink = _r.m_pglbLink;
     m_pgnbNode = _r.m_pgnbNode;
@@ -989,16 +989,16 @@ private:
   _TyGraphNodeBase *  m_pgnbRoot;
 protected:
 
-  void  _SetRootNode( _TyGraphNodeBase *  _pgnbRoot ) __STL_NOTHROW
+  void  _SetRootNode( _TyGraphNodeBase *  _pgnbRoot ) _STLP_NOTHROW
   {
     m_pgnbRoot = _pgnbRoot;
   }
 
-  static __INLINE void  _deinit_node( _TyGraphNodeBase * ) __STL_NOTHROW
+  static __INLINE void  _deinit_node( _TyGraphNodeBase * ) _STLP_NOTHROW
   {
     // Nothing to do in an unsafe graph.
   }
-  static __INLINE void  _deinit_link( _TyGraphLinkBase * ) __STL_NOTHROW
+  static __INLINE void  _deinit_link( _TyGraphLinkBase * ) _STLP_NOTHROW
   {
   }
 
@@ -1030,15 +1030,15 @@ public:
     }
 
   // Allocation stuff:
-  _TyPathNodeBaseAllocator const &  get_base_path_allocator_ref() const __STL_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator_ref(); }
-  _TyPathNodeBaseAllocator &        get_base_path_allocator_ref() __STL_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator_ref(); }
-  _TyPathNodeBaseAllocatorAsPassed  get_base_path_allocator() const __STL_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator(); }
+  _TyPathNodeBaseAllocator const &  get_base_path_allocator_ref() const _STLP_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator_ref(); }
+  _TyPathNodeBaseAllocator &        get_base_path_allocator_ref() _STLP_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator_ref(); }
+  _TyPathNodeBaseAllocatorAsPassed  get_base_path_allocator() const _STLP_NOTHROW { return _TyBaseAllocPathNodeBase::get_allocator(); }
 
-  _TyGraphNodeBase * _GetRootNode() __STL_NOTHROW
+  _TyGraphNodeBase * _GetRootNode() _STLP_NOTHROW
   {
     return m_pgnbRoot;
   }
-  const _TyGraphNodeBase * _GetRootNode() const __STL_NOTHROW
+  const _TyGraphNodeBase * _GetRootNode() const _STLP_NOTHROW
   {
     return m_pgnbRoot;
   }

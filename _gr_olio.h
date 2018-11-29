@@ -6,7 +6,7 @@
 // OLE i/o stuff.
 
 #include <ole2.h>
-#include "bienutil\_oleutil.h"
+#include "_oleutil.h"
 
 // _gr_ole.h
 
@@ -74,14 +74,14 @@ struct _IStream_object
     _Seek( _sp ); 
   }
 
-  void          Write( const void * _pv, size_t _st )
+  void          Write( const void * _pv, ULONG _len )
   {
-    __ThrowOLEFAIL( m_ps->Write( _pv, _st, 0 ) );
+    __ThrowOLEFAIL( m_ps->Write( _pv, _len, 0 ) );
   }
 
-  void          Read( void * _pv, size_t _st )
+  void          Read( void * _pv, ULONG _len )
   {
-    __ThrowOLEFAIL( m_ps->Read( _pv, _st, 0 ) );
+    __ThrowOLEFAIL( m_ps->Read( _pv, _len, 0 ) );
   }
 
   template < class t_TyEl >
@@ -111,7 +111,7 @@ protected:
   _TyStreamPos  _Tell() const             
   {
     _TyStreamPos  sp;
-    static const LARGE_INTEGER llZero = 0ll;
+		static const LARGE_INTEGER llZero = { 0ll };
     __ThrowOLEFAIL( m_ps->Seek( llZero, STREAM_SEEK_CUR, &sp ) );
     return sp;
   }

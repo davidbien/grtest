@@ -204,6 +204,9 @@ private:
 public:
 
   typedef _TyBase   _TyInputObjectBase;
+  typedef typename _TyBase::_TyInitArg _TyInitArg;
+  typedef typename _TyBase::_TyIONodeEl _TyIONodeEl;
+  typedef typename _TyBase::_TyIOLinkEl _TyIOLinkEl;
 
   _binary_input_object( _TyInitArg _ris, 
                         _TyIONodeEl const & _rione, 

@@ -2,7 +2,7 @@
 #define __GR_OLE_H
 
 #include <ole2.h>
-#include "..\bienutil\_oleutil.h"
+#include "..\_oleutil.h"
 
 // OLE graph elements - an implementation.
 // NOTE: I am not sure that this code has ever been run ( pretty sure it hasn't ).
@@ -78,7 +78,7 @@ public:
     }
   }
 
-  ~_ole_graph_element() __STL_NOTHROW
+  ~_ole_graph_element() __STLP_NOTHROW
   {
     m_punk->Release();
   }

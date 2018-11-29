@@ -5,20 +5,21 @@
 
 // Include file for directed graph implementation.
 
-#include <stddef.h>
-#include <assert.h>
-#include <alloc.h>
+//#include <stddef.h>
+//#include <assert.h>
+//#include <_alloc.h>
+//#include <stdexcept>
 #include <stdexcept>
 
-#include "bienutil/bienutil.h"
-#include "bienutil/_namdexc.h"
-#include "bienutil/_debug.h"
-#include "bienutil/_util.h"
-#include "bienutil/_dbgthrw.h"
+#include "bienutil.h"
+#include "_namdexc.h"
+#include "_debug.h"
+#include "_util.h"
+#include "_dbgthrw.h"
 
 #ifndef __DGRAPH_DEFAULT_ALLOCATOR
 #ifndef NDEBUG
-#define __DGRAPH_DEFAULT_ALLOCATOR __STD::__allocator< char, __STD::malloc_alloc >
+#define __DGRAPH_DEFAULT_ALLOCATOR __STD::_stlallocator< char, __STD::__malloc_alloc >
 #else !NDEBUG
 #define __DGRAPH_DEFAULT_ALLOCATOR __STD::allocator< char >
 #endif !NDEBUG
@@ -57,7 +58,7 @@ struct __gr_const_cast_iter
 template < class t_TyP >
 struct _gr_hash_ptr
 {
-  size_t operator()( const t_TyP & __s ) const __STL_NOTHROW
+  size_t operator()( const t_TyP & __s ) const _STLP_NOTHROW
   { 
     return reinterpret_cast< size_t >( __s ); 
   }
@@ -78,15 +79,15 @@ __DGRAPH_END_NAMESPACE
 #define _GR_HASH_INITSIZENODES  1000
 #define _GR_HASH_INITSIZELINKS  1000
 
-#include "bienutil/_allbase.h"
-#include "bienutil/_sdp.h"
-#include "bienutil/_sdpn.h"
-#include "bienutil/_fcdtor.h"
-#include "dgraph/_gr_trt.h"
-#include "dgraph/_gr_titr.h"
-#include "dgraph/_gr_copy.h"
-#include "dgraph/_gr_dtor.h"
-#include "dgraph/_gr_rndm.h"
-#include "dgraph/_graph.h"
+#include "_allbase.h"
+#include "_sdp.h"
+#include "_sdpn.h"
+#include "_fcdtor.h"
+#include "_gr_trt.h"
+#include "_gr_titr.h"
+#include "_gr_copy.h"
+#include "_gr_dtor.h"
+#include "_gr_rndm.h"
+#include "_graph.h"
 
 #endif __GR_INC_H

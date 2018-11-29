@@ -34,7 +34,7 @@ struct _gc_default_copy_node
   void  operator()( _TyGraphNodeDst & _rgnDst, _TyGraphNodeSrc const & _rgnSrc )
   {
     // Default just calls the copy constructor:
-    t_TyGraphDst::__STL_TEMPLATE _construct_node_el1
+    t_TyGraphDst::template _construct_node_el1
       < const typename t_TyGraphSrc::_TyGraphNode::_TyNodeEl & >
       ( &_rgnDst, _rgnSrc.RElConst() );
   }
@@ -48,7 +48,7 @@ struct _gc_default_copy_link
   void  operator()( _TyGraphLinkDst & _rglDst, _TyGraphLinkSrc const & _rglSrc )
   {
     // Default just calls the copy constructor:
-    t_TyGraphDst::__STL_TEMPLATE _construct_link_el1
+    t_TyGraphDst::template _construct_link_el1
       < const typename t_TyGraphSrc::_TyGraphLink::_TyLinkEl & >
       ( &_rglDst, _rglSrc.RElConst() );
   }
@@ -81,8 +81,8 @@ public:
                     equal_to< const _TyGraphNodeBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedNodes;
   typedef hash_map< const _TyGraphLinkBaseBaseSrc*, _TyUnconnectedLink, _gr_hash_ptr< const _TyGraphLinkBaseBaseSrc* >,
                     equal_to< const _TyGraphLinkBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedLinks;
-  static const _TyUnconnectedNodes::size_type ms_stInitSizeNodes = __GR_COPY_INITSIZENODES;
-  static const _TyUnconnectedLinks::size_type ms_stInitSizeLinks = __GR_COPY_INITSIZELINKS;
+  static const typename _TyUnconnectedNodes::size_type ms_stInitSizeNodes = __GR_COPY_INITSIZENODES;
+  static const typename _TyUnconnectedLinks::size_type ms_stInitSizeLinks = __GR_COPY_INITSIZELINKS;
 #else __GR_DSIN_USEHASH
   typedef map<  const _TyGraphNodeBaseBaseSrc*, _TyUnconnectedNode, 
                 less< const _TyGraphNodeBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedNodes;
@@ -137,7 +137,7 @@ public:
                       bool _fCopyDirectionDown,
                       t_TyAllocator const & _rAlloc = t_TyAllocator(),
                       t_TyNodeCopyObject const & _rnco = t_TyNodeCopyObject(),
-                      t_TyLinkCopyObject const & _rlco = t_TyLinkCopyObject() ) __STL_NOTHROW
+                      t_TyLinkCopyObject const & _rlco = t_TyLinkCopyObject() ) _STLP_NOTHROW
   : m_rSrc( _rSrc ),
     m_rDst( _rDst ),
     m_fClosedDirectedCopy( _fClosedDirectedCopy ),
@@ -180,7 +180,7 @@ public:
     __THROWPT( e_ttMemory );
   }
 
-  ~_graph_copy_struct() __STL_NOTHROW
+  ~_graph_copy_struct() _STLP_NOTHROW
   {
     // If the caller did not transfer ownership of the new graph then we should destroy
     //  it now:
@@ -195,17 +195,17 @@ public:
   }
 
   // Access the current node and link lookup table bases on the current copy direction:
-  _TyUnconnectedNodes & RNodesCur()  __STL_NOTHROW
+  _TyUnconnectedNodes & RNodesCur()  _STLP_NOTHROW
   {
     return m_fCopyDirectionDown ? m_mapUnconnectedNodesDown : m_mapUnconnectedNodesUp;
   }
-  _TyUnconnectedLinks & RLinksCur() __STL_NOTHROW
+  _TyUnconnectedLinks & RLinksCur() _STLP_NOTHROW
   {
     return m_fCopyDirectionDown ? m_mapUnconnectedLinksDown : m_mapUnconnectedLinksUp;
   }
 
   // Transfer ownership of the newly created root:
-  _TyGraphNodeDst * PGNTransferNewRoot() __STL_NOTHROW
+  _TyGraphNodeDst * PGNTransferNewRoot() _STLP_NOTHROW
   {
     assert( !m_pgnDstTempRoot );
     _TyGraphNodeDst * _pgn = m_pgnDstNewRoot;
@@ -213,15 +213,15 @@ public:
     return _pgn;
   }
 
-  _TyUNIterator ITFindNode( typename t_TyGraphSrc::_TyGraphNodeBaseBase const * _pgnbSrcFind )  __STL_NOTHROW
+  _TyUNIterator ITFindNode( typename t_TyGraphSrc::_TyGraphNodeBaseBase const * _pgnbSrcFind )  _STLP_NOTHROW
   {
     return RNodesCur().find( _pgnbSrcFind );
   }
-  _TyUNIterator ITBeginNodes() __STL_NOTHROW
+  _TyUNIterator ITBeginNodes() _STLP_NOTHROW
   { 
     return RNodesCur().begin();
   }
-  _TyUNIterator ITEndNodes() __STL_NOTHROW
+  _TyUNIterator ITEndNodes() _STLP_NOTHROW
   { 
     return RNodesCur().end();
   }
@@ -230,24 +230,24 @@ public:
     __THROWPT( e_ttMemory );
     return RNodesCur().insert( _rdn );
   }
-  void    RemoveNode( const _TyUNIterator & rit ) __STL_NOTHROW
+  void    RemoveNode( const _TyUNIterator & rit ) _STLP_NOTHROW
   {
     RNodesCur().erase( rit );
   }
-  void    ClearNodes() __STL_NOTHROW
+  void    ClearNodes() _STLP_NOTHROW
   {
     RNodesCur().clear();
   }
 
-  _TyULIterator ITFindLink( typename t_TyGraphSrc::_TyGraphLinkBaseBase const * _pglbSrcFind ) __STL_NOTHROW
+  _TyULIterator ITFindLink( typename t_TyGraphSrc::_TyGraphLinkBaseBase const * _pglbSrcFind ) _STLP_NOTHROW
   {
     return RLinksCur().find( _pglbSrcFind );
   }
-  _TyULIterator ITBeginLinks() __STL_NOTHROW
+  _TyULIterator ITBeginLinks() _STLP_NOTHROW
   { 
     return RLinksCur().begin();
   }
-  _TyULIterator ITEndLinks() __STL_NOTHROW
+  _TyULIterator ITEndLinks() _STLP_NOTHROW
   { 
     return RLinksCur().end();
   }
@@ -257,16 +257,16 @@ public:
     pair< _TyULIterator, bool > pibLink = RLinksCur().insert( _rdn );
     assert( pibLink.second );
   }
-  void    RemoveLink( const _TyULIterator & rit ) __STL_NOTHROW
+  void    RemoveLink( const _TyULIterator & rit ) _STLP_NOTHROW
   {
     RLinksCur().erase( rit );
   }
-  void    ClearLinks() __STL_NOTHROW
+  void    ClearLinks() _STLP_NOTHROW
   {
     RLinksCur().clear();
   }
 
-  bool          FNoDisconnected() __STL_NOTHROW
+  bool          FNoDisconnected() _STLP_NOTHROW
   {
     return  m_mapUnconnectedNodesDown.begin() == m_mapUnconnectedNodesDown.end() &&
             m_mapUnconnectedNodesUp.begin() == m_mapUnconnectedNodesUp.end() &&
@@ -295,12 +295,12 @@ copy( )
   // Create the new root node:
   {
     _TyGraphNodeDst * pgnDst = m_rDst._allocate_node();
-    __STL_TRY
+    _STLP_TRY
     {
       pgnDst->Init();
       m_nco( *pgnDst, *m_pgnSrc );
     }
-    __STL_UNWIND( m_rDst._deallocate_node( pgnDst ) );
+    _STLP_UNWIND( m_rDst._deallocate_node( pgnDst ) );
     m_pgnDst = m_pgnDstNewRoot = pgnDst;
   }
 
@@ -466,12 +466,12 @@ do_copy_down( )
               // Create the new node:              
               {
                 _TyGraphNodeDst * pgnDst = m_rDst._allocate_node();
-                __STL_TRY
+                _STLP_TRY
                 {
                   pgnDst->Init();
                   m_nco( *pgnDst, *lpiSrcChild.PGNChild() );
                 }
-                __STL_UNWIND( m_rDst._deallocate_node( pgnDst ) );
+                _STLP_UNWIND( m_rDst._deallocate_node( pgnDst ) );
                 m_pgnDstTempRoot = pgnDst;
               }
 
@@ -634,7 +634,7 @@ do_copy_down( )
                 }
 
               // The link has been initialized but not constructed:
-              m_rDst.__STL_TEMPLATE _construct_link_el1
+              m_rDst.template _construct_link_el1
                 < const typename t_TyGraphSrc::_TyGraphLink::_TyLinkEl & >
                 (  static_cast< _TyGraphLinkDst * >( pglbFoundDst ), 
                    *lpiSrcChild );
@@ -738,12 +738,12 @@ do_copy_up()
               // Create the new node:              
               {
                 _TyGraphNodeDst * pgnDst = m_rDst._allocate_node();
-                __STL_TRY
+                _STLP_TRY
                 {
                   pgnDst->Init();
                   m_nco( *pgnDst, *lpiSrcParent.PGNParent() );
                 }
-                __STL_UNWIND( m_rDst._deallocate_node( pgnDst ) );
+                _STLP_UNWIND( m_rDst._deallocate_node( pgnDst ) );
                 m_pgnDstTempRoot = pgnDst;
               }
   
@@ -823,7 +823,7 @@ do_copy_up()
               //    the nodes involved to be constructed.
               // b) Then link the newly created sub-graph into the current destination sub-graph.
               // c) Transfer ownership of the newly created sub-graph - now owned by current destination sub-graph.
-              m_rDst.__STL_TEMPLATE _construct_link_el1
+              m_rDst.template _construct_link_el1
                 < const typename t_TyGraphSrc::_TyGraphLink::_TyLinkEl & >
                 ( pglCurParentDst, *lpiSrcParent );
 
@@ -908,7 +908,7 @@ do_copy_up()
                 }
 
               // The link has been initialized but not constructed:
-              m_rDst.__STL_TEMPLATE _construct_link_el1
+              m_rDst.template _construct_link_el1
                 < const typename t_TyGraphDst::_TyGraphLink::_TyLinkEl & >
                 (  static_cast< _TyGraphLinkDst * >( pglbFoundDst ), 
                    *lpiSrcParent );
