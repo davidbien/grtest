@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+.vs/gr_test/v15/.suo
+*.db
+*.opendb
+*.ipch
+*.ilk
+x64/Debug/gr_test.log
+x64/Debug/gr_test.pdb
+*.tlog
+x64/Debug/vc141.pdb
