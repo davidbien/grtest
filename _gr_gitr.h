@@ -87,10 +87,10 @@ public:
                               bool ) _STLP_NOTHROW
     : _TyAllocUNBase( _rAlloc )
   {
-    m_pgnbCur = _pgnbCur;
-    m_pglbCur = _pglbCur;
-    m_fClosedDirected = _fClosedDirected;
-    m_fDirectionDown = _fDirectionDown;
+    _TyBase::m_pgnbCur = _pgnbCur;
+    _TyBase::m_pglbCur = _pglbCur;
+    _TyBase::m_fClosedDirected = _fClosedDirected;
+    _TyBase::m_fDirectionDown = _fDirectionDown;
   }
 
   _graph_fwd_iter_base_base( _TyThis const & _r, bool )  _STLP_NOTHROW
@@ -102,22 +102,22 @@ public:
   bool  FInitialized() const _STLP_NOTHROW  { return true; }
   void  _Init() const _STLP_NOTHROW         { }
   
-  t_TyGraphNodeBase * PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
-  t_TyGraphLinkBase * PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
+  t_TyGraphNodeBase * PGNBCur() const _STLP_NOTHROW { return _TyBase::m_pgnbCur; }
+  t_TyGraphLinkBase * PGLBCur() const _STLP_NOTHROW { return _TyBase::m_pglbCur; }
 
   void SetPGNBCur( t_TyGraphNodeBase *  _pgnbCur ) _STLP_NOTHROW
   {
-    m_pgnbCur = _pgnbCur;
+    _TyBase::m_pgnbCur = _pgnbCur;
   }
   void SetPGLBCur( t_TyGraphLinkBase *  _pglbCur ) _STLP_NOTHROW
   {
-    m_pglbCur = _pglbCur;
+    _TyBase::m_pglbCur = _pglbCur;
   }
 
   // We are comparing positions not options.
   bool  operator == ( _TyThis const & _r ) const _STLP_NOTHROW
   {
-    return m_pglbCur == _r.m_pglbCur && m_pgnbCur == _r.m_pgnbCur;
+    return _TyBase::m_pglbCur == _r._TyBase::m_pglbCur && _TyBase::m_pgnbCur == _r._TyBase::m_pgnbCur;
   }
 };
 
@@ -216,6 +216,9 @@ private:
 public:
 
   typedef _TyBase _TyFwdIterBaseBase;
+  typedef t_TyGraphNodeBase _TyGraphNodeBase;
+  typedef t_TyGraphLinkBase _TyGraphLinkBase;
+  typedef typename _TyBase::_TyUnfinishedArrayAllocator _TyUnfinishedArrayAllocator;
 
   bool  m_fInitialized; // This is in case we throw during initialization.
                         // Without this flag we could get into an undefined state
@@ -336,7 +339,7 @@ public:
       m_pmfnNotifyUnfinished( 0 )
   {
     __THROWPT( e_ttMemory );
-    if ( _fInit && ( m_pgnbCur || m_pglbCur ) )
+    if ( _fInit && ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur ) )
     {
       _Init();
     }
@@ -365,7 +368,7 @@ public:
       _CopyNodeArray( _r );
     }
 
-    if ( !m_fInitialized && _fInit && ( m_pgnbCur || m_pglbCur ) )
+    if ( !m_fInitialized && _fInit && ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur ) )
     {
       _Init();
     }
@@ -396,7 +399,7 @@ public:
       m_pmfnNotifyUnfinished( 0 )
   {
     __THROWPT( e_ttMemory );
-    if ( _fInit && ( m_pgnbCur || m_pglbCur ) )
+    if ( _fInit && ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur ) )
     {
       _Init();
     }
@@ -418,7 +421,7 @@ public:
   // Return if we are at the beginning of an iteration:
   bool  FAtBegin()
   {
-    return !m_fInitialized || ( !m_punStart && !m_iContexts && m_pgnbCur && !m_pglbCur );
+    return !m_fInitialized || ( !m_punStart && !m_iContexts && _TyBase::m_pgnbCur && !_TyBase::m_pglbCur );
   }
 
   // This should only before the iteration is begun:
@@ -426,14 +429,14 @@ public:
   {
     assert( FAtBegin() );
     m_fInitialized = false;
-    m_fDirectionDown = _fDirectionDown;
+    _TyBase::m_fDirectionDown = _fDirectionDown;
     _Init();
   }
 
   pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* > PairCurObjs() const _STLP_NOTHROW
   {
     // Return the current object(s) to the caller:
-    return pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* >( m_pgnbCur, m_pglbCur );
+    return pair< t_TyGraphLinkBase*, t_TyGraphNodeBase* >( _TyBase::m_pgnbCur, _TyBase::m_pglbCur );
   }
 
   // Two types of assignment - assignment with full blown iterator ( us ) - 
@@ -472,7 +475,7 @@ public:
     }
     else
     {
-      if ( m_pgnbCur || m_pglbCur )
+      if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
       {
         _Init();
       }
@@ -485,7 +488,7 @@ public:
   {
     m_fInitialized = false;
     ((_TyBase&)*this) =  _r;
-    if ( m_pgnbCur || m_pglbCur )
+    if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
     {
       _Init();
     }
@@ -495,7 +498,7 @@ public:
   void  Reset()
   {
     m_fInitialized = false;
-    if ( m_pgnbCur || m_pglbCur )
+    if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
     {
       _Init();
     }
@@ -528,8 +531,8 @@ protected:
   // Initialize the iteration.
   void  _Init()
   {
-    assert( PGNBCur() );  // TODO: Allow initialization with a node OR a link - this would
-    assert( !PGLBCur() ); //  start the iteration at that link.
+    assert( _TyBase::PGNBCur() );  // TODO: Allow initialization with a node OR a link - this would
+    assert( !_TyBase::PGLBCur() ); //  start the iteration at that link.
     assert( !m_fInitialized );  // Should currently be uninitialized.
 
     // Ensure have no state before adding any:
@@ -538,7 +541,7 @@ protected:
     // If this node has any relations in the opposite direction of the current iteration then
     //  we need to add it to the unfinished nodes map:
     _TyUnfinishedNodeHashEl unh;
-    if ( PGNBCur()->FRelations( !m_fDirectionDown ) )
+    if ( _TyBase::PGNBCur()->FRelations( !_TyBase::m_fDirectionDown ) )
     {
       if ( !m_pmfnNotifyUnfinished )
       {
@@ -546,11 +549,11 @@ protected:
         if ( t_fControlledLinkIteration )
         {
           // Then need to count the matching links:
-          for ( _TyGraphLinkBase ** ppglb = PGNBCur()->PPGLBRelationHead( !m_fDirectionDown );
+          for ( _TyGraphLinkBase ** ppglb = _TyBase::PGNBCur()->PPGLBRelationHead( !_TyBase::m_fDirectionDown );
                 *ppglb;
-                ppglb = (*ppglb)->PPGLBGetNextRelation( !m_fDirectionDown ) )
+                ppglb = (*ppglb)->PPGLBGetNextRelation( !_TyBase::m_fDirectionDown ) )
           {
-            if ( (this->*m_pmfnQueryIterLink)( *ppglb ) )
+            if ( (this->*_TyBase::m_pmfnQueryIterLink)( *ppglb ) )
             {
               ++unh.m_iRemainingLinks;
             }
@@ -558,25 +561,25 @@ protected:
         }
         else
         {
-          unh.m_iRemainingLinks = PGNBCur()->URelations( !m_fDirectionDown );
+          unh.m_iRemainingLinks = _TyBase::PGNBCur()->URelations( !_TyBase::m_fDirectionDown );
         }
       }
       else
       {
         // Let this method do some stuff and return the number of relations in the
         //  opposite direction.
-        unh.m_iRemainingLinks = (this->*m_pmfnNotifyUnfinished)( true, PGNBCur(), 0 );
+        unh.m_iRemainingLinks = (this->*m_pmfnNotifyUnfinished)( true, _TyBase::PGNBCur(), 0 );
       }
 
       if ( !t_fControlledLinkIteration || unh.m_iRemainingLinks )
       {
         unh.m_iVisitOrder = m_iCurVisitOrder++;
-        _TyUNValType  vtUN( PGNBCur(), unh );
+        _TyUNValType  vtUN( _TyBase::PGNBCur(), unh );
         m_itNodeLastInserted = _PIBInsertNode( vtUN ).first;
       }
     }
 
-    m_pgnbIterationRoot = PGNBCur();
+    m_pgnbIterationRoot = _TyBase::PGNBCur();
 
     m_fInitialized = true;
   }
@@ -616,10 +619,10 @@ protected:
     {
       // we could be along a single strand from an unfinished node - if so then
       // we are not at an unfinished node:
-      if ( PGLBCur() )
+      if ( _TyBase::PGLBCur() )
       {
         // Then if the relation is the current
-        return PGLBCur()->PGNBRelation( !m_fDirectionDown ) == (m_punCur-1)->m_pgnbUnfinished;
+        return _TyBase::PGLBCur()->PGNBRelation( !_TyBase::m_fDirectionDown ) == (m_punCur-1)->m_pgnbUnfinished;
       }
       else
       {
@@ -638,7 +641,7 @@ protected:
     // _RVLGet( !m_fDirectionDown ).insert( _pglb )
     // CHANGE: <dbien>: Avoid using a reference as this aliases the lookup
     //  ( had a crash in the optimized version ).
-    if ( m_fDirectionDown )
+    if ( _TyBase::m_fDirectionDown )
     {
       pib = m_linksVisitedUp.insert( _pglb );
     }
@@ -653,7 +656,7 @@ protected:
   {
     // Remove in the opposite direction:
     // _RVLGet( !m_fDirectionDown ).erase( _rit ); avoid aliasing
-    if ( m_fDirectionDown )
+    if ( _TyBase::m_fDirectionDown )
     {
       m_linksVisitedUp.erase( _rit );
     }
@@ -669,14 +672,14 @@ protected:
     //  iterate this link:
     if ( t_fControlledLinkIteration )
     {
-      if ( !(this->*m_pmfnQueryIterLink)( _pglb ) )
+      if ( !(this->*_TyBase::m_pmfnQueryIterLink)( _pglb ) )
       {
         return true;  // Indicate that we have already been here.
       }
     }
 
     // We only search for visited links in the same direction as the current iteration:
-    if ( m_fDirectionDown )
+    if ( _TyBase::m_fDirectionDown )
     {
       _TyVLIter vlit = m_linksVisitedDown.find( _pglb );
       return vlit != m_linksVisitedDown.end();
@@ -691,7 +694,7 @@ protected:
   {
     // We are finished processing unfinished nodes in one direction - no longer need
     //  the visited links:
-    if ( m_fDirectionDown )
+    if ( _TyBase::m_fDirectionDown )
     {
       m_linksVisitedUp.clear();
     }
@@ -704,7 +707,7 @@ protected:
   t_TyGraphLinkBase * _PGLBFindUnvisitedLink( t_TyGraphLinkBase * _pglb ) _STLP_NOTHROW
   {
     for( ; _pglb && _FVisitedLink( _pglb ); 
-          _pglb = _pglb->PGLBGetNextRelation( m_fDirectionDown ) )
+          _pglb = _pglb->PGLBGetNextRelation( _TyBase::m_fDirectionDown ) )
     {
     }
     return _pglb;
@@ -757,10 +760,10 @@ protected:
           // we have an unfinished node left to process - find the first unvisited link
           //  from this node - then increment {m_punCur}:
           t_TyGraphLinkBase * pglbUnvisited = 
-            _PGLBFindUnvisitedLink( *( m_punCur->m_pgnbUnfinished->PPGLBRelationHead( m_fDirectionDown ) ) );
+            _PGLBFindUnvisitedLink( *( m_punCur->m_pgnbUnfinished->PPGLBRelationHead( _TyBase::m_fDirectionDown ) ) );
           assert( pglbUnvisited );  // Otherwise why is this node in the unfinished array.
-          SetPGNBCur( m_punCur->m_pgnbUnfinished );
-          SetPGLBCur( pglbUnvisited );
+          _TyBase::SetPGNBCur( m_punCur->m_pgnbUnfinished );
+          _TyBase::SetPGLBCur( pglbUnvisited );
           m_punCur++; // We could clear the unfinished array at this point if we were at the end - 
                       //  but we still would need the visited link hash - and then we wouldn't have the
                       //  transition from m_punStart!=0 -> m_punStart==0 to decide to clear everything.
@@ -773,10 +776,10 @@ protected:
       
       // If we are doing a closed-directed iteration then we are done.
       // Otherwise check the hash for unfinished nodes:
-      if ( m_fClosedDirected || 
+      if ( _TyBase::m_fClosedDirected || 
            ( !!m_nodesUnfinished.size() == m_fNodeToBeRemoved ) )
       {
-        if ( m_fClosedDirected )
+        if ( _TyBase::m_fClosedDirected )
         {
           // REVIEW: The state saved in {m_nodesUnfinished} could be used
           //  by another closed directed iteration in the same direction, starting, for instance
@@ -795,8 +798,8 @@ protected:
           m_linksVisitedDown.clear();
         }
         // Nothing left to do - we are at the end:
-        SetPGNBCur( 0 );
-        SetPGLBCur( 0 );
+        _TyBase::SetPGNBCur( 0 );
+        _TyBase::SetPGLBCur( 0 );
       }
       else
       {
@@ -824,8 +827,8 @@ protected:
       // We have contexts left in this direction:
       t_TyGraphLinkBase * pglbContext = m_contexts.front();
       assert( pglbContext );
-      SetPGLBCur( pglbContext );
-      SetPGNBCur( pglbContext->PGNBRelation( !m_fDirectionDown ) );
+      _TyBase::SetPGLBCur( pglbContext );
+      _TyBase::SetPGNBCur( pglbContext->PGNBRelation( !_TyBase::m_fDirectionDown ) );
       m_contexts.pop_front();
       m_iContexts--;
     }
@@ -840,7 +843,7 @@ protected:
     // We have nodes in the opposite direction to process - they are in {m_nodesUnfinished}.
     // Allocate an array of _TyUnfinishedNodeArrayEl objects and fill with the hash - then
     //  sort by visit time.
-    allocate_n( m_punStart, m_nodesUnfinished.size() - ( m_fNodeToBeRemoved ? 1 : 0 ) ); // throws.
+    _TyBase::allocate_n( m_punStart, m_nodesUnfinished.size() - ( m_fNodeToBeRemoved ? 1 : 0 ) ); // throws.
     _ProcessUnfinishedNodesNoThrow();
   }
 
@@ -873,16 +876,16 @@ protected:
     sort( m_punStart, m_punEnd, _TyCompareVisitedTime() );
 
     // Change the direction of the iteration:
-    m_fDirectionDown = !m_fDirectionDown;
+    _TyBase::m_fDirectionDown = !_TyBase::m_fDirectionDown;
     // Clear the unfinished node hash:
     m_nodesUnfinished.clear();
 
     // Now find an unvisited link on this node:
     t_TyGraphLinkBase * pglbUnvisited = 
-      _PGLBFindUnvisitedLink( *( m_punStart->m_pgnbUnfinished->PPGLBRelationHead( m_fDirectionDown ) ) );
+      _PGLBFindUnvisitedLink( *( m_punStart->m_pgnbUnfinished->PPGLBRelationHead( _TyBase::m_fDirectionDown ) ) );
     assert( pglbUnvisited );  // Otherwise why is this node in the unfinished array.
-    SetPGNBCur( m_punStart->m_pgnbUnfinished );
-    SetPGLBCur( pglbUnvisited );
+    _TyBase::SetPGNBCur( m_punStart->m_pgnbUnfinished );
+    _TyBase::SetPGLBCur( pglbUnvisited );
   }
 
 };
@@ -900,7 +903,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
 {
   if ( !m_fInitialized )
   {
-    if ( m_pgnbCur || m_pglbCur )
+    if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
     {
       _Init();
     }
@@ -911,17 +914,17 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
     }
   }
 
-  if ( PGLBCur() )
+  if ( _TyBase::PGLBCur() )
   {
     // Find the next link to be visited from this node - this is either the next
     //  iteration point or a context to push on the context stack:
-    t_TyGraphLinkBase * pglbNextRel = PGLBCur()->PGLBGetNextRelation( m_fDirectionDown );
+    t_TyGraphLinkBase * pglbNextRel = _TyBase::PGLBCur()->PGLBGetNextRelation( _TyBase::m_fDirectionDown );
     if ( t_fControlledLinkIteration )
     {
       // Then need to move to the next link of interest:
-      while( pglbNextRel && !(this->*m_pmfnQueryIterLink)( pglbNextRel ) )
+      while( pglbNextRel && !(this->*_TyBase::m_pmfnQueryIterLink)( pglbNextRel ) )
       {
-        pglbNextRel = pglbNextRel->PGLBGetNextRelation( m_fDirectionDown );
+        pglbNextRel = pglbNextRel->PGLBGetNextRelation( _TyBase::m_fDirectionDown );
       }
     }
 
@@ -932,7 +935,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
     // else we know that we have not iterated this link ( even if we have iterated to the node beyond ).
 
     // See if we are connected to a node ( we will iterate disconnected links ):
-    t_TyGraphNodeBase * pgnbNextNode = PGLBCur()->PGNBRelation( m_fDirectionDown );
+    t_TyGraphNodeBase * pgnbNextNode = _TyBase::PGLBCur()->PGNBRelation( _TyBase::m_fDirectionDown );
     if ( pgnbNextNode )
     {
       // If this node has more than one relation in the opposite direction ( PGNBCur() ) then
@@ -940,7 +943,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
       // Special case: If this node is the root of the iteration then this optimization on lookup
       //  does not apply.
       t_TyGraphLinkBase * pglbOppRels = 
-        *(pgnbNextNode->PPGLBRelationHead( !m_fDirectionDown ));
+        *(pgnbNextNode->PPGLBRelationHead( !_TyBase::m_fDirectionDown ));
 
       pair< _TyUNIter, bool > pibUnfinished;
       if ( t_fControlledLinkIteration )
@@ -960,17 +963,17 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           int iFound = 0;
           do
           {
-            if (  ( pglbOppRels == PGLBCur() ) || 
-                  ( (this->*m_pmfnQueryIterLink)( pglbOppRels ) ) )
+            if (  ( pglbOppRels == _TyBase::PGLBCur() ) || 
+                  ( (this->*_TyBase::m_pmfnQueryIterLink)( pglbOppRels ) ) )
             {
               ++iFound;
             }
           }
-          while( pglbOppRels = pglbOppRels->PGLBGetNextRelation( !m_fDirectionDown ) );
+          while( !!( pglbOppRels = pglbOppRels->PGLBGetNextRelation( !_TyBase::m_fDirectionDown ) ) );
           
           if ( iFound > 1 )
           {
-            pglbOppRels = *(pgnbNextNode->PPGLBRelationHead( !m_fDirectionDown ));
+            pglbOppRels = *(pgnbNextNode->PPGLBRelationHead( !_TyBase::m_fDirectionDown ));
             _TyUNValType vtUnfinished( pgnbNextNode, _TyUnfinishedNodeHashEl() );
             vtUnfinished.second.m_iRemainingLinks = iFound-1;
             pibUnfinished = _PIBInsertNode( vtUnfinished );
@@ -982,7 +985,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
       {
         if ( pgnbNextNode != m_pgnbIterationRoot )
         {
-          pglbOppRels = pglbOppRels->PGLBGetNextRelation( !m_fDirectionDown );
+          pglbOppRels = pglbOppRels->PGLBGetNextRelation( !_TyBase::m_fDirectionDown );
         }
       }
 
@@ -1006,7 +1009,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           {
             if ( !t_fControlledLinkIteration )// otherwise set above.
             {
-              pvtUN->second.m_iRemainingLinks = pglbOppRels->UCountRelations( !m_fDirectionDown );
+              pvtUN->second.m_iRemainingLinks = pglbOppRels->UCountRelations( !_TyBase::m_fDirectionDown );
             }
           }
           else
@@ -1020,7 +1023,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
               //  through the caller ( whatever was thrown to us ).
               // Let this method do some stuff and return the number of relations in the
               //  opposite direction.
-              pvtUN->second.m_iRemainingLinks = (this->*m_pmfnNotifyUnfinished)( true, pgnbNextNode, PGLBCur() );
+              pvtUN->second.m_iRemainingLinks = (this->*m_pmfnNotifyUnfinished)( true, pgnbNextNode, _TyBase::PGLBCur() );
             }
             _STLP_UNWIND( _RemoveNode( pibUnfinished.first ) ); // Restore state and re-throw.
           }
@@ -1031,7 +1034,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           if ( m_pmfnNotifyUnfinished )
           {
             // Notify the derived that we have encountered an old unfinished node:
-            (void)(this->*m_pmfnNotifyUnfinished)( false, pgnbNextNode, PGLBCur() );
+            (void)(this->*m_pmfnNotifyUnfinished)( false, pgnbNextNode, _TyBase::PGLBCur() );
           }
           // We have been to this unfinished node - decrement the remaining links - 
           // we will check below ( after any throwing can occur ) and remove the node if
@@ -1047,9 +1050,9 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           {
             // If this throws then we will be in an inconsistent state - unless we remove any new 
             //  unfinished node:
-            vlitInserted = _ITInsertLink( PGLBCur() );  // throws.
+            vlitInserted = _ITInsertLink( _TyBase::PGLBCur() );  // throws.
           }
-#ifdef __STL_USE_EXCEPTIONS
+#ifdef _STLP_USE_EXCEPTIONS
           catch( ... )
           {
             if ( pibUnfinished.second )
@@ -1065,7 +1068,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
             }
             throw;
           }
-#endif __STL_USE_EXCEPTIONS
+#endif //_STLP_USE_EXCEPTIONS
         }
         else
         {
@@ -1088,7 +1091,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           {
             _PushContext( pglbNextRel );  // throws - if we throw maintain current state.
           }
-#ifdef __STL_USE_EXCEPTIONS
+#ifdef _STLP_USE_EXCEPTIONS
           catch( ... )
           {
             // We may have added a link and a node - remove it so to maintain state:
@@ -1102,17 +1105,17 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
             }
             throw;
           }
-#endif __STL_USE_EXCEPTIONS
+#endif //_STLP_USE_EXCEPTIONS
         }
-        SetPGNBCur( pgnbNextNode );
-        SetPGLBCur( 0 );
+        _TyBase::SetPGNBCur( pgnbNextNode );
+        _TyBase::SetPGLBCur( 0 );
       }
       else
       {
         // we have already visited the node below - need to move to the next link or context:
         if ( pglbNextRel )
         {
-          SetPGLBCur( pglbNextRel );
+          _TyBase::SetPGLBCur( pglbNextRel );
         }
         else
         {
@@ -1120,7 +1123,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
           {
             _NextContext(); // throws.
           }
-#ifdef __STL_USE_EXCEPTIONS
+#ifdef _STLP_USE_EXCEPTIONS
           catch( ... )
           {
             // We may have added a link to the visited map - remove to maintain state:
@@ -1134,7 +1137,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
             }
             throw;
           }
-#endif __STL_USE_EXCEPTIONS
+#endif //_STLP_USE_EXCEPTIONS
         }
 
         if ( m_fNodeToBeRemoved )
@@ -1149,7 +1152,7 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
       // no node below move to next link or context:
       if ( pglbNextRel )
       {
-        SetPGLBCur( pglbNextRel );
+        _TyBase::SetPGLBCur( pglbNextRel );
       }
       else
       {
@@ -1159,22 +1162,22 @@ _graph_fwd_iter_base< t_TyGraphNodeBase, t_TyGraphLinkBase,
     }
   }
   else
-  if ( PGNBCur() )
+  if ( _TyBase::PGNBCur() )
   {
     // Go to the first link from this node - if none then call _NextContext().
-    t_TyGraphLinkBase * pglbFirst = *( PGNBCur()->PPGLBRelationHead( m_fDirectionDown ) );
+    t_TyGraphLinkBase * pglbFirst = *( _TyBase::PGNBCur()->PPGLBRelationHead( _TyBase::m_fDirectionDown ) );
     if ( t_fControlledLinkIteration )
     {
       // Then need to move to the next link of interest:
-      while( pglbFirst && !(this->*m_pmfnQueryIterLink)( pglbFirst ) )
+      while( pglbFirst && !(this->*_TyBase::m_pmfnQueryIterLink)( pglbFirst ) )
       {
-        pglbFirst = pglbFirst->PGLBGetNextRelation( m_fDirectionDown );
+        pglbFirst = pglbFirst->PGLBGetNextRelation( _TyBase::m_fDirectionDown );
       }
     }
 
     if ( pglbFirst )
     {
-      SetPGLBCur( pglbFirst );
+      _TyBase::SetPGLBCur( pglbFirst );
     }
     else
     {
@@ -1289,10 +1292,10 @@ public:
   {
     if ( t_fControlledLinkIteration )
     {
-      m_pmfnQueryIterLink = static_cast< typename _TyBase::_TyPMFnQueryIterLink >( &_TyThis::QueryLink );
-      if ( m_pgnbCur || m_pglbCur )
+      _TyBase::m_pmfnQueryIterLink = static_cast< typename _TyBase::_TyPMFnQueryIterLink >( &_TyThis::QueryLink );
+      if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
       {
-        _Init();
+        _TyBase::_Init();
       }
     }
   }
@@ -1318,7 +1321,7 @@ public:
       }
     }
   }
-#else 0
+#else //0
 	template < class t_tyGraphIter >
 	_graph_iter( t_tyGraphIter const & _r )
 		: _TyBase(_r, !t_fControlledLinkIteration),
@@ -1328,14 +1331,14 @@ public:
 
 		if (t_fControlledLinkIteration)
 		{
-			m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
-			if (!FInitialized() && (m_pgnbCur || m_pglbCur))
+			_TyBase::m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
+			if (!_TyBase::FInitialized() && (_TyBase::m_pgnbCur || _TyBase::m_pglbCur))
 			{
-				_Init();
+				_TyBase::_Init();
 			}
 		}
 	}
-#endif 0
+#endif //0
 
 #if 0 // This is not working under MSVC.
 	// Special initialization allows graph to transform const->non-const. 
@@ -1357,7 +1360,7 @@ public:
       }
     }
   }
-#else 0
+#else //0
 	// Special initialization allows graph to transform const->non-const. 
 	// ( doesn't check const transfer ).
 	template < class t_TyGraphIter >
@@ -1368,14 +1371,14 @@ public:
 	{
 		if (t_fControlledLinkIteration)
 		{
-			m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
-			if (!FInitialized() && (m_pgnbCur || m_pglbCur))
+			_TyBase::m_pmfnQueryIterLink = static_cast<typename _TyBase::_TyPMFnQueryIterLink>(&_TyThis::QueryLink);
+			if (!_TyBase::FInitialized() && (_TyBase::m_pgnbCur || _TyBase::m_pglbCur))
 			{
-				_Init();
+				_TyBase::_Init();
 			}
 		}
 	}
-#endif 0
+#endif //1
   bool  QueryLink( typename _tyConstIterBase::_TyGraphLinkBaseBase * _pglb )
   {
     return m_lsSelectLink( static_cast< _TyGraphLink * >( _pglb ) );
@@ -1383,29 +1386,29 @@ public:
 
   _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
   node_reference    RNodeEl() const _STLP_NOTHROW
   {
-    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
   link_reference    RLinkEl() const _STLP_NOTHROW
   {
-    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
   pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
-    return pair< link_pointer, node_pointer >( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
+    return pair< link_pointer, node_pointer >( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
   }
 
   // Allow comparison with either const or non-const self:
@@ -1448,7 +1451,7 @@ public:
   // This will throw OOM exceptions.
   _TyThis & operator ++()
   {
-    _Next();  // Call base class method - an error here indicates you are attempting 
+    _TyBase::_Next();  // Call base class method - an error here indicates you are attempting 
               //  to iterate a position - rather than an iterator.
     return *this;
   }
@@ -1456,4 +1459,4 @@ public:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_GITR_H
+#endif //__GR_GITR_H

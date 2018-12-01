@@ -18,7 +18,7 @@ __DGRAPH_BEGIN_NAMESPACE
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucUnfinishedNode;
 #ifdef __GR_BINARY_WRITENODEFOOTER
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucNodeFooter;
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucLink;
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucLinkFromUnfinished;
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucNormalLinkFooter;
@@ -28,7 +28,7 @@ __DGRAPH_BEGIN_NAMESPACE
   // Link construction indicators:
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucLinkConstructed; // A constructed link.
   const _binary_rep_tokens< __false_type >::_TyToken  _binary_rep_tokens< __false_type >::ms_ucLinkEmpty; // An unconstructed link.
-#endif !__ICL
+#endif //!__ICL
 
 __DGRAPH_END_NAMESPACE
 

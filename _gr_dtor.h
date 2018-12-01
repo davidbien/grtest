@@ -24,10 +24,10 @@ public:
       m_rg( _rg )
   {
     // Set up callbacks in base:
-    m_pmfnDeallocateNode = static_cast< typename _TyBase::_TyPMFnDeallocateNode >( &_TyThis::_DeallocateNode );
-    m_pmfnDestructNode = static_cast< typename _TyBase::_TyPMFnDestructNode >( &_TyThis::_DestructNode );
-    m_pmfnDeallocateLink = static_cast< typename _TyBase::_TyPMFnDeallocateLink >( &_TyThis::_DeallocateLink );
-    m_pmfnDestructLink = static_cast< typename _TyBase::_TyPMFnDestructLink >( &_TyThis::_DestructLink );
+    _TyBase::m_pmfnDeallocateNode = static_cast< typename _TyBase::_TyPMFnDeallocateNode >( &_TyThis::_DeallocateNode );
+    _TyBase::m_pmfnDestructNode = static_cast< typename _TyBase::_TyPMFnDestructNode >( &_TyThis::_DestructNode );
+    _TyBase::m_pmfnDeallocateLink = static_cast< typename _TyBase::_TyPMFnDeallocateLink >( &_TyThis::_DeallocateLink );
+    _TyBase::m_pmfnDestructLink = static_cast< typename _TyBase::_TyPMFnDestructLink >( &_TyThis::_DestructLink );
   }
 
   t_TyGraph & m_rg;
@@ -150,7 +150,7 @@ public:
     m_pgnbDebugCheck = _pgn;
   }
 private:
-#endif __GRAPH_DEBUG_DTOR
+#endif //__GRAPH_DEBUG_DTOR
 
 void
 _destroy_children() _STLP_NOTHROW
@@ -162,13 +162,13 @@ _destroy_children() _STLP_NOTHROW
     assert( pglbChildHead->PGNBParent() == m_pgnbDestroy ); // This assertion firing means that the graph is corrupt.
 
     // If this is a unconnected link then it has already been destructed:
-    if ( m_pgnbRelation = pglbChildHead->PGNBChild() )
+    if ( !!( m_pgnbRelation = pglbChildHead->PGNBChild() ) )
     {
 #ifdef __GRAPH_DEBUG_DTOR
       // We should not run into <m_pgnbDebugCheck> 
       // ( this checks destruction of subgraphs supposedly not connected to the root ).
       assert( m_pgnbDebugCheck != m_pgnbRelation );
-#endif __GRAPH_DEBUG_DTOR
+#endif //__GRAPH_DEBUG_DTOR
 
       // Destruct the child link:
       (this->*m_pmfnDestructLink)( pglbChildHead );
@@ -220,13 +220,13 @@ _destroy_parents() _STLP_NOTHROW
     assert( pglbParentHead->PGNBChild() == m_pgnbDestroy ); // This assertion firing means that the graph is corrupt.
 
     // If this is a unconnected link then it has already been destructed:
-    if ( m_pgnbRelation = pglbParentHead->PGNBParent() )
+    if ( !!( m_pgnbRelation = pglbParentHead->PGNBParent() ) )
     {
 #ifdef __GRAPH_DEBUG_DTOR
       // We should not run into <m_pgnbDebugCheck> 
       // ( this checks destruction of subgraphs supposedly not connected to the root ).
       assert( m_pgnbDebugCheck != m_pgnbRelation );
-#endif __GRAPH_DEBUG_DTOR
+#endif //__GRAPH_DEBUG_DTOR
 
       // Destruct the parent link:
       (this->*m_pmfnDestructLink)( pglbParentHead );
@@ -380,4 +380,4 @@ _append_parents() _STLP_NOTHROW
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_DTOR_H
+#endif //__GR_DTOR_H

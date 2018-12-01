@@ -48,4 +48,4 @@ struct _gfi_unfinished_node_with_remaining :
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_DISN_H
+#endif //__GR_DISN_H

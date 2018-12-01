@@ -40,7 +40,7 @@ public:
       m_rgpgn( 0 ),
       m_pgnNewRoot( 0 )
     {
-      allocate_n( m_rgpgn, _stNodes );
+      _TyAllocBase::allocate_n( m_rgpgn, _stNodes );
       srand( _uRandSeed );
       
       _create_nodes();
@@ -50,7 +50,7 @@ public:
 
   ~_random_graph_generator()
   {
-    deallocate_n( m_rgpgn, m_stNodes );
+    _TyAllocBase::deallocate_n( m_rgpgn, m_stNodes );
     if ( m_pgnNewRoot )
     {
       m_rg.destroy_node( m_pgnNewRoot );
@@ -140,4 +140,4 @@ public:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_RNDM_H
+#endif //__GR_RNDM_H

@@ -22,8 +22,10 @@ struct _iostream_DumpElIO
   template < class t_TyEl >
   void Read( istream & _ris, t_TyEl & _rel )
   {
+#ifndef __GNUC__
     // This method should never be instantiated:
     ___semantic_error_object  error;
+#endif //!__GNUC__
   }
 };
 
@@ -161,4 +163,4 @@ _RawReadGraphEl( istream & _ris, t_TyRead & _rEl )
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_STIO_H
+#endif //__GR_STIO_H

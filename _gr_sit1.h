@@ -83,12 +83,12 @@ public:
 		}
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TySafeNodeIter >
 	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_node_iterator_base_safe( const _TyThis & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		:	_TyAllocConnLinkBase( _r._GetCLAllocatorAsPassed() ),
 			_TyIterBase( 0 )	// In case of throw.
 			// m_pgclNode( 0 ) - no need for this - only valid when !!PGNBCur().
@@ -100,12 +100,12 @@ public:
 		}
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TySafeNodeIter >
 	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, __false_type )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_node_iterator_base_safe( const _TyThis & _r, __false_type )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		:	_TyAllocConnLinkBase( _r._GetCLAllocatorAsPassed() ),
 			_TyIterBase( 0 )	// In case of throw.
 			// m_pgclNode( 0 ) - no need for this - only valid when !!PGNBCur().
@@ -115,7 +115,7 @@ public:
 	}
 
 // Initialize with a reference and a different allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	// This is not as safe as it might be - but misuse would involve assigning from the
 	//	iterator of another ( non-safe ) graph - which is a bug in itself - perhaps we
 	//	should record graph identities in debug to ensure iterators are used on the
@@ -130,10 +130,10 @@ public:
 	template < class t_TyNodeIter >
 	explicit _graph_node_iterator_base_safe(	const t_TyNodeIter & _r,
 																						const t_TyConnLinkAlloc & _rAlloc )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_node_iterator_base_safe(	const _TyThis & _r,
 																						const t_TyConnLinkAlloc & _rAlloc )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		:	_TyAllocConnLinkBase( _rAlloc ),
 			_TyIterBase( 0 )	// throwsafe.
 			// m_pgclNode( 0 ) - no need for this - only valid when !!PGNBCur().
@@ -162,13 +162,13 @@ public:
 		return static_cast< t_TyGraphNodeSafe * >( m_pgnbCur );
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	// Once again this can be misused when multiple graph types ( safe and non-safe ) are mixed.
 	template < class t_TyNodeIter >
 	_TyThis &	operator = ( const t_TyNodeIter & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	_TyThis &	operator = ( const _TyThis & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{
 		SetPGNBCur( _r.PGNBCur() );
 		return *this;
@@ -205,14 +205,14 @@ public:
 		(m_pgnbCur = _pgnb)->PushConnection( m_pgclNode );
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	// Set to value of passed iterator - assume currently populated link - won't throw.
 	// Typesafe problem when multiple graph types ( safe and non-safe ) are mixed.
 	template < class t_TyNodeIter >
 	void			Set_Populated( const t_TyNodeIter & _r ) __STLP_NOTHROW
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	void			Set_Populated( const _TyThis & _r ) __STLP_NOTHROW
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{
 		SetPGNBCur_Populated( _r.PGNBCur() );
 	}
@@ -333,7 +333,7 @@ protected:
 		t_TyGraphNodeSafe *	_pgns;
 		t_TyGraphLinkSafe::PGrObjFromPPGLB( PPGLBCur(), _pgls, _pgns );
 		assert( !_pgls && _pgns );	// We should currently be at the head of a relation list.
-#endif !NDEBUG
+#endif //!NDEBUG
 		
 		_TyIterBase::Clear();
 		_TyAllocConnLinkBase::deallocate_type( m_pgclObj );
@@ -351,7 +351,7 @@ protected:
 		t_TyGraphNodeSafe *	_pgns;
 		t_TyGraphLinkSafe::PGrObjFromPPGLB( PPGLBCur(), _pgls, _pgns );
 		assert( _pgls );	// We should currently not be at the head of a relation list.
-#endif !NDEBUG
+#endif //!NDEBUG
 		
 		_TyIterBase::Clear();
 		_TyAllocConnLinkBase::deallocate_type( m_pgclObj );
@@ -379,12 +379,12 @@ protected:
 	}
 
 // Init with an iterator that has an allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
 	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( )
 	{
@@ -397,12 +397,12 @@ protected:
 	}
 
 // Init with an iterator that has an allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
 	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, __false_type )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, __false_type )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( )
 	{
@@ -411,14 +411,14 @@ protected:
 	}
 
 // Init with a reference to an iterator and a different allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
 	explicit _graph_link_pos_iterator_base_safe(	const t_TyLinkPosIter & _r,
 																								t_TyConnLinkAlloc const & _alloc )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_pos_iterator_base_safe(	const _TyThis & _r,
 																								t_TyConnLinkAlloc const & _alloc )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _alloc ),
 			_TyIterBase( )
 	{
@@ -624,7 +624,7 @@ public:
 
 	// Operations between link iterators:
 #warning Think this code needs updating.
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkIterator >
 	void	ExchangeSiblingParents( t_TyLinkIterator const & _rSiblingParent ) const __STLP_NOTHROW
 	{
@@ -639,7 +639,7 @@ public:
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingChild.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeChildren( PGLBCur(), _rSiblingChild.PGLBCur() );
 	}
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	void	ExchangeSiblingParents( _TyThis const & _rSiblingParent ) const __STLP_NOTHROW
 	{
 		assert( &_rSiblingParent != this );
@@ -665,9 +665,9 @@ public:
 		assert( PGLBCur()->m_pgnbNodeChild == _rSiblingChild.PGLBCur()->m_pgnbNodeChild );
 		_TyGraphLinkBase::ExchangeChildren( PGLBCur(), _rSiblingChild.PGLBCur() );
 	}
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIterator >
 	_TyThis & operator = ( t_TyLinkPosIterator const & _r ) __STLP_NOTHROW
 	{
@@ -685,7 +685,7 @@ public:
 	{
 		SetPGLBCur_Populated( _r.PPGLBCur_Child() );
 	}
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 
 };
 
@@ -762,12 +762,12 @@ public:
 	}
 
 // Init with iterator that has an allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
 	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( 0 )
 	{ 
@@ -777,12 +777,12 @@ public:
 		}
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
 	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r, __false_type )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, __false_type )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( 0 )
 	{ 
@@ -790,14 +790,14 @@ public:
 	}
 
 // Init with iterator and allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
 	explicit _graph_link_ident_iterator_base_safe(	const _TyLinkIdentIter & _r,
 																									t_TyConnLinkAlloc const & _alloc )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_link_ident_iterator_base_safe(	const _TyThis & _r,
 																									t_TyConnLinkAlloc const & _alloc )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _alloc ),
 			_TyIterBase( 0 )
 	{ 
@@ -974,12 +974,12 @@ protected:
 													t_TyPathNodeSafe * _ppns )
 	{
 		_TyBaseAllocConnLink::allocate_type( _pgcl );
-#ifndef __STL_USEEXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 		if ( !_pgcl )
 		{
 			return;
 		}
-#endif !__STL_USEEXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 		_pgcl->m_pvConnection = (void*)_ppns;
 		_pgcl->m_pvConnectionContainer = (void*)this;
 	}
@@ -1007,7 +1007,7 @@ protected:
 
 			// Save the position of the old tail - we will revert if we throw:
 			_TyPathNodeBase **	_pppnbTailOld = m_pppnbTail;
-			__STL_TRY
+			_STLP_TRY
 			{
 				// Special case the last element - we won't be allocating a link.
 				__SDP( t_TyPathNodeSafe, _TyPathNodeSafeAllocator, GetPNSAllocator(), _ppnsNew );
@@ -1018,26 +1018,26 @@ protected:
 							_ppnbAppend = _ppnbAppend->m_ppnbNext )
 				{
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( *_ppnbAppend );
 
 					_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclNode )
 					{
 						_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					_CreateConnLink( _pgclLink, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclLink )
 					{
 						_TyBaseAllocConnLink::deallocate_type( _pgclNode );
@@ -1045,7 +1045,7 @@ protected:
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					_ppnsNew->m_pgclNode = _pgclNode;
 					_ppnsNew->m_pgclLink = _pgclLink;
 					_ppnsNew->push_back_node( m_pppnbTail );
@@ -1054,30 +1054,30 @@ protected:
 					__SDP_TRANSFER(_ppnsNew)->m_pglbLink->PushConnection( __SDP_TRANSFER(_pgclLink) );
 				}
 				_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 				if ( !_ppnsNew )
 				{
 					_DestroyPath( _pppnbTailOld );
 					return;
 				}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 				new ( _ppnsNew ) t_TyPathNodeSafe( *_ppnbAppend );
 				assert( !_ppnsNew->m_pglbLink );
 
 				_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclNode )
 					{
 						_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 				_ppnsNew->m_pgclNode = _pgclNode;
 				_ppnsNew->push_back_node( m_pppnbTail );
 				__SDP_TRANSFER(_ppnsNew)->m_pgnbNode->PushConnection( __SDP_TRANSFER(_pgclNode) );
 			}
-			__STL_UNWIND( _DestroyPath( _pppnbTailOld ) )
+			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )
 
 			// If we had an old tail then update by removing now - for throw-safety:
 			if ( _ppnbTailOld )
@@ -1100,7 +1100,7 @@ protected:
 
 			// Save the old tail - we will revert if we throw:
 			_TyPathNodeBase **	_pppnbTailOld = m_pppnbTail;
-			__STL_TRY
+			_STLP_TRY
 			{
 				__SDP( t_TyPathNodeSafe, _TyPathNodeSafeAllocator, GetPNSAllocator(), _ppnsNew );
 				_TyBaseAllocPathNode::allocate_type( _ppnsNew );
@@ -1111,13 +1111,13 @@ protected:
 				__SDP( _TyGraphConnectionLink, _TyConnLinkAlloc, GetCLAllocator(), _pgclNode );
 				__SDP( _TyGraphConnectionLink, _TyConnLinkAlloc, GetCLAllocator(), _pgclLink );
 				_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 				if ( !_pgclNode )
 				{
 					_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 					return;
 				}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 
 				_ppnsNew->m_pgclNode = _pgclNode;
 				_ppnsNew->m_pgnbNode->PushConnection( __SDP_TRANSFER(_pgclNode) );
@@ -1132,27 +1132,27 @@ protected:
 						)
 				{
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( _ppnbAppend->m_pgnbNode );
 					_ppnsNew->m_pglbLink = _pglbNext;
 
 					_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclNode )
 					{
 						_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					_CreateConnLink( _pgclLink, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclLink )
 					{
 						_TyBaseAllocConnLink::deallocate_type( _pgclNode );
@@ -1160,7 +1160,7 @@ protected:
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					_ppnsNew->m_pgclNode = _pgclNode;
 					_ppnsNew->m_pgclNode = _pgclLink;
 
@@ -1172,7 +1172,7 @@ protected:
 				}
 				assert( !_pglbNext );
 			}
-			__STL_UNWIND( _DestroyPath( _pppnbTailOld ) )
+			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )
 
 			// We succeeded - if we had an old tail then remove it now:
 			if ( _ppnbTailOld )
@@ -1186,12 +1186,12 @@ protected:
 		}
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
 	void	_OverwritePath( _TyPathIter const & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	void	_OverwritePath( _TyThis const & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{	
 		_OverwritePath( _r.m_ppnbHead, _r.m_pppnbTail, _r.m_uCount );
 	}
@@ -1216,7 +1216,7 @@ protected:
 		{
 			// Then we need to create some nodes - copy as we allocate:
 			const _TyPathNodeBase ** _pppnbTailOld = m_pppnbTail; // Save the old tail - in case we throw:
-			__STL_TRY
+			_STLP_TRY
 			{
 				// Insert the first one normally - this one updates the tail - the rest we know
 				//	won't touch the tail so we can use the faster method:
@@ -1230,24 +1230,24 @@ protected:
 
 				// throw-safe sequence:
 				_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 				if ( !_pgclNode )
 				{
 					_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 					return;
 				}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 				if ( _ppnsNew->m_pglbLink )
 				{
 					_CreateConnLink( _pgclLink, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclLink )
 					{
 						_TyBaseAllocConnLink::deallocate_type( _pgclNode );
 						_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					_ppnsNew->m_pgclLink = _pgclLink;
 					_ppnsNew->m_pglbLink->PushConnection( __SDP_TRANSFER(_pgclLink) );
 				}
@@ -1261,28 +1261,28 @@ protected:
 				{
 					_pppnbCopyUntil = _TyPathNodeBase::PPGNBGetPrevPrevNext( _pppnbCopyUntil );
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( **_pppnbCopyUntil );
 
 					_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 					if ( !_pgclNode )
 					{
 						_TyBaseAllocPathNode::deallocate_type( _ppnsNew );
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 					if ( _ppnsNew->m_pglbLink )
 					{
 						_CreateConnLink( _pgclLink, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 						if ( !_pgclLink )
 						{
 							_TyBaseAllocConnLink::deallocate_type( _pgclNode );
@@ -1290,7 +1290,7 @@ protected:
 							_DestroyPath( _pppnbTailOld );
 							return;
 						}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 						_ppnsNew->m_pgclLink = _pgclLink;
 						_ppnsNew->m_pglbLink->PushConnection( __SDP_TRANSFER(_pgclLink) );
 					}
@@ -1300,7 +1300,7 @@ protected:
 					__SDP_TRANSFER(_ppnsNew)->insert_node_in_middle( *_pppnbTailOld );
 				}
 			}
-			__STL_UNWIND( _DestroyPath( _pppnbTailOld ) )	// revert and rethrow.
+			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )	// revert and rethrow.
 		}
 
 		// Now overwrite the already existing nodes in the path - as no allocation occurs we need not try:
@@ -1332,7 +1332,7 @@ protected:
 		m_uCount = _uCount;
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	// Specialize the case for overwriting the current path with a node iterator.
 	template < >
 	void	_OverwritePath( _TyGraphNodeIter const & _r )
@@ -1352,7 +1352,7 @@ protected:
 		_AppendLinkPosIter( _r );
 	}
 
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 
 	void	_PushNode( _TyGraphNodeBase * _pgnb, _TyGraphLinkBase * _pglb )
 	{
@@ -1363,24 +1363,24 @@ protected:
 
 		__SDP( _TyGraphConnectionLink, _TyConnLinkAlloc, GetCLAllocator(), _pgclNode );
 		_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 		if ( !_pgclNode )
 		{
 			_TyBaseAllocPathNode::deallocate_type( _ppnsAlloc );
 			return;
 		}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 		if ( _ppnsAlloc->m_pglbLink )
 		{
 			_CreateConnLink( _ppnsAlloc->m_pgclLink, _ppnsAlloc );	// This should be the last throw ( or code should change ).
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 			if ( !_ppnsAlloc->m_pgclLink )
 			{
 				_TyBaseAllocConnLink::deallocate_type( _pgclNode );
 				_TyBaseAllocPathNode::deallocate_type( _ppnsAlloc );
 				return;
 			}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 			_ppnsAlloc->m_pglbLink->PushConnection( _ppnsAlloc->m_pgclLink );
 		}
 		_ppnsAlloc->m_pgclNode = _pgclNode;
@@ -1400,24 +1400,24 @@ protected:
 
 		__SDP( _TyGraphConnectionLink, _TyConnLinkAlloc, GetCLAllocator(), _pgclNode );
 		_CreateConnLink( _pgclNode, _ppnsNew );
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 		if ( !_pgclNode )
 		{
 			_TyBaseAllocPathNode::deallocate_type( _ppnsAlloc );
 			return;
 		}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 		if ( _ppnsAlloc->m_pglbLink )
 		{
 			_CreateConnLink( _ppnsAlloc->m_pgclLink, _ppnsAlloc );	// This should be the last throw ( or code should change ).
-#ifndef __STL_USE_EXCEPTIONS
+#ifndef _STLP_USE_EXCEPTIONS
 			if ( !_ppnsAlloc->m_pgclLink )
 			{
 				_TyBaseAllocConnLink::deallocate_type( _pgclNode );
 				_TyBaseAllocPathNode::deallocate_type( _ppnsAlloc );
 				return;
 			}
-#endif !__STL_USE_EXCEPTIONS
+#endif //!_STLP_USE_EXCEPTIONS
 			_ppnsAlloc->m_pglbLink->PushConnection( _ppnsAlloc->m_pgclLink );
 		}
 		_ppnsAlloc->m_pgclNode = _pgclNode;
@@ -1432,7 +1432,7 @@ protected:
 		assert( !m_uCount );
 		_TyPathNodeBase ** _pppnbOldTail = m_pppnbTail;
 		_TyGNIndex _uOldCount;
-		__STL_TRY
+		_STLP_TRY
 		{
 			if ( _r.PGLBCur() )
 			{
@@ -1450,7 +1450,7 @@ protected:
 				}
 			}
 		}
-		__STL_UNWIND( _DestroyPath( _pppnbOldTail ), m_uCount = _uOldCount )
+		_STLP_UNWIND( _DestroyPath( _pppnbOldTail ), m_uCount = _uOldCount )
 	}
 
 	// Re-reference each path node to be connected to <_pvReference>:
@@ -1529,16 +1529,16 @@ public:
 	}
 
 // Construction with a path and a different allocator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
 	explicit _graph_path_iterator_base_safe(	_TyPathIter const & _r,
 																						t_TyPathNodeSafeAllocator const & _allocPathNode,
 																						t_TyConnLinkAlloc const & _allocConnLink )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_path_iterator_base_safe(	_TyThis const & _r,
 																						t_TyPathNodeSafeAllocator const & _allocPathNode,
 																						t_TyConnLinkAlloc const & _allocConnLink )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyBaseAllocPathNode( _allocPathNode ),
 			_TyBaseAllocConnLink( _allocConnLink ),
 			_TyBase( _allocPathNode )
@@ -1549,9 +1549,9 @@ public:
 	
 	
 	// Specialize construction with a graph node iterator:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < >
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	explicit _graph_path_iterator_base_safe(	_TyGraphNodeIter const & _r,
 																						t_TyPathNodeSafeAllocator const & _allocPathNode,
 																						t_TyConnLinkAlloc const & _allocConnLink )
@@ -1569,9 +1569,9 @@ public:
 	//	that ends at the node located at current position of that iterator - i.e. if the
 	//	link iterator is in the middle of the child list then the path iterator will start at 
 	//	parent above that child and end at that child. Likewise for a parent list position.
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < >
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	explicit _graph_path_iterator_base_safe(	_TyGraphLinkPosIter const & _r,
 																						t_TyPathNodeSafeAllocator const & _allocPathNode,
 																						t_TyConnLinkAlloc const & _allocConnLink )
@@ -1582,12 +1582,12 @@ public:
 		_AppendLinkPosIter( _r );
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
 	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r )
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_path_iterator_base_safe( _TyThis const & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyBaseAllocPathNode( _r._GetPNAllocatorAsPassed() ),
 			_TyBaseAllocConnLink( _r._GetCLAllocatorAsPassed() ),
 			_TyBase( _r._GetPNAllocatorAsPassed() )	// Don't call copy constructor on base - it copies non-safe nodes.
@@ -1597,12 +1597,12 @@ public:
 		m_uCount = _r.m_uCount;	// throwsafe
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
 	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r, __false_type ) __STLP_NOTHROW
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	explicit _graph_path_iterator_base_safe( _TyThis const & _r, __false_type ) __STLP_NOTHROW
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 		: _TyBaseAllocPathNode( _r._GetPNAllocatorAsPassed() ),
 			_TyBaseAllocConnLink( _r._GetCLAllocatorAsPassed() ),
 			_TyBase( _r._GetPNAllocatorAsPassed() )	// Don't call copy constructor on base - it copies non-safe nodes.
@@ -1634,12 +1634,12 @@ public:
 		return _TyBaseAllocConnLink::get_allocator_as_passed();
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
 	_TyThis &	operator = ( _TyPathIter const & _r )
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	_TyThis &	operator = ( _TyThis const & _r )
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{
 		_OverwritePath( _r );
 	}
@@ -1751,22 +1751,22 @@ public:
 
 	// Operations between link iterators:
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkIter >
 	bool operator == ( t_TyLinkIter const & _r ) const __STLP_NOTHROW
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	bool operator == ( _TyThis const & _r ) const __STLP_NOTHROW
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{
 		return PGLBCur() == _r.PGLBCur();
 	}
 
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyIter >
 	_TyThis & operator = ( _TyIter const & _r ) __STLP_NOTHROW
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 	_TyThis & operator = ( _TyThis const & _r ) __STLP_NOTHROW
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 	{
 		// Overwrite the current path with that passed:
 		_OverwritePath( _r );
@@ -1774,7 +1774,7 @@ public:
 	}
 
 	// Swap existences - need member templates for type-safety:
-#ifdef __STL_MEMBER_TEMPLATES
+#ifdef _STLP_MEMBER_TEMPLATES
 
 	// Swapping with anything other than this should not compile:
 	template < class _TyIter >
@@ -1794,7 +1794,7 @@ public:
 		_TyBase::swap( static_cast< _TyBase & >(  _r ) );
 	}
 
-#else __STL_MEMBER_TEMPLATES
+#else //_STLP_MEMBER_TEMPLATES
 
 	// Non-safe version - programmer can screw up:
 	void	swap( _TyThis & _r ) __STLP_NOTHROW
@@ -1804,9 +1804,9 @@ public:
 		_TyBase::swap( _r );
 	}
 
-#endif __STL_MEMBER_TEMPLATES
+#endif //_STLP_MEMBER_TEMPLATES
 };
 
 
 
-#endif __GR_SITR
+#endif //__GR_SITR

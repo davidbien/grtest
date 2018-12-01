@@ -72,7 +72,7 @@ public:
       m_mapLinkIds( typename _TyMapToIds::key_compare(), _rA )
 #ifndef NDEBUG
       ,m_fSetDirection( 0 )
-#endif !NDEBUG
+#endif //!NDEBUG
   {
   }
 
@@ -194,7 +194,7 @@ public:
 #ifdef __GR_DUMP_DONTWRITENAMES
       _pgnb = 0;
       _pglb = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "New unfinished node: ";
       _WriteNodePtr( _pgnb );
       m_ros << " entered from link ";
@@ -212,10 +212,10 @@ public:
 #ifdef __GR_DUMP_DONTWRITENAMES
       t_TyGraphNodeBase * _pgnbWrite = 0;
       t_TyGraphLinkBase * _pglbWrite = 0;
-#else __GR_DUMP_DONTWRITENAMES
+#else //__GR_DUMP_DONTWRITENAMES
       t_TyGraphNodeBase *& _pgnbWrite = _pgnb;
       t_TyGraphLinkBase *& _pglbWrite = _pglb;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       
       m_ros << "Unfinished node footer: ";
       _WriteNodePtr( _pgnbWrite );
@@ -232,18 +232,18 @@ public:
       {
 #ifdef __GR_DUMP_DONTWRITENAMES
         _WriteLinkPtr( 0 );
-#else __GR_DUMP_DONTWRITENAMES
+#else //__GR_DUMP_DONTWRITENAMES
         _WriteLinkPtr( *_ppglb );
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
         m_ros << ",";
       }
       
       // Write last link:
 #ifdef __GR_DUMP_DONTWRITENAMES
       _WriteLinkPtr( 0 );
-#else __GR_DUMP_DONTWRITENAMES
+#else //__GR_DUMP_DONTWRITENAMES
       _WriteLinkPtr( *_ppglb );
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "].\n";
     
       return ++iRelations;
@@ -262,7 +262,7 @@ public:
       __THROWPT( e_ttFileOutput | e_ttMemory );
 #ifdef __GR_DUMP_DONTWRITENAMES
       _pgnb = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "Normal node: ";
       _WriteNodePtr( _pgnb );
       m_ros << ".\n";
@@ -276,7 +276,7 @@ public:
       __THROWPT( e_ttFileOutput | e_ttMemory );
 #ifdef __GR_DUMP_DONTWRITENAMES
       _pgnb = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "Node footer: ";
       _WriteNodePtr( _pgnb );
       m_ros << ".\n";
@@ -292,16 +292,16 @@ public:
       __THROWPT( e_ttFileOutput | e_ttMemory );
 #ifdef __GR_DUMP_DONTWRITENAMES
       t_TyGraphLinkBase * _pglbWrite = 0;
-#else __GR_DUMP_DONTWRITENAMES
+#else //__GR_DUMP_DONTWRITENAMES
       t_TyGraphLinkBase *& _pglbWrite = _pglb;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "Link: ";
       _WriteLinkPtr( _pglbWrite );
       if ( _pgnbUnfinished )
       {
 #ifdef __GR_DUMP_DONTWRITENAMES
         _pgnbUnfinished = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
         m_ros << " iterating unfinished node ";
         _WriteNodePtr( _pgnbUnfinished );
       }
@@ -320,14 +320,14 @@ public:
       __THROWPT( e_ttFileOutput | e_ttMemory );
 #ifdef __GR_DUMP_DONTWRITENAMES
       _pglb = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
       m_ros << "Link footer: ";
       _WriteLinkPtr( _pglb );
       if ( _pgnb )
       {
 #ifdef __GR_DUMP_DONTWRITENAMES
         _pgnb = 0;
-#endif __GR_DUMP_DONTWRITENAMES
+#endif //__GR_DUMP_DONTWRITENAMES
         m_ros << " enters into unfinished node ";
         _WriteNodePtr( _pgnb );
       }
@@ -374,23 +374,23 @@ public:
 
   void    _WriteNode( const t_TyGraphNode * _pgn )
   {
-    if ( m_fOutputOn )
+    if ( _TyBase::m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput | e_ttMemory );
-      m_ros.WriteNodeEl( _pgn->RElConst() );
+      _TyBase::m_ros.WriteNodeEl( _pgn->RElConst() );
     }
   }
 
   void    _WriteLink( const t_TyGraphLink * _pgl )
   {
-    if ( m_fOutputOn )
+    if ( _TyBase::m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput | e_ttMemory );
-      m_ros.WriteLinkEl( _pgl->RElConst() );
+      _TyBase::m_ros.WriteLinkEl( _pgl->RElConst() );
     }
   }
 };
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_DUMP_H
+#endif //__GR_DUMP_H

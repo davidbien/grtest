@@ -46,4 +46,4 @@ CreateTestGraph0( t_TyGraph & g )
 
 }
 
-#endif __GR_TST0_H
+#endif //__GR_TST0_H

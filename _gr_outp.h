@@ -5,7 +5,7 @@
 
 // This module defines the graph binary output iterator.
 
-#if defined( __STL_USE_EXCEPTIONS )
+#if defined( _STLP_USE_EXCEPTIONS )
 //    !defined( __GR_DONTTHROWBADGRAPHERRORS )
 #define __GR_THROWBADGRAPHERRORS
 #endif
@@ -13,7 +13,7 @@
 #ifdef __GR_THROWBADGRAPHERRORS
 // We use the SGI exception stuff:
 #include <stdexcept>
-#endif __GR_THROWBADGRAPHERRORS
+#endif //__GR_THROWBADGRAPHERRORS
 
 __DGRAPH_BEGIN_NAMESPACE
 
@@ -26,9 +26,9 @@ public:
   bad_graph( const string_type & __s ) : _TyBase( __s ) {}
 };
 
-#else __GR_THROWBADGRAPHERRORS
+#else //__GR_THROWBADGRAPHERRORS
 #error This not currently supported. Need error propagation - not too tough, but...
-#endif __GR_THROWBADGRAPHERRORS
+#endif //__GR_THROWBADGRAPHERRORS
 
 
 // Function that knows how to write raw data to a stream:
@@ -53,7 +53,7 @@ struct _binary_rep_tokens
   static const _TyToken ms_ucUnfinishedNode       = 0x06;
 #ifdef __GR_BINARY_WRITENODEFOOTER
   static const _TyToken ms_ucNodeFooter           = 0x07;
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
   static const _TyToken ms_ucLink                 = 0x08;
   static const _TyToken ms_ucLinkFromUnfinished   = 0x09;
   static const _TyToken ms_ucNormalLinkFooter     = 0x0a;
@@ -88,7 +88,7 @@ const typename  _binary_rep_tokens< t_TyDummy >::_TyToken
 template < class t_TyDummy >
 const typename  _binary_rep_tokens< t_TyDummy >::_TyToken 
                 _binary_rep_tokens< t_TyDummy >::ms_ucNodeFooter;
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
 template < class t_TyDummy >
 const typename  _binary_rep_tokens< t_TyDummy >::_TyToken 
                 _binary_rep_tokens< t_TyDummy >::ms_ucLink;
@@ -154,7 +154,7 @@ public:
       m_fOutputOn( true )
 #ifndef NDEBUG
       ,m_fSetDirection( 0 )
-#endif !NDEBUG
+#endif //!NDEBUG
   {
   }
 
@@ -266,7 +266,7 @@ public:
       // Not really necessary to write a node footer - but good for 
       //  debugging ( and its only a byte ).
       _WriteToken( _binary_rep_tokens::ms_ucNodeFooter );
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
     }
   }
 
@@ -384,23 +384,23 @@ public:
 
   void    _WriteNode( const t_TyGraphNode * _pgn )
   {
-    if ( m_fOutputOn )
+    if ( _TyBase::m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput );
-      m_ros.WriteNodeEl( _pgn->RElConst() );
+      _TyBase::m_ros.WriteNodeEl( _pgn->RElConst() );
     }
   }
 
   void    _WriteLink( const t_TyGraphLink * _pgl )
   {
-    if ( m_fOutputOn )
+    if ( _TyBase::m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput );
-      m_ros.WriteLinkEl( _pgl->RElConst() );
+      _TyBase::m_ros.WriteLinkEl( _pgl->RElConst() );
     }
   }
 };
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_OUTP_H
+#endif //__GR_OUTP_H

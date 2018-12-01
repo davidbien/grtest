@@ -20,13 +20,13 @@
 #ifndef __DGRAPH_DEFAULT_ALLOCATOR
 #ifndef NDEBUG
 #define __DGRAPH_DEFAULT_ALLOCATOR __STD::_stlallocator< char, __STD::__malloc_alloc >
-#else !NDEBUG
+#else //!NDEBUG
 #define __DGRAPH_DEFAULT_ALLOCATOR __STD::allocator< char >
-#endif !NDEBUG
-#endif __DGRAPH_DEFAULT_ALLOCATOR
+#endif //!NDEBUG
+#endif //__DGRAPH_DEFAULT_ALLOCATOR
 
 // Choose namespace:
-#if !defined( __STL_USE_NAMESPACES ) && !defined( __DGRAPH_USE_NAMESPACE )
+#if !defined( _STLP_USE_NAMESPACES ) && !defined( __DGRAPH_USE_NAMESPACE )
 #define __DGRAPH_GLOBALNAMESPACE
 #endif
 
@@ -35,15 +35,15 @@
 #define __DGRAPH_END_NAMESPACE
 #define __DGRAPH_USING_NAMESPACE
 #define __DGRAPH_NAMESPACE
-#else __DGRAPH_GLOBALNAMESPACE
+#else //__DGRAPH_GLOBALNAMESPACE
 #ifndef __DGRAPH_USE_NAMESPACE
 #define __DGRAPH_USE_NAMESPACE ns_dgraph
-#endif __DGRAPH_USE_NAMESPACE
+#endif //__DGRAPH_USE_NAMESPACE
 #define __DGRAPH_BEGIN_NAMESPACE namespace __DGRAPH_USE_NAMESPACE { __BIENUTIL_USING_NAMESPACE
 #define __DGRAPH_END_NAMESPACE }
 #define __DGRAPH_USING_NAMESPACE using namespace __DGRAPH_USE_NAMESPACE;
 #define __DGRAPH_NAMESPACE __DGRAPH_USE_NAMESPACE::
-#endif __DGRAPH_GLOBALNAMESPACE
+#endif //__DGRAPH_GLOBALNAMESPACE
 
 __DGRAPH_BEGIN_NAMESPACE
 
@@ -69,7 +69,7 @@ extern int gs_iNodesAllocated;
 extern int gs_iLinksAllocated;
 extern int gs_iNodesConstructed;
 extern int gs_iLinksConstructed;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
 
 __DGRAPH_END_NAMESPACE
 
@@ -83,6 +83,7 @@ __DGRAPH_END_NAMESPACE
 #include "_sdp.h"
 #include "_sdpn.h"
 #include "_fcdtor.h"
+#include "_gr_def.h"
 #include "_gr_trt.h"
 #include "_gr_titr.h"
 #include "_gr_copy.h"
@@ -90,4 +91,4 @@ __DGRAPH_END_NAMESPACE
 #include "_gr_rndm.h"
 #include "_graph.h"
 
-#endif __GR_INC_H
+#endif //__GR_INC_H

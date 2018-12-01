@@ -105,7 +105,7 @@ public:
     {
       throw bad_graph_stream( "_ReadNodeFooter(): Expected node footer token." );
     }
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
   }
 
   void  _ReadLinkName( _TyGraphLinkBaseReadPtr * _pglbr )
@@ -220,8 +220,8 @@ public:
     __THROWPT( e_ttFileInput | e_ttMemory );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
-    m_ris.ReadNodeEl( _pgn->RElNonConst() );
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
+    _TyBase::m_ris.ReadNodeEl( _pgn->RElNonConst() );
   }
 
   void    _ReadLink( t_TyGraphLink * _pgl )
@@ -229,11 +229,11 @@ public:
     __THROWPT( e_ttFileInput | e_ttMemory );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
-    m_ris.ReadLinkEl( _pgl->RElNonConst() );
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
+    _TyBase::m_ris.ReadLinkEl( _pgl->RElNonConst() );
   }
 };
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_STIN_H
+#endif //__GR_STIN_H

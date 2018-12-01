@@ -141,9 +141,16 @@ public:
 
   static _TyPositionType & RPTGetPositionType( _TyGraphLinkBase ** _ppglb )
   {
+#ifdef __GNUC__
+	#pragma GCC diagnostic push	
+	#pragma GCC diagnostic ignored "-Winvalid-offsetof"
+#endif //__GNUC__
     return *reinterpret_cast< _TyPositionType* >( reinterpret_cast< char*>( _ppglb ) + 
       offsetof(_TyGraphLinkSafe,m_ptNextParentType)-
       offsetof(_TyGraphLinkBase,m_pglbNextParent) );
+#ifdef __GNUC__
+	#pragma GCC diagnostic pop
+#endif //__GNUC__
   }
 
   static void AssertValidPT( const _TyPositionType & _rpt ) _STLP_NOTHROW
@@ -158,10 +165,17 @@ public:
                                 _TyGraphNodeSafe *& _pgns ) _STLP_NOTHROW
   {
     // Structs must be set up appropriately - may need to push some packing pragmas if these assert(s) fail.
+#ifdef __GNUC__
+	#pragma GCC diagnostic push	
+	#pragma GCC diagnostic ignored "-Winvalid-offsetof"
+#endif //__GNUC__
     assert( offsetof(_TyGraphLinkSafe,m_ptNextParentType)-offsetof(_TyGraphLinkBase,m_pglbNextParent) ==
             offsetof(_TyGraphNodeSafe,m_ptNextParentType)-offsetof(_TyGraphNodeBase,m_pglbParents) );
     assert( offsetof(_TyGraphLinkSafe,m_ptNextChildType)-offsetof(_TyGraphLinkBase,m_pglbNextChild) ==
             offsetof(_TyGraphNodeSafe,m_ptNextChildType)-offsetof(_TyGraphNodeBase,m_pglbChildren) );
+#ifdef __GNUC__
+	#pragma GCC diagnostic pop
+#endif //__GNUC__
 
     _TyPositionType & _rpt = _TyGraphLinkSafe::RPTGetPositionType( _ppglb );
     // We will either reference the graph node ( if this is the head of the list )
@@ -203,7 +217,7 @@ class _graph_node_safe_base : public _graph_node_base
   // Needs access to assert.
   template < class t__TyGraphNodeSafe >
   friend class _graph_link_safe_base;
-#endif !NDEBUG
+#endif //!NDEBUG
 
   template <  class t_TyPathNodeSafe, 
     class t_TyPathNodeBaseAllocator,
@@ -264,14 +278,14 @@ class _graph_path_node_safe_base
   // We don't need to unlink the connection link.
   void  _node_deinit() _STLP_NOTHROW
   {
-    m_pgnbNode = 0;
+    _TyBase::m_pgnbNode = 0;
   }
 
   // The graph link to which this iterator is connected is being deinitialized.
   // We don't need to unlink the connection link.
   void  _link_deinit() _STLP_NOTHROW
   {
-    m_pglbLink = 0;
+    _TyBase::m_pglbLink = 0;
   }
 
 public:
@@ -297,8 +311,8 @@ public:
     _init();
   }
 
-  _TyGraphNodeSafe * PGNS() { return static_cast< _TyGraphNodeSafe * >( m_pgnbNode ); }
-  _TyGraphLinkSafe * PGLS() { return static_cast< _TyGraphLinkSafe * >( m_pglbLink ); }
+  _TyGraphNodeSafe * PGNS() { return static_cast< _TyGraphNodeSafe * >( _TyBase::m_pgnbNode ); }
+  _TyGraphLinkSafe * PGLS() { return static_cast< _TyGraphLinkSafe * >( _TyBase::m_pglbLink ); }
 
 protected:
 
@@ -574,7 +588,7 @@ protected:
           psneb->_element_deinit();
         }
         break;
-#endif __GR_USESHADOWSTUFF
+#endif //__GR_USESHADOWSTUFF
 
         default:
         {
@@ -632,7 +646,7 @@ protected:
           psleb->_element_deinit();
         }
         break;
-#endif __GR_USESHADOWSTUFF
+#endif //__GR_USESHADOWSTUFF
 
         default:
         {
@@ -646,4 +660,4 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_SAFE_H
+#endif //__GR_SAFE_H

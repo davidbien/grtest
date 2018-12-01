@@ -61,69 +61,69 @@ public:
       m_rg( _rg )
   {
     // Set up callbacks in base:
-    m_pmfnAllocInitNode = static_cast< typename _TyBase::_TyPMFnAllocInitNode >
+    _TyBase::m_pmfnAllocInitNode = static_cast< typename _TyBase::_TyPMFnAllocInitNode >
       ( &_TyThis::_AllocInitNode );
-    m_pmfnDeallocateNode = static_cast< typename _TyBase::_TyPMFnDeallocateNode >
+    _TyBase::m_pmfnDeallocateNode = static_cast< typename _TyBase::_TyPMFnDeallocateNode >
       ( &_TyThis::_DeallocateNode );
-    m_pmfnAllocInitLink = static_cast< typename _TyBase::_TyPMFnAllocInitLink >
+    _TyBase::m_pmfnAllocInitLink = static_cast< typename _TyBase::_TyPMFnAllocInitLink >
       ( &_TyThis::_AllocInitLink );
-    m_pmfnDeallocateLink = static_cast< typename _TyBase::_TyPMFnDeallocateLink >
+    _TyBase::m_pmfnDeallocateLink = static_cast< typename _TyBase::_TyPMFnDeallocateLink >
       ( &_TyThis::_DeallocateLink );
-    m_pmfnReadNode = static_cast< typename _TyBase::_TyPMFnReadNode >
+    _TyBase::m_pmfnReadNode = static_cast< typename _TyBase::_TyPMFnReadNode >
       ( &_TyThis::_ReadNode );
-    m_pmfnReadLink = static_cast< typename _TyBase::_TyPMFnReadLink >
+    _TyBase::m_pmfnReadLink = static_cast< typename _TyBase::_TyPMFnReadLink >
       ( &_TyThis::_ReadLink );
-    m_pmfnDestructLinkEl = static_cast< typename _TyBase::_TyPMFnDestructLinkEl >
+    _TyBase::m_pmfnDestructLinkEl = static_cast< typename _TyBase::_TyPMFnDestructLinkEl >
       ( &_TyThis::_DestructLinkEl );
-    m_pmfnDestroySubGraph = static_cast< typename _TyBase::_TyPMFnDestroySubGraph >
+    _TyBase::m_pmfnDestroySubGraph = static_cast< typename _TyBase::_TyPMFnDestroySubGraph >
       ( &_TyThis::_DestroySubGraph );
   }
 
   ~_graph_input_iterator()
   {
-    if ( m_pglbConstructedEl )
+    if ( _TyBase::m_pglbConstructedEl )
     {
-      _DestructLinkEl( m_pglbConstructedEl );
+      _DestructLinkEl( _TyBase::m_pglbConstructedEl );
     }
-    if ( m_pglbAllocedInited )
+    if ( _TyBase::m_pglbAllocedInited )
     {
-      _DeallocateLink( m_pglbAllocedInited );
+      _DeallocateLink( _TyBase::m_pglbAllocedInited );
     }
-    if ( m_pgnbTempRoot )
+    if ( _TyBase::m_pgnbTempRoot )
     {
-      _DestroySubGraph( m_pgnbTempRoot ); 
+      _DestroySubGraph( _TyBase::m_pgnbTempRoot ); 
     }
-    if ( m_pgnbNewRoot )
+    if ( _TyBase::m_pgnbNewRoot )
     {
-      _DestroySubGraph( m_pgnbNewRoot ); 
+      _DestroySubGraph( _TyBase::m_pgnbNewRoot ); 
     }
   }
 
   _TyGraphNode * PGNTransferNewRoot() _STLP_NOTHROW
     {
-      _TyGraphNode * _pgnNewRoot = static_cast< _TyGraphNode * >( m_pgnbNewRoot );
-      m_pgnbNewRoot = 0;
+      _TyGraphNode * _pgnNewRoot = static_cast< _TyGraphNode * >( _TyBase::m_pgnbNewRoot );
+      _TyBase::m_pgnbNewRoot = 0;
       return _pgnNewRoot;
     }
 
   _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
   node_reference    RNodeEl() const _STLP_NOTHROW
   {
-    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
   link_reference    RLinkEl() const _STLP_NOTHROW
   {
-    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
@@ -131,12 +131,12 @@ public:
   pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
     return pair< link_pointer, node_pointer >
-      ( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
+      ( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
   }
 
   _TyThis & operator ++()
   {
-    _Next();
+    _TyBase::_Next();
     return *this;
   }
 
@@ -196,4 +196,4 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_INPW_H
+#endif //__GR_INPW_H
