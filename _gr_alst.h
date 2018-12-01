@@ -69,7 +69,7 @@ struct _allocator_set_safe_base
       m_allocPathNodeSafe( _r.m_allocPathNodeSafe )
   {
   } 
-#endif 0
+#endif //0
 
   // Any other _allocator_set_safe_base<> can initialize this one:
   template <  class t__TyAllocatorPathNodeBase,
@@ -106,7 +106,7 @@ struct _allocator_set_notsafe
       _TyBaseAllocatorSetSafety( _r )
   {
   }
-#endif 0
+#endif //0
 
   // Any other non-safe allocator set can initialize this one:
   template <  class t__TyAllocatorGraphNode,
@@ -173,4 +173,4 @@ struct _allocator_set_safe
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_ALST
+#endif //__GR_ALST

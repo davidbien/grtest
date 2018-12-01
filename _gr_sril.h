@@ -28,6 +28,7 @@ public:
 
   typedef typename t_TyOutputStreamBase::_TyGraphLinkBase _TyGraphLinkBase;
   typedef typename t_TyOutputStreamBase::_TyGraphNodeBase _TyGraphNodeBase;
+  typedef typename _TyBase::_TyPMFnNotifyUnfinished _TyPMFnNotifyUnfinished;
 
   // Output stream object - supports some types and functionality - allows dumping
   //  ( for instance ) in both human readable as well as binary forms. Also allows
@@ -66,12 +67,12 @@ protected:
   _Init()
   {
     // Set up callback:
-    m_pmfnNotifyUnfinished = static_cast< _TyPMFnNotifyUnfinished >( &_TyThis::_NotifyUnfinished );
+    _TyBase::m_pmfnNotifyUnfinished = static_cast< _TyPMFnNotifyUnfinished >( &_TyThis::_NotifyUnfinished );
     m_fNewUnfinished = false;
 
-    if ( !m_fInitialized )
+    if ( !_TyBase::m_fInitialized )
     {
-      if ( m_pgnbCur || m_pglbCur )
+      if ( _TyBase::m_pgnbCur || _TyBase::m_pglbCur )
       {
         _TyBase::_Init();
       }
@@ -122,7 +123,7 @@ public:
   {
     assert( &m_ros != &_r.m_ros );
   }
-#endif 0
+#endif //0
 
   // Allow initialization with the base - this allows us to skip sections of the graph
   //  using a graph iterator and then initialize the output iterator with the state
@@ -167,7 +168,7 @@ public:
   // This should only before the iteration is begun:
   void  SetDirection( bool _fDirectionDown )
   {
-    if ( _fDirectionDown != m_fDirectionDown )
+    if ( _fDirectionDown != _TyBase::m_fDirectionDown )
     {
       assert( !m_iContextsOutput );
       m_fNewUnfinished = false; // Clear any state.
@@ -201,7 +202,7 @@ public:
         m_fWroteLinkFooter = true;
       }
 
-      m_ros._WriteLinkFooter( _FAtUnfinishedNode() ? 0 : _pglb, _pgnb ); // Indicate connection to _pgnb.
+      m_ros._WriteLinkFooter( _TyBase::_FAtUnfinishedNode() ? 0 : _pglb, _pgnb ); // Indicate connection to _pgnb.
       return 1; // Return value is ignored.
     }
   }
@@ -248,12 +249,12 @@ public:
       _STLP_TRY
       {
         // See where we are right now:
-        if ( PGLBCur() )
+        if ( _TyBase::PGLBCur() )
         {
-          m_ros._WriteLinkHeader( PGLBCur(), 
-                                  _FAtUnfinishedNode() ? PGNBCur() : 0 ); // throws.
+          m_ros._WriteLinkHeader( _TyBase::PGLBCur(), 
+                                  _TyBase::_FAtUnfinishedNode() ? _TyBase::PGNBCur() : 0 ); // throws.
           
-          if ( PGLBCur()->FIsConstructed() )
+          if ( _TyBase::PGLBCur()->FIsConstructed() )
           {
             (this->*m_pmfnWriteLink)(); // throws.
           }
@@ -262,28 +263,28 @@ public:
           if ( t_fUseSeek )
           {
             m_spBeforeLinkFooter = m_ros._Tell();
-            m_ros._WriteLinkFooter( _FAtUnfinishedNode() ? 0 : PGLBCur(), 0 ); // Indicate no re-connected node. throws.
+            m_ros._WriteLinkFooter( _TyBase::_FAtUnfinishedNode() ? 0 : _TyBase::PGLBCur(), 0 ); // Indicate no re-connected node. throws.
           }
           else
           {
-            _pglbCheckWriteFooter = PGLBCur();
-            _fAtUnfinishedNode = _FAtUnfinishedNode();
+            _pglbCheckWriteFooter = _TyBase::PGLBCur();
+            _fAtUnfinishedNode = _TyBase::_FAtUnfinishedNode();
             m_fWroteLinkFooter = false; // Indicate that we have not written the link footer
                                       //  we will check for this after calling the base.
           }
         }
         else
-        if ( PGNBCur() )
+        if ( _TyBase::PGNBCur() )
         {
           // If this is a new unfinished node then write the link information.
           if ( m_fNewUnfinished )
           {
-            m_ros._WriteNewUnfinishedNodeHeader( PGNBCur(), m_pglbUnfinished );
+            m_ros._WriteNewUnfinishedNodeHeader( _TyBase::PGNBCur(), m_pglbUnfinished );
           }
           else
           {
             // Just write a simple node header.
-            m_ros._WriteNodeHeader( PGNBCur() );
+            m_ros._WriteNodeHeader( _TyBase::PGNBCur() );
           }
 
           // write the node itself:
@@ -294,14 +295,14 @@ public:
             // We write the link information for the unfinished node now - this
             //  allows easier throw-safe construction of the graph on read:
             // Update the remaining links after writing the footer:
-            m_itNodeLastInserted->second.m_iRemainingLinks = 
-            m_ros._WriteUnfinishedNodeFooter( PGNBCur(), m_pglbUnfinished ) -
+            _TyBase::m_itNodeLastInserted->second.m_iRemainingLinks = 
+            m_ros._WriteUnfinishedNodeFooter( _TyBase::PGNBCur(), m_pglbUnfinished ) -
             !!m_pglbUnfinished;
             m_fNewUnfinished = false;
           }
           else
           {
-            m_ros._WriteNodeFooter( PGNBCur() );
+            m_ros._WriteNodeFooter( _TyBase::PGNBCur() );
           }
         }
         else
@@ -406,8 +407,8 @@ public:
       m_os( _oia, _fDirectionDown, _rione, _riole, _rAlloc )
   {
     // Set up function pointers in the base:
-    m_pmfnWriteNode = static_cast< typename _TyBase::_TyPMFnWriteNode >( &_TyThis::_WriteNode );
-    m_pmfnWriteLink = static_cast< typename _TyBase::_TyPMFnWriteLink >( &_TyThis::_WriteLink );
+    _TyBase::m_pmfnWriteNode = static_cast< typename _TyBase::_TyPMFnWriteNode >( &_TyThis::_WriteNode );
+    _TyBase::m_pmfnWriteLink = static_cast< typename _TyBase::_TyPMFnWriteLink >( &_TyThis::_WriteLink );
   }
 
   // Initialization with the base's base class - this allows us to initialize the
@@ -420,8 +421,8 @@ public:
       m_os( _oia, _r.m_fDirectionDown, _rione, _riole, _r.get_allocator() )
   {
     // Set up function pointers in the base:
-    m_pmfnWriteNode = static_cast< typename _TyBase::_TyPMFnWriteNode >( &_TyThis::_WriteNode );
-    m_pmfnWriteLink = static_cast< typename _TyBase::_TyPMFnWriteLink >( &_TyThis::_WriteLink );
+    _TyBase::m_pmfnWriteNode = static_cast< typename _TyBase::_TyPMFnWriteNode >( &_TyThis::_WriteNode );
+    _TyBase::m_pmfnWriteLink = static_cast< typename _TyBase::_TyPMFnWriteLink >( &_TyThis::_WriteLink );
   }
 
   // Template that accesses similar named method in the output object:
@@ -433,34 +434,34 @@ public:
 
   _TyGraphNodeCQ *  PGNCur()
   {
-    return const_cast< _TyGraphNodeCQ * >( static_cast< t_TyGraphNode * >( PGNBCur() ) );
+    return const_cast< _TyGraphNodeCQ * >( static_cast< t_TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   _TyGraphLinkCQ *  PGLCur()
   {
-    return const_cast< _TyGraphLinkCQ * >( static_cast< t_TyGraphLink * >( PGLBCur() ) );
+    return const_cast< _TyGraphLinkCQ * >( static_cast< t_TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
   node_reference    RNodeEl() const _STLP_NOTHROW
   {
-    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
   link_reference    RLinkEl() const _STLP_NOTHROW
   {
-    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
   pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
-    return pair< link_pointer, node_pointer >( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
+    return pair< link_pointer, node_pointer >( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
   }
   
   _TyThis & operator ++()
   {
-    _Next();
+    _TyBase::_Next();
     return *this;
   }
 
@@ -478,4 +479,4 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_SRIL
+#endif //__GR_SRIL

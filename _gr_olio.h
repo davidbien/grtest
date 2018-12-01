@@ -141,4 +141,4 @@ _RawReadGraphEl( IStream *& _rs, t_TyRead & _rEl )
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_OLIO_H
+#endif //__GR_OLIO_H

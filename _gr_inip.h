@@ -124,7 +124,7 @@ protected:
     SetPGNBCur( _pgnb );
     SetPGLBCur( _pglb );
 
-    __STL_TRY
+    _STLP_TRY
     {
       // We check for both context and direction switches so that an input iterator can be kept
       //  "inline" with a forward iterator - this could allow some iteresting transformations:
@@ -133,7 +133,7 @@ protected:
         _Tell( sp ); // Each successful read of a context or direction advances the state.
       }
     }
-    __STL_UNWIND( _Seek( sp ) );
+    _STLP_UNWIND( _Seek( sp ) );
   }
 
   bool  _FReadOne()
@@ -174,7 +174,7 @@ protected:
         throw bad_graph_stream( "_FReadOne(): Encountered a node footer token at top level." );
       }
       break;
-#endif __GR_BINARY_WRITENODEFOOTER
+#endif //__GR_BINARY_WRITENODEFOOTER
 
       case  _binary_rep_tokens< __false_type >::ms_ucLink:
       {
@@ -356,9 +356,9 @@ public:
       m_is( _iia, _rione, _riole )
   {
     // Set up callbacks in base:
-    m_pmfnReadNode = static_cast< typename _TyBase::_TyPMFnReadNode >
+    _TyBase::m_pmfnReadNode = static_cast< typename _TyBase::_TyPMFnReadNode >
       ( &_TyThis::_ReadNode );
-    m_pmfnReadLink = static_cast< typename _TyBase::_TyPMFnReadLink >
+    _TyBase::m_pmfnReadLink = static_cast< typename _TyBase::_TyPMFnReadLink >
       ( &_TyThis::_ReadLink );
   }
 
@@ -368,22 +368,22 @@ public:
 
   _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
   node_reference    RNodeEl() const _STLP_NOTHROW
   {
-    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( PGNBCur() ) );
+    return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
   link_reference    RLinkEl() const _STLP_NOTHROW
   {
-    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( PGLBCur() ) );
+    return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
@@ -391,7 +391,7 @@ public:
   pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
   {
     return pair< link_pointer, node_pointer >
-      ( PGLBCur() ? &RLinkEl() : 0, PGNBCur() ? &RNodeEl() : 0 );
+      ( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
   }
 
   void  Next( _TyGraphNode * _pgnbReadInto, _TyGraphLink * _pglbReadInto )
@@ -414,4 +414,4 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_INIP_H
+#endif //__GR_INIP_H

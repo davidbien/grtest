@@ -37,7 +37,7 @@
 #include "_gr_stio.h"
 #ifdef __GR_DEFINEOLEIO
 #include "_gr_olio.h"
-#endif __GR_DEFINEOLEIO
+#endif //__GR_DEFINEOLEIO
 
 // This module implements the default graph traits template.
 
@@ -370,9 +370,9 @@ typedef _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >
 typedef _graph_iterator_traits_const_base< t_TyGraphTraits, t_fIsConstIterator > _TyConstBase;
 public:
 
-  typedef _TyNodeEl   _TyValueEl;
-  typedef _TyNodePtr  _TyValuePtr;
-  typedef _TyNodeRef  _TyValueRef;
+  typedef typename _TyConstBase::_TyNodeEl   _TyValueEl;
+  typedef typename _TyConstBase::_TyNodePtr  _TyValuePtr;
+  typedef typename _TyConstBase::_TyNodeRef  _TyValueRef;
 
   typedef typename _TySafetyBase::_TyGraphNodeBaseBase  _TyGraphValueBaseBase;
   typedef typename _TySafetyBase::_TyGraphNodeBase      _TyGraphValueBase;
@@ -390,16 +390,16 @@ public:
 #if 1
   typedef typename 
     _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass    _TyIterBase;
-#endif 0
+#endif //0
 
 #if 1
-  typedef typename _graph_iterator_pass2< typename _TyConstBase::_TyFIsConstIterator, typename 
+  typedef _graph_iterator_pass2< typename _TyConstBase::_TyFIsConstIterator, typename 
     _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIter;
-  typedef typename _graph_iterator_pass2< __false_type, typename 
+  typedef _graph_iterator_pass2< __false_type, typename 
     _TySafetyBase::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIterNonConst;
-  typedef typename _graph_iterator_pass2< __true_type, typename 
+  typedef _graph_iterator_pass2< __true_type, typename 
     _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIterConst;
-#else 1
+#else //1
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TySafetyBase::_TyGraphLinkBase, 
     _TyConstBase::_TyFIsConstIterator, _TyIterBase >                _TyPassIter;
   // Const and non-const types - keeps implementation independent:
@@ -407,7 +407,7 @@ public:
                                 __false_type, _TyIterBase >                       _TyPassIterNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
                                 __true_type, _TyIterBase >                        _TyPassIterConst;
-#endif 1
+#endif //0
 
   // rebindability:
   template < class t__TyIteratorType > 
@@ -445,7 +445,7 @@ template <  class t_TyGraphTraits,
   template < class t_TyIteratorType, bool t__fIsConstIterator, bool t__fIsSafeIterator > 
 _graph_iterator_traits< t_TyGraphTraits, _TyGraphNodeIteratorType, t_fIsConstIterator, t_fIsSafeIterator >::
   rebind_all< t_TyIteratorType, t__fIsConstIterator, t__fIsSafeIterator >::m_assert;
-#endif 0
+#endif //0
 
 // graph link position iterator:
 template < class t_TyGraphTraits, bool t_fIsConstIterator, bool t_fIsSafeIterator >
@@ -458,9 +458,10 @@ private:
 	typedef _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator > _TySafetyBase;
 	typedef _graph_iterator_traits_const_base< t_TyGraphTraits, t_fIsConstIterator > _TyConstBase;
 public:
-  typedef _TyLinkEl   _TyValueEl;
-  typedef _TyLinkPtr  _TyValuePtr;
-  typedef _TyLinkRef  _TyValueRef;
+  typedef typename _TyConstBase::_TyLinkEl   _TyValueEl;
+  typedef typename _TyConstBase::_TyLinkPtr  _TyValuePtr;
+  typedef typename _TyConstBase::_TyLinkRef  _TyValueRef;
+  typedef typename _TyConstBase::_TyFIsConstIterator _TyFIsConstIterator;
 
   typedef typename _TySafetyBase::_TyGraphLinkBaseBase  _TyGraphValueBaseBase;
   typedef typename _TySafetyBase::_TyGraphLinkBase      _TyGraphLinkBase;
@@ -522,9 +523,10 @@ private:
 	typedef _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator > _TySafetyBase;
 	typedef _graph_iterator_traits_const_base< t_TyGraphTraits, t_fIsConstIterator > _TyConstBase;
 public:
-	typedef _TyLinkEl   _TyValueEl;
-  typedef _TyLinkPtr  _TyValuePtr;
-  typedef _TyLinkRef  _TyValueRef;
+	typedef typename _TyConstBase::_TyLinkEl   _TyValueEl;
+	typedef typename _TyConstBase::_TyLinkPtr  _TyValuePtr;
+	typedef typename _TyConstBase::_TyLinkRef  _TyValueRef;
+	typedef typename _TyConstBase::_TyFIsConstIterator _TyFIsConstIterator;
 
 	typedef typename _TySafetyBase::_TyGraphLinkBaseBase  _TyGraphValueBaseBase;
 	typedef typename _TySafetyBase::_TyGraphLinkBase      _TyGraphLinkBase;
@@ -585,24 +587,25 @@ private:
 typedef _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator > _TySafetyBase;
 typedef _graph_iterator_traits_const_base< t_TyGraphTraits, t_fIsConstIterator > _TyConstBase;
 public:
-  typedef _TyNodeEl   _TyValueEl;
-  typedef _TyNodePtr  _TyValuePtr;
-  typedef _TyNodeRef  _TyValueRef;
+	typedef typename _TyConstBase::_TyNodeEl   _TyValueEl;
+	typedef typename _TyConstBase::_TyNodePtr  _TyValuePtr;
+	typedef typename _TyConstBase::_TyNodeRef  _TyValueRef;
+	typedef typename _TyConstBase::_TyFIsConstIterator _TyFIsConstIterator;
 
 	typedef typename _TySafetyBase::_TyPathNodeBase				_TyPathNodeBase;
 	typedef typename _TySafetyBase::_TyPathNodeAllocatorAsPassed	_TyPathNodeAllocatorAsPassed;
 	typedef typename _TySafetyBase::_TyGraphLinkBaseBase  _TyGraphValueBaseBase;
-  typedef typename _TySafetyBase::_TyGraphLinkBase      _TyGraphLinkBase;
-  typedef typename _TySafetyBase::_TyGraphLink          _TyGraphLink;
+	typedef typename _TySafetyBase::_TyGraphLinkBase      _TyGraphLinkBase;
+	typedef typename _TySafetyBase::_TyGraphLink          _TyGraphLink;
 	typedef typename _TySafetyBase::_TyGraphLinkBase      _TyGraphValueBase;
 	typedef typename _TySafetyBase::_TyGraphLink          _TyGraphValue;
 	typedef typename _TySafetyBase::_TyGraphNodeBase			_TyGraphNodeBase;
 	typedef typename _TySafetyBase::_TyGraphNode					_TyGraphNode;
 
-  typedef _TyGraphNode *      _TyInitArg;
-  typedef _TyGraphNodeBase *  _TyInitArgBase;
-  typedef const _TyGraphNode *      _TyInitArgConst;
-  typedef _TyGraphNodeBase *  _TyInitArgBaseConst;
+	typedef _TyGraphNode *      _TyInitArg;
+	typedef _TyGraphNodeBase *  _TyInitArgBase;
+	typedef const _TyGraphNode *      _TyInitArgConst;
+	typedef _TyGraphNodeBase *  _TyInitArgBaseConst;
 
   // Base classes:
   typedef typename 
@@ -832,9 +835,9 @@ public:
                                     t_TyAllocatorPathNodeBase,
 #ifndef __NDEBUG_THROW
                                     true > /*use seek when want to be throw safe*/
-#else !__NDEBUG_THROW
+#else //!__NDEBUG_THROW
                                     false > /*don't use seek - since output to cout can be garbled*/
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
                                             _TyDumpOstreamIterBase;
 
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyDumpOstreamObject,
@@ -901,7 +904,7 @@ public:
                                   t_TyAllocatorPathNodeBase,
                                   true, false >                             _TyBinaryOLEInputIterBase;
   // Need to have the most derived graph type to declare the iterator itself.
-#endif __GR_DEFINEOLEIO
+#endif //__GR_DEFINEOLEIO
 };
 
 
@@ -953,7 +956,7 @@ struct _graph_traits_safe
                           _sgraph_link< t_TyLinkEl, t_TyNodeEl, _graph_link_safe_base< _graph_node_safe_base > >,
                           _graph_path_node_safe_base< _graph_node_safe_base, 
                             _graph_link_safe_base< _graph_node_safe_base > >  _TyShadowTraitsSafe;
-#endif __GR_USESHADOWSTUFF
+#endif //__GR_USESHADOWSTUFF
 };
 
 // Now declare a mapping type given the default graph parameters:
@@ -971,4 +974,4 @@ struct _graph_traits_map< t_TyNodeEl, t_TyLinkEl, false, t_TyAllocator >
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_TRT_H
+#endif //__GR_TRT_H

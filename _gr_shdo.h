@@ -73,7 +73,7 @@ protected:
     {
       throw bad_shadow_element( "_ValidatePSOS(): Null graph element." );
     }
-#endif !NDEBUG
+#endif //!NDEBUG
   }
 };
 
@@ -126,4 +126,4 @@ public:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_SHDO_H
+#endif //__GR_SHDO_H

@@ -27,7 +27,7 @@ public:
     __QI( _punk, punkDebug );
     assert( _punk == punkDebug );
     punkDebug->Release();
-#endif !NDEBUG
+#endif //!NDEBUG
     m_punk->AddRef();
   }
   explicit _ole_graph_element( _TyThis const & _r )
@@ -38,38 +38,38 @@ public:
       m_punk = 0; // In case of throw.
       IPersistStream *  ppsSrc;
       __QI( _r.m_punk, ppsSrc );
-      __STL_TRY
+      _STLP_TRY
       {
         CLSID clsid;
         __ThrowOLEFAIL( pps->GetClassID( &clsid ) );
         IUnknown *  punk;
         __CoCreateLocal( clsid, punk );
 
-        __STL_TRY
+        _STLP_TRY
         {
           IPersistStream *  ppsDst;
           __QI( punk, ppsDst );
 
-          __STL_TRY
+          _STLP_TRY
           {
             IStream * ps;
             CreateStreamOnHGlobal( NULL, TRUE, &ps );
-            __STL_TRY
+            _STLP_TRY
             {
               __ThrowOLEFAIL( ppsSrc->Save( ps, FALSE ) );
               __ThrowOLEFAIL( ps->Seek( 0ll, STREAM_SEEK_SET, 0 ) );
               __ThrowOLEFAIL( ppsDst->Load( ps ) );
             }
-            __STL_UNWIND( ps->Release() );
+            _STLP_UNWIND( ps->Release() );
             ps->Release();
           }
-          __STL_UNWIND( ppsDst->Release() );
+          _STLP_UNWIND( ppsDst->Release() );
           ppsDst->Release();
         }
-        __STL_UNWIND( punk->Release() );
+        _STLP_UNWIND( punk->Release() );
         m_punk = punk;
       }
-      __STL_UNWIND( ppsSrc->Release() );
+      _STLP_UNWIND( ppsSrc->Release() );
       ppsSrc->Release();
     }
     else
@@ -88,14 +88,14 @@ public:
   {
     IPersistStream *  pps;
     __QI( m_punk, pps );
-    __STL_TRY
+    _STLP_TRY
     {
       CLSID clsid;
       __TOF( pps->GetClassID( &clsid ) );
       __TOF( WriteClassStm( _ps, clsid ) );
       __TOF( pps->Save( _ps, _fClearDirty ) );
     }
-    __STL_UNWIND( pps->Release() );
+    _STLP_UNWIND( pps->Release() );
     pps->Release();
   }
 
@@ -125,4 +125,4 @@ _RawReadGraphEl( IStream *& _rps, _ole_graph_element & _rEl )
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_OLE_H
+#endif //__GR_OLE_H

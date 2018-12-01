@@ -5,16 +5,20 @@
 
 // This module defines the default graph objects.
 
-#if defined( __STL_USE_EXCEPTIONS )
+#if defined( _STLP_USE_EXCEPTIONS )
 //    !defined( __GR_DONTTHROWBADGRAPHERRORS )
 // Throw graph navigation errors.
 #define __GR_THROWGRAPHNAVERRORS
 #endif
 
+#include <assert.h>
+
 #ifdef __GR_THROWGRAPHNAVERRORS
 // We use the SGI exception stuff:
 #include <stdexcept>
-#endif __GR_THROWGRAPHNAVERRORS
+#endif //__GR_THROWGRAPHNAVERRORS
+
+#include "_gr_alst.h"
 
 __DGRAPH_BEGIN_NAMESPACE
 
@@ -27,9 +31,9 @@ public:
   _graph_nav_except( const string_type & __s ) : _TyBase( __s ) {}
 };
 
-#else __GR_THROWGRAPHNAVERRORS
+#else //__GR_THROWGRAPHNAVERRORS
 #error This not currently supported. Need error propagation - not too tough, but...
-#endif __GR_THROWGRAPHNAVERRORS
+#endif //__GR_THROWGRAPHNAVERRORS
 
 // Predeclare:
 class _graph_node_base;
@@ -810,7 +814,7 @@ public:
     : m_pgnbNode( _pgnbNode )
   {
   }
-#endif 0
+#endif //0
 
   _graph_path_node_base(  t_TyGraphNodeBase * _pgnbNode,
                           t_TyGraphLinkBase * _pglbLink ) _STLP_NOTHROW
@@ -1047,4 +1051,4 @@ public:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_DEF_H
+#endif //__GR_DEF_H

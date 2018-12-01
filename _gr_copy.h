@@ -5,9 +5,9 @@
 
 #ifdef __GR_DSIN_USEHASH
 #include <hash_map>
-#else __GR_DSIN_USEHASH
+#else //__GR_DSIN_USEHASH
 #include <map>
-#endif __GR_DSIN_USEHASH
+#endif //__GR_DSIN_USEHASH
 
 __DGRAPH_BEGIN_NAMESPACE
 
@@ -83,12 +83,12 @@ public:
                     equal_to< const _TyGraphLinkBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedLinks;
   static const typename _TyUnconnectedNodes::size_type ms_stInitSizeNodes = __GR_COPY_INITSIZENODES;
   static const typename _TyUnconnectedLinks::size_type ms_stInitSizeLinks = __GR_COPY_INITSIZELINKS;
-#else __GR_DSIN_USEHASH
+#else //__GR_DSIN_USEHASH
   typedef map<  const _TyGraphNodeBaseBaseSrc*, _TyUnconnectedNode, 
                 less< const _TyGraphNodeBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedNodes;
   typedef map<  const _TyGraphLinkBaseBaseSrc*, _TyUnconnectedLink, 
                 less< const _TyGraphLinkBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedLinks;
-#endif __GR_DSIN_USEHASH
+#endif //__GR_DSIN_USEHASH
 
   typedef typename _TyUnconnectedNodes::value_type  _TyUNValueType;
   typedef typename _TyUnconnectedNodes::iterator    _TyUNIterator;
@@ -164,7 +164,7 @@ public:
                              typename _TyUnconnectedLinks::hasher(), 
                              typename _TyUnconnectedLinks::key_equal(), 
                              _rAlloc ),
-#else __GR_DSIN_USEHASH
+#else //__GR_DSIN_USEHASH
     m_mapUnconnectedNodesDown( typename _TyUnconnectedNodes::key_compare(), 
                                _rAlloc ),
     m_mapUnconnectedNodesUp( typename _TyUnconnectedNodes::key_compare(), 
@@ -173,7 +173,7 @@ public:
                                _rAlloc ),
     m_mapUnconnectedLinksUp( typename _TyUnconnectedLinks::key_compare(), 
                              _rAlloc ),
-#endif __GR_DSIN_USEHASH
+#endif //__GR_DSIN_USEHASH
     m_lContexts( _rAlloc ),
     m_iContexts( 0 )
   {
@@ -961,4 +961,4 @@ do_copy_up()
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_COPY_H
+#endif //__GR_COPY_H

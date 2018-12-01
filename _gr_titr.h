@@ -106,14 +106,14 @@ public:
   }
 
 // Construction with an iterator and another allocator:
-  template < class _TyIter >
-  _graph_typed_iterator(  _TyIter const & _r, 
+  template < class t_TyIter >
+  _graph_typed_iterator(  t_TyIter const & _r, 
                           _TyPathNodeAllocatorAsPassed const & _allocPathNode )
-    : _TyIterBase( static_cast< typename _TyIter::_TyIterBase const & >( _r ), _allocPathNode )
+    : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), _allocPathNode )
   {
-    __TRANSFER_CONST( typename _TyIter::_TyFIsConstIterator, _TyFIsConstIterator );
-    __ASSERT_SAME_TYPE3( _TyGraphNode, typename t_TyIter::_TyGraphNode, _TyAssertNode );
-    __ASSERT_SAME_TYPE3( _TyGraphLink, typename t_TyIter::_TyGraphLink, _TyAssertLink );
+    __TRANSFER_CONST( typename t_TyIter::_TyFIsConstIterator, _TyFIsConstIterator );
+    __ASSERT_SAME_TYPE( _TyGraphNode, typename t_TyIter::_TyGraphNode );
+    __ASSERT_SAME_TYPE( _TyGraphLink, typename t_TyIter::_TyGraphLink );
   }
 
   // Specialize the versions that take a "pass" path - we will take posession from the pass path object.
@@ -121,12 +121,14 @@ public:
                           _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
   : _TyIterBase( _allocPathNode )
   {
-    ___semantic_error_object  error;  // we are not const.
+    __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
+    _r.swap( static_cast< _TyIterBase& >( *this ) );
   }
   _graph_typed_iterator(  _TyPassIterNonConst & _r, 
                           _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
     : _TyIterBase( _allocPathNode )
   {
+    __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase& >( *this ) );
   }
 
@@ -163,12 +165,14 @@ public:
     : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), 
                    __false_type() )
   {
-    ___semantic_error_object  error;  // we are not const.
+    __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
+    _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
   explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _STLP_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), 
                    __false_type() )
   {
+    __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
 
@@ -211,20 +215,22 @@ public:
   _TyThis &
   operator = ( _TyPassIterConst & _r ) _STLP_NOTHROW
   {
-    // we are not const:
-    ___semantic_error_object  error;
+    // We swap our existence with the pass iterator:
+    __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
+    _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
 
   _TyThis &
   operator = ( _TyPassIterNonConst & _r ) _STLP_NOTHROW
   {
     // We swap our existence with the pass iterator:
+    __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
 
   reference operator* ( ) const _STLP_NOTHROW
   { 
-    return static_cast< _TyGraphValue* >( PBObjCur() )->RElNonConst(); 
+    return static_cast< _TyGraphValue* >( _TyIterBase::PBObjCur() )->RElNonConst(); 
   }
   pointer operator-> ( ) const _STLP_NOTHROW
   { 
@@ -239,64 +245,64 @@ public:
   // Current node access:
   node_reference    GetCurNode() const _STLP_NOTHROW
   { 
-    return static_cast< _TyGraphNode* >( PGNBCur() )->RElNonConst();
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBCur() )->RElNonConst();
   }
 
   // Accessors to parent and child nodes:
   node_reference    GetParentNode() const _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode* >( PGNBParent() )->RElNonConst(); 
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() )->RElNonConst(); 
   }
   node_reference    GetChildNode() const
   {
-    return static_cast< _TyGraphNode* >( PGNBChild() )->RElNonConst(); 
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() )->RElNonConst(); 
   }
   _TyGraphNode * PGNParent() const _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode* >( PGNBParent() );
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() );
   }
   _TyGraphNode * PGNChild() const _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode* >( PGNBChild() );
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() );
   }
 
   // Accessor to current link:
   link_reference    GetCurLink() const _STLP_NOTHROW
   { 
-    return static_cast< _TyGraphLink* >( PGNBCur() )->RElNonConst();
+    return static_cast< _TyGraphLink* >( _TyIterBase::PGNBCur() )->RElNonConst();
   }
 
   // Typed graph object accessors:
   _TyInitArg PObjCur() const _STLP_NOTHROW
   {
-    return (_TyInitArg)PBObjCur();
+    return (_TyInitArg)_TyIterBase::PBObjCur();
   }
 
   _TyGraphLink ** PPGLCur() const _STLP_NOTHROW
   {
-    return (_TyGraphLink**)PPGLBCur();
+    return (_TyGraphLink**)_TyIterBase::PPGLBCur();
   }
   void SetPPGLCur( _TyGraphLink ** _ppglCur )
   {
-    SetPPGLBCur( (_TyGraphLinkBase**)_ppglCur );
+    _TyIterBase::SetPPGLBCur( (_TyGraphLinkBase**)_ppglCur );
   }
 
   _TyGraphLink * PGLCur() const _STLP_NOTHROW
   {
-    return (_TyGraphLink*)PGLBCur();
+    return (_TyGraphLink*)_TyIterBase::PGLBCur();
   }
   void SetPPGLCur( _TyGraphLink * _pglCur )
   {
-    SetPGLBCur( (_TyGraphLinkBase*)_pglCur );
+    _TyIterBase::SetPGLBCur( (_TyGraphLinkBase*)_pglCur );
   }
 
   _TyGraphNode * PGNCur() const _STLP_NOTHROW
   {
-    return (_TyGraphNode*)PGNBCur();
+    return (_TyGraphNode*)_TyIterBase::PGNBCur();
   }
   void SetPGNCur( _TyGraphNode * _pgnCur )
   {
-    SetPGNBCur( _pgnCur );
+    _TyIterBase::SetPGNBCur( _pgnCur );
   }
 
   _TyGraphLink ** FirstParent() const _STLP_NOTHROW
@@ -443,8 +449,8 @@ public:
     : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), _allocPathNode )
   {
     __TRANSFER_CONST( typename t_TyIter::_TyFIsConstIterator, _TyFIsConstIterator );
-		__ASSERT_SAME_TYPE3( _TyGraphNode, t_TyIter::_TyGraphNode, _TyAssertNode );
-    __ASSERT_SAME_TYPE3( _TyGraphLink, typename t_TyIter::_TyGraphLink, _TyAssertLink );
+	__ASSERT_SAME_TYPE( _TyGraphNode, typename t_TyIter::_TyGraphNode );
+    __ASSERT_SAME_TYPE( _TyGraphLink, typename t_TyIter::_TyGraphLink );
   }
 
   // Construction that just obtains the allocator - if any - this doesn't check const-correctness
@@ -495,15 +501,15 @@ public:
 
   // assignment - similar to construction except we have already been populated
   //  with a reference to an allocator.
-  template < class _TyIter >
+  template < class t_TyIter >
   _TyThis &
-  operator = ( _TyIter const & _r )
+  operator = ( t_TyIter const & _r )
   {
-    __TRANSFER_CONST( _TyFIsConstIterator, typename _TyIter::_TyFIsConstIterator );
+    __TRANSFER_CONST( _TyFIsConstIterator, typename t_TyIter::_TyFIsConstIterator );
     __ASSERT_SAME_TYPE3( _TyGraphNode, typename t_TyIter::_TyGraphNode, _TyAssertNode );
     __ASSERT_SAME_TYPE3( _TyGraphLink, typename t_TyIter::_TyGraphLink, _TyAssertLink );
     // call base class:
-    _TyIterBase::operator = ( static_cast< typename _TyIter::_TyIterBase const & >( _r ) );
+    _TyIterBase::operator = ( static_cast< typename t_TyIter::_TyIterBase const & >( _r ) );
     return *this;
   }
 
@@ -522,7 +528,7 @@ public:
 
   reference operator* ( ) const _STLP_NOTHROW
   { 
-    return static_cast< const _TyGraphValue* >( PBObjCur() )->RElConst(); 
+    return static_cast< const _TyGraphValue* >( _TyIterBase::PBObjCur() )->RElConst(); 
   }
   pointer operator-> ( ) const _STLP_NOTHROW
   { 
@@ -532,36 +538,36 @@ public:
   // Accessors to parent and child nodes:
   node_reference    GetParentNode() const _STLP_NOTHROW
   { 
-    return static_cast< _TyGraphNode* >( PGNBParent() )->RElConst(); 
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() )->RElConst(); 
   }
   node_reference    GetChildNode() const _STLP_NOTHROW
   { 
-    return static_cast< _TyGraphNode* >( PGNBChild() )->RElConst(); 
+    return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() )->RElConst(); 
   }
   const _TyGraphNode * PGNParent() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( PGNBParent() ) );
+    return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() ) );
   }
   const _TyGraphNode * PGNChild() const _STLP_NOTHROW
   {
-    return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( PGNBChild() ) );
+    return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() ) );
   }
 
   // Accessor to current link ( if any ):
   link_reference GetCurLink() const _STLP_NOTHROW
   {
-    return static_cast< _TyGraphLink* >( PGLBCur() )->RElConst(); 
+    return static_cast< _TyGraphLink* >( _TyIterBase::PGLBCur() )->RElConst(); 
   }
 
   // Typed graph object accessors:
   _TyInitArgConst PObjCur() const _STLP_NOTHROW
   {
-    return (_TyInitArgConst)PBObjCur();
+    return (_TyInitArgConst)_TyIterBase::PBObjCur();
   }
 
   const _TyGraphLink * const * PPGLCur() const _STLP_NOTHROW
   {
-    return (const _TyGraphLink* const *)PPGLBCur();
+    return (const _TyGraphLink* const *)_TyIterBase::PPGLBCur();
   }
   void SetPPGLCur( const _TyGraphLink * const * _ppglCur )
   {
@@ -570,7 +576,7 @@ public:
 
   const _TyGraphLink * PGLCur() const _STLP_NOTHROW
   {
-    return (const _TyGraphLink*)PGLBCur();
+    return (const _TyGraphLink*)_TyIterBase::PGLBCur();
   }
   void SetPGLCur( const _TyGraphLink * _pglCur )
   {
@@ -579,7 +585,7 @@ public:
 
   const _TyGraphNode * PGNCur() const _STLP_NOTHROW
   {
-    return (const _TyGraphNode*)PGNBCur();
+    return (const _TyGraphNode*)_TyIterBase::PGNBCur();
   }
   void SetPGNCur( const _TyGraphNode * _pgnCur )
   {
@@ -587,71 +593,30 @@ public:
   }
 
 // Now mask access to any graph modifying base class methods - via compilation error:
-  void  ExchangeParentsOrdered( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  ExchangeParents( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveParentUp( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveParentDown( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveParent( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  ExchangeChildrenOrdered( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  ExchangeChildren( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveChildUp( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveChildDown( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
-  void  MoveChild( const _TyGNIndex &, const _TyGNIndex & )
-  {
-    ___semantic_error_object  error;
-  }
+protected:
+  void  ExchangeParentsOrdered( const _TyGNIndex &, const _TyGNIndex & );
+  void  ExchangeParents( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveParentUp( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveParentDown( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveParent( const _TyGNIndex &, const _TyGNIndex & );
+  void  ExchangeChildrenOrdered( const _TyGNIndex &, const _TyGNIndex & );
+  void  ExchangeChildren( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveChildUp( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveChildDown( const _TyGNIndex &, const _TyGNIndex & );
+  void  MoveChild( const _TyGNIndex &, const _TyGNIndex & );
   void  AddParent(  _TyGraphNode * _pgnAdd, _TyGraphLink * _pglAdd,
                     _TyGraphLink ** _rpglInsertBeforeParent,
-                    _TyGraphLink ** _rpglInsertBeforeAddChild )
-  {
-    ___semantic_error_object  error;
-  }
+                    _TyGraphLink ** _rpglInsertBeforeAddChild );
   void  AddChild(  _TyGraphNode * _pgnAdd, _TyGraphLink * _pglAdd,
                     _TyGraphLink ** _rpglInsertBeforeChild,
-                    _TyGraphLink ** _rpglInsertBeforeAddParent )
-  {
-    ___semantic_error_object  error;
-  }
+                    _TyGraphLink ** _rpglInsertBeforeAddParent );
 
   template < class _TyLinkIterator >
-  void  ExchangeSiblingParents( _TyLinkIterator const & _rSiblingParent ) const
-  {
-    ___semantic_error_object  error;
-  }
+  void  ExchangeSiblingParents( _TyLinkIterator const & _rSiblingParent ) const;
   template < class _TyLinkIterator >
-  void  ExchangeSiblingChildren( _TyLinkIterator const & _rSiblingChild ) const
-  {
-    ___semantic_error_object  error;
-  }
+  void  ExchangeSiblingChildren( _TyLinkIterator const & _rSiblingChild ) const;
 };
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_TITR_H
+#endif //__GR_TITR_H

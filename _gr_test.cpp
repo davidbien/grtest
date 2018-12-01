@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#endif _MSC_VER
+#endif //_MSC_VER
 
 #include <memory>
 
@@ -26,7 +26,7 @@ typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
 #include <time.h>
 #include <fstream>
 #include <iostream>
-#include <_alloc.c>
+//#include <_alloc.c>
 
 __DGRAPH_USING_NAMESPACE
 #include "_gr_tst0.h"
@@ -36,7 +36,7 @@ int gs_iNodesAllocated = 0;
 int gs_iLinksAllocated = 0;
 int gs_iNodesConstructed = 0;
 int gs_iLinksConstructed = 0;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
 
 void
 print_time( const char * _cpMesg, time_t * _ptStart )
@@ -63,7 +63,7 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 #ifndef __NDEBUG_THROW
 	bool	fWasOn = _throw_object_base::ms_tsb.m_fOn;
 	_throw_object_base::ms_tsb.set_on( false );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 	pair< typename t_TyGraphLeft::const_iterator_pos, 
         typename t_TyGraphRight::const_iterator_pos >
@@ -73,7 +73,7 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 		print_time( "test_compare(): Compare succeeded.\n", _ptStart );
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.set_on( fWasOn );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 		return true;
 	}
 	else
@@ -85,7 +85,7 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 		_rgLeft.dump( fsDumpLeft );
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.set_on( fWasOn );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 		return false;
 	}
 }
@@ -101,14 +101,14 @@ test_copy(  t_TyGraphDst & _rgDst,
 #ifndef __NDEBUG_THROW
 	bool	fWasOn = _throw_object_base::ms_tsb.m_fOn;
 	_throw_object_base::ms_tsb.set_on( false );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 		_rgDst.replace_copy( _rgSrc );
 		print_time( "test_copy(): After copy.\n", _ptStart );
 
 #ifndef __NDEBUG_THROW
 	_throw_object_base::ms_tsb.set_on( fWasOn );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 		bool	fComp1 = test_compare( _rgDst, _rgSrc, _ptStart );
 		bool	fComp2 = test_compare( _rgSrc, _rgDst, _ptStart );
@@ -119,7 +119,7 @@ test_copy(  t_TyGraphDst & _rgDst,
 		const char * cpWhat = rexc.what();
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.handle_throw();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 	}
 
 	return false;
@@ -144,7 +144,7 @@ try_dump( t_TyGraph const & _rg, ostream & _ros )
 				const char * cpWhat = rexc.what();
 #ifndef __NDEBUG_THROW
 				_throw_object_base::ms_tsb.handle_throw();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 			}
 		}
 
@@ -155,7 +155,7 @@ try_dump( t_TyGraph const & _rg, ostream & _ros )
 		const char * cpWhat = rexc.what();
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.handle_throw();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 	}
 
 	return false;
@@ -177,7 +177,7 @@ test_dump( t_TyGraph const & _rg, const char * _cpFileName, time_t * _ptStart )
 	cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 	_throw_object_base::ms_tsb.report_unhit( cout );
 	_throw_object_base::ms_tsb.clear_hit_map();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 }
 
 template < class t_TyGraph >
@@ -201,7 +201,7 @@ try_save( t_TyGraph const & _rg, ostream & _ros )
 				const char * cpWhat = rexc.what();
 		#ifndef __NDEBUG_THROW
 				_throw_object_base::ms_tsb.handle_throw();
-		#endif !__NDEBUG_THROW
+		#endif //!__NDEBUG_THROW
 			}
 		}
 
@@ -212,7 +212,7 @@ try_save( t_TyGraph const & _rg, ostream & _ros )
 		const char * cpWhat = rexc.what();
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.handle_throw();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 	}
 
 	return fSuccess;
@@ -243,7 +243,7 @@ try_load( t_TyGraph & _rg, istream & _ris )
 				const char * cpWhat = rexc.what();
 		#ifndef __NDEBUG_THROW
 				_throw_object_base::ms_tsb.handle_throw();
-		#endif !__NDEBUG_THROW
+		#endif //!__NDEBUG_THROW
 			}
 		}
 		while( !bii.FAtEnd() );
@@ -257,7 +257,7 @@ try_load( t_TyGraph & _rg, istream & _ris )
 		const char * cpWhat = rexc.what();
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.handle_throw();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 	}
 
 	return fSuccess;
@@ -284,7 +284,7 @@ test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad,
 		_throw_object_base::ms_tsb.clear_hit_map();
 		
 		_throw_object_base::ms_tsb.reset_hit_once();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 		fsOut.seekg( 0 );
 		while ( !try_load( _rgLoad, fsOut ) )
@@ -299,7 +299,7 @@ test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad,
 		cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 		_throw_object_base::ms_tsb.report_unhit( cout );
 		_throw_object_base::ms_tsb.clear_hit_map();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 		return test_compare( _rgSave, _rgLoad, _ptStart );
 	}
@@ -334,7 +334,7 @@ struct test_iterators
     pitCopy.FirstParent();
 
     pit = pitCopy;
-#endif 0
+#endif //0
   }
 };
 
@@ -344,7 +344,7 @@ main( int argc, char ** argv )
 #ifdef _MSC_VER
 	_set_error_mode( _OUT_TO_MSGBOX );	// Allow debugging after assert.
 	_CrtSetDbgFlag( _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG ) | _CRTDBG_LEAK_CHECK_DF );
-#endif _MSC_VER
+#endif //_MSC_VER
 
 	// Extract the random graph parameters:
 	if ( argc < 4 )
@@ -460,7 +460,7 @@ main( int argc, char ** argv )
 
 			sort( rgtobtrSpecial, rgtobtrSpecial + kiNSpecial );
 
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 #define __TEST_COPY
 
@@ -471,16 +471,16 @@ main( int argc, char ** argv )
 			_TyGraph gCopy;
 			while ( !test_copy( gCopy, g, &tStart ) )
 				;
-#else __TEST_COPY
+#else //__TEST_COPY
 			_TyGraph &	gCopy = g;
-#endif __TEST_COPY
+#endif //__TEST_COPY
 
 			test_dump( gCopy, "C:\\dv\\dgraph\\graph.txt", &tStart );
 			typedef dgraph< int, int, true, _TyAllocator > _TyGraphSafe;
 			_TyGraphSafe gsCopyLoaded;
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.reset_hit_once();
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 			while ( !test_saveload( gCopy, gsCopyLoaded, "C:\\dv\\dgraph\\graph.bin", &tStart ) )
 				;
 
@@ -495,15 +495,15 @@ main( int argc, char ** argv )
 			_TyGraphDouble gdCopyLoaded;
 			while( !test_saveload( gdCopy, gdCopyLoaded, "C:\\dv\\dgraph\\dgraph.bin", &tStart ) )
 				;
-#endif __TEST_COPY
+#endif //__TEST_COPY
 
-#endif __TEST_NONOLE
+#endif //__TEST_NONOLE
 
 #ifdef __GR_DEFINEOLEIO
 
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.set_on( false );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 			IStream *	pis;
 			__ThrowOLEFAIL( CreateStreamOnHGlobal( NULL, TRUE, &pis ) );
@@ -517,7 +517,7 @@ main( int argc, char ** argv )
 			print_time( "main(): After OLE load.\n", &tStart );
 			test_compare( g, gLoadOLE, &tStart );
 			pis->Release();
-#endif __GR_DEFINEOLEIO
+#endif //__GR_DEFINEOLEIO
 
 #if 1
 #if 0
@@ -526,7 +526,7 @@ main( int argc, char ** argv )
       _TyGraph::_TyNodeIterNonConst,
       _TyGraph::_TyLinkIdentIterConst,
       _TyGraph::_TyPathIterConst >::test_path( g );
-#endif 0
+#endif //0
 
 #if 1
     test_iterators< 
@@ -534,8 +534,8 @@ main( int argc, char ** argv )
       _TyGraphSafe::_TyNodeIterNonConst,
       _TyGraphSafe::_TyLinkIdentIterNonConstSafe,
       _TyGraphSafe::_TyPathIterConstSafe >::test_path( gsCopyLoaded );
-#endif 0
-#endif 1
+#endif //0
+#endif //1
 		}
 	catch( exception & rexc )
 	{
@@ -550,7 +550,7 @@ main( int argc, char ** argv )
 	cout << "Links allocated [" << gs_iLinksAllocated << "].\n";
 	cout << "Nodes constructed [" << gs_iNodesConstructed << "].\n";
 	cout << "Links constructed [" << gs_iLinksConstructed << "].\n";
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
 
 #ifndef __NDEBUG_THROW
 	cout << "Num throws [" << _throw_object_base::ms_tsb.m_uNumThrows << "].\n";
@@ -559,7 +559,7 @@ main( int argc, char ** argv )
 	_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
 	cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
 	_throw_object_base::ms_tsb.report_unhit( cout );
-#endif !__NDEBUG_THROW
+#endif //!__NDEBUG_THROW
 
 	return 0;
 }

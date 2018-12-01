@@ -27,7 +27,7 @@ class _graph_path_iterator_pass2
   typedef t_TyFIsConstIter _TyFIsConstIter;
 };
 
-#else 1
+#else //1
 template <  class t_TyGraphNodeBase, class t_TyGraphLinkBase,
             class t_TyFIsConstIter, class t_TyBaseClass >
 class _graph_iterator_pass
@@ -143,8 +143,8 @@ public:
   }
 };
 
-#endif 0
+#endif //0
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_PITR_H
+#endif //__GR_PITR_H

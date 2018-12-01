@@ -16,7 +16,7 @@
   //  currently using exceptions for error propagation.
   // Seems to make sense when reading streams.
 
-#if defined( __STL_USE_EXCEPTIONS )
+#if defined( _STLP_USE_EXCEPTIONS )
 //    !defined( __GR_DONTTHROWBADGRAPHERRORS )
 #define __GR_THROWBADGRAPHSTREAMERRORS
 #else
@@ -36,9 +36,9 @@ public:
   bad_graph_stream( const string_type & __s ) : _TyBase( __s ) {}
 };
 
-#else __GR_THROWBADGRAPHSTREAMERRORS
+#else //__GR_THROWBADGRAPHSTREAMERRORS
 #error This not currently supported. Need error propagation - not too tough, but...
-#endif __GR_THROWBADGRAPHSTREAMERRORS
+#endif //__GR_THROWBADGRAPHSTREAMERRORS
 
 // This object implements those operations that need have no knowledge of the full type specifications
 //  of the graph elements.
@@ -85,12 +85,12 @@ public:
                     equal_to< _TyGraphLinkBaseReadPtr >, t_TyAllocator > _TyUnfinishedLinks;
   static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_INPT_INITSIZENODES;
   static const typename _TyUnfinishedLinks::size_type ms_stInitSizeLinks = __GR_INPT_INITSIZELINKS;
-#else __GR_DSIN_USEHASH
+#else //__GR_DSIN_USEHASH
   typedef map<  _TyGraphNodeBaseReadPtr, _TyUnfinishedNode, 
                 less< _TyGraphNodeBaseReadPtr >, t_TyAllocator > _TyUnfinishedNodes;
   typedef map<  _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, 
                 less< _TyGraphLinkBaseReadPtr >, t_TyAllocator > _TyUnfinishedLinks;
-#endif __GR_DSIN_USEHASH
+#endif //__GR_DSIN_USEHASH
 
   typedef typename _TyUnfinishedNodes::value_type _TyUNValueType;
   typedef typename _TyUnfinishedNodes::iterator   _TyUNIterator;
@@ -228,14 +228,14 @@ public:
                          typename _TyUnfinishedLinks::hasher(), 
                          typename _TyUnfinishedLinks::key_equal(), 
                          _rAlloc ),
-#else __GR_DSIN_USEHASH
+#else //__GR_DSIN_USEHASH
     m_nodesUnfinished( typename _TyUnfinishedNodes::key_compare(), 
                        _rAlloc ),
     m_linksUnfinishedDown(  typename _TyUnfinishedLinks::key_compare(), 
                             _rAlloc ),
     m_linksUnfinishedUp(  typename _TyUnfinishedLinks::key_compare(), 
                           _rAlloc ),
-#endif __GR_DSIN_USEHASH
+#endif //__GR_DSIN_USEHASH
     m_pgnbNewRoot( 0 ),
     m_pgnbTempRoot( 0 ),
     m_pglbConstructedEl( 0 ),
@@ -370,7 +370,7 @@ protected:
           throw bad_graph_stream( "_FReadOne(): Encountered a node footer token at top level." );
         }
         break;
-  #endif __GR_BINARY_WRITENODEFOOTER
+  #endif //__GR_BINARY_WRITENODEFOOTER
 
         case  _binary_rep_tokens< __false_type >::ms_ucLink:
         {
@@ -458,7 +458,7 @@ protected:
     _ClearNodeArray();  // Clear any old unfinished nodes that we may have.
     m_punStart = 0;     // ts
 
-    allocate_n( m_punStart, m_nodesUnfinished.size() ); // throws.
+    _TyAllocUNBase::allocate_n( m_punStart, m_nodesUnfinished.size() ); // throws.
 
     _ProcessUnfinishedNodesNoThrow();
   }
@@ -1022,4 +1022,4 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_INPT_H
+#endif //__GR_INPT_H

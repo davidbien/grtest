@@ -80,74 +80,74 @@ public:
   // typed child/parent node access:
   _TyGraphNode * PGNChild() _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode* >( PGNBChild() );
+    return static_cast< _TyGraphNode* >( _TyBase::PGNBChild() );
   }
   _TyGraphNode * PGNParent() _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode* >( PGNBParent() );
+    return static_cast< _TyGraphNode* >( _TyBase::PGNBParent() );
   }
 
   const _TyGraphNode * PGNChild() const _STLP_NOTHROW
   {
-    return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( PGNBChild() ) );
+    return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( _TyBase::PGNBChild() ) );
   }
   const _TyGraphNode * PGNParent() const _STLP_NOTHROW
   {
-    return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( PGNBParent() ) );
+    return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( _TyBase::PGNBParent() ) );
   }
 
   _TyThis ** PPGLGetNextChild() _STLP_NOTHROW
   {
-    return (_TyThis**)PPGLBGetNextChild();
+    return (_TyThis**)_TyBase::PPGLBGetNextChild();
   }
   const _TyThis * const * PPGLGetNextChild() const _STLP_NOTHROW
   {
-    return (const _TyThis* const *)PPGLBGetNextChild();
+    return (const _TyThis* const *)_TyBase::PPGLBGetNextChild();
   }
 
   _TyThis ** PPGLGetNextParent() _STLP_NOTHROW
   {
-    return (_TyThis**)PPGLBGetNextParent();
+    return (_TyThis**)_TyBase::PPGLBGetNextParent();
   }
   const _TyThis * const * PPGLGetNextParent() const _STLP_NOTHROW
   {
-    return (const _TyThis* const *)PPGLBGetNextParent();
+    return (const _TyThis* const *)_TyBase::PPGLBGetNextParent();
   }
 
   _TyThis ** PPGLGetThisChild() _STLP_NOTHROW
   {
-    return (_TyThis**)PPGLBGetThisChild();
+    return (_TyThis**)_TyBase::PPGLBGetThisChild();
   }
   const _TyThis * const * PPGLGetThisChild() const _STLP_NOTHROW
   {
-    return (const _TyThis* const *)PPGLBGetThisChild();
+    return (const _TyThis* const *)_TyBase::PPGLBGetThisChild();
   }
 
   _TyThis ** PPGLGetThisParent() _STLP_NOTHROW
   {
-    return (_TyThis**)PPGLBGetThisParent();
+    return (_TyThis**)_TyBase::PPGLBGetThisParent();
   }
   const _TyThis * const * PPGLGetThisParent() const _STLP_NOTHROW
   {
-    return (const _TyThis* const *)PPGLBGetThisParent();
+    return (const _TyThis* const *)_TyBase::PPGLBGetThisParent();
   }
 
   _TyThis * PGLGetPrevChild() _STLP_NOTHROW
   {
-    return (_TyThis*)PGLBGetPrevChild();
+    return (_TyThis*)_TyBase::PGLBGetPrevChild();
   }
   const _TyThis * PGLGetPrevChild() const _STLP_NOTHROW
   {
-    return (const _TyThis*)PGLBGetPrevChild();
+    return (const _TyThis*)_TyBase::PGLBGetPrevChild();
   }
 
   _TyThis * PGLGetPrevParent() _STLP_NOTHROW
   {
-    return (_TyThis*)PGLBGetPrevParent();
+    return (_TyThis*)_TyBase::PGLBGetPrevParent();
   }
   const _TyThis * PGLGetPrevParent() const _STLP_NOTHROW
   {
-    return (const _TyThis*)PGLBGetPrevParent();
+    return (const _TyThis*)_TyBase::PGLBGetPrevParent();
   }
 
   void InsertParent( _TyThis ** _ppgl ) _STLP_NOTHROW
@@ -235,29 +235,29 @@ public:
   // child/parent typed link list access:
   _TyGraphLink **           PPGLChildHead() _STLP_NOTHROW
   {
-    return (_TyGraphLink**)PPGLBChildHead();
+    return (_TyGraphLink**)_TyBase::PPGLBChildHead();
   }
   const _TyGraphLink * const *    PPGLChildHead() const _STLP_NOTHROW
   {
-    return (const _TyGraphLink* const *)PPGLBChildHead();
+    return (const _TyGraphLink* const *)_TyBase::PPGLBChildHead();
   }
 
   _TyGraphLink **     PPGLParentHead() _STLP_NOTHROW
   {
-    return (_TyGraphLink**)PPGLBParentHead();
+    return (_TyGraphLink**)_TyBase::PPGLBParentHead();
   }
   const _TyGraphLink * const *  PPGLParentHead() const _STLP_NOTHROW
   {
-    return (const _TyGraphLink* const *)PPGLBParentHead();
+    return (const _TyGraphLink* const *)_TyBase::PPGLBParentHead();
   }
 
   _TyGraphLink **     PPGLRelationHead( bool _fChild ) _STLP_NOTHROW
   {
-    return (_TyGraphLink**)PPGLBRelationHead( _fChild );
+    return (_TyGraphLink**)_TyBase::PPGLBRelationHead( _fChild );
   }
   const _TyGraphLink * const *      PPGLRelationHead( bool _fChild ) const _STLP_NOTHROW
   {
-    return (const _TyGraphLink* const *)PPGLBRelationHead( _fChild );  
+    return (const _TyGraphLink* const *)_TyBase::PPGLBRelationHead( _fChild );  
   }
 
 protected:
@@ -266,5 +266,5 @@ protected:
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GR_TYPE_H
+#endif //__GR_TYPE_H
 

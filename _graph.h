@@ -11,10 +11,10 @@ __DGRAPH_BEGIN_NAMESPACE
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
 #define __DGRAPH_STATIC_ALLOC_DECL  
 #define __DGRAPH_STATIC_ALLOC_DECL_CONST const
-#else __DGRAPH_INSTANCED_ALLOCATORS
+#else //__DGRAPH_INSTANCED_ALLOCATORS
 #define __DGRAPH_STATIC_ALLOC_DECL static
 #define __DGRAPH_STATIC_ALLOC_DECL_CONST
-#endif __DGRAPH_INSTANCED_ALLOCATORS
+#endif //__DGRAPH_INSTANCED_ALLOCATORS
 
 template < class t_TyNodeEl, class t_TyLinkEl, 
   bool t_fIsSafeGraph = false, class t_TyAllocator = allocator<char>,
@@ -108,7 +108,7 @@ public:
   typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
     typename _TyGraphTraits::_TyBinaryOLEInputObject,
     typename _TyGraphTraits::_TyBinaryOLEInputIterBase >::_TyBinaryInputIterNonConst  _TyBinaryOLEInputIterNonConst;
-#endif __GR_DEFINEOLEIO
+#endif //__GR_DEFINEOLEIO
 
   typedef typename _TyGraphTraits::_TyAllocatorSet                _TyAllocatorSet;  // Set of all required allocators.
   typedef typename _TyGraphTraits::_TyGraphNodeAllocator          _TyGraphNodeAllocator;
@@ -175,15 +175,15 @@ public:
  // root node:
   _TyGraphNode *  get_root() _STLP_NOTHROW
   {
-    return static_cast< _TyGraphNode * >( _GetRootNode() );
+    return static_cast< _TyGraphNode * >( _TyBaseGraph::_GetRootNode() );
   }
   const _TyGraphNode *  get_root() const _STLP_NOTHROW
   {
-    return static_cast< const _TyGraphNode * >( _GetRootNode() );
+    return static_cast< const _TyGraphNode * >( _TyBaseGraph::_GetRootNode() );
   }
   void set_root_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
   {
-    _SetRootNode( _pgn );
+    _TyBaseGraph::_SetRootNode( _pgn );
   }
 
 // Node creation - these could be static but to allow for instanced allocators
@@ -269,12 +269,12 @@ public:
   _TyGraphFwdIterPosConst begin() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, true, 
-                                    get_base_path_allocator() );
+                                    _TyBaseGraph::get_base_path_allocator() );
   }
   _TyGraphFwdIterPosNonConst begin() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, true, 
-                                        get_base_path_allocator() );
+                                        _TyBaseGraph::get_base_path_allocator() );
   }
 
   // rbegin() does not iterate the nodes in reverse - it just starts the iteration
@@ -282,23 +282,23 @@ public:
   _TyGraphFwdIterPosConst rbegin() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, false, 
-                                    get_base_path_allocator() );
+                                    _TyBaseGraph::get_base_path_allocator() );
   }
   _TyGraphFwdIterPosNonConst rbegin() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, false, 
-                                        get_base_path_allocator() );
+                                        _TyBaseGraph::get_base_path_allocator() );
   }
 
   _TyGraphFwdIterPosConst end() const _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosConst( 0, 0, false, true,
-                                    get_base_path_allocator() );
+                                    _TyBaseGraph::get_base_path_allocator() );
   }
   _TyGraphFwdIterPosNonConst end() _STLP_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  0, 0, false, true, 
-                                        get_base_path_allocator() );
+                                        _TyBaseGraph::get_base_path_allocator() );
   }
 
   _TyGraphFwdIterPosConst rend() const _STLP_NOTHROW
@@ -380,7 +380,7 @@ public:
 
     }
   }
-#endif 0
+#endif //0
 
   // Just compare the values encountered in the iteration, stopping:
   //  1) Where the values are different. <or>
@@ -439,7 +439,7 @@ public:
 
     _graph_copy_struct< t_TyGraph, _TyThis, 
       typename _TyBaseGraph::_TyPathNodeBaseAllocatorAsPassed > 
-        gcs( _r, *this, false, true, get_base_path_allocator() );
+        gcs( _r, *this, false, true, _TyBaseGraph::get_base_path_allocator() );
     gcs.m_pgnSrcCopyRoot = _r.get_root();
     if ( gcs.m_pgnSrcCopyRoot )
     {
@@ -460,7 +460,7 @@ public:
     _graph_copy_struct< t_TyGraph, _TyThis, 
       typename _TyBaseGraph::_TyPathNodeBaseAllocatorAsPassed,
       t_TyCopyNodeObject, t_TyCopyLinkObject > 
-        gcs( _r, *this, false, true, get_base_path_allocator(), _rcno, _rclo );
+        gcs( _r, *this, false, true, _TyBaseGraph::get_base_path_allocator(), _rcno, _rclo );
     gcs.m_pgnSrcCopyRoot = _r.get_root();
     if ( gcs.m_pgnSrcCopyRoot )
     {
@@ -486,7 +486,7 @@ public:
     //  after successful load, perhaps with a bool parameter.
     destroy();
 
-    _TyBinaryIstreamIterNonConst bii( *this, _ris, get_base_path_allocator()  );
+    _TyBinaryIstreamIterNonConst bii( *this, _ris, _TyBaseGraph::get_base_path_allocator()  );
 
     __DEBUG_STMT( int _i = 0 )
     do
@@ -540,7 +540,7 @@ public:
   {
     destroy();
 
-    _TyBinaryOLEInputIterNonConst bii( *this, _pis, get_base_path_allocator()  );
+    _TyBinaryOLEInputIterNonConst bii( *this, _pis, _TyBaseGraph::get_base_path_allocator()  );
 
     __DEBUG_STMT( int _i = 0 )
     do
@@ -573,7 +573,7 @@ public:
     typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
       _TyBinaryOLEInputObject,_TyBinaryOLEInputIterBase >::_TyBinaryInputIterNonConst  _TyBinaryOLEInputIterNonConst;
 
-    _TyBinaryOLEInputIterNonConst bii( *this, _pis, get_base_path_allocator(), _rione, _riole );
+    _TyBinaryOLEInputIterNonConst bii( *this, _pis, _TyBaseGraph::get_base_path_allocator(), _rione, _riole );
 
     __DEBUG_STMT( int _i = 0 )
     do
@@ -616,7 +616,7 @@ public:
     }
   }
 
-#endif __GR_DEFINEOLEIO
+#endif //__GR_DEFINEOLEIO
 
   void  replace_random( size_t _stNodes,
                         size_t _stExtraLinks,
@@ -626,7 +626,7 @@ public:
 
     _random_graph_generator< _TyThis, 
       typename _TyBaseGraph::_TyPathNodeBaseAllocatorAsPassed >
-        rgg( *this, _stNodes, _stExtraLinks, _uRandSeed, get_base_path_allocator() );
+        rgg( *this, _stNodes, _stExtraLinks, _uRandSeed, _TyBaseGraph::get_base_path_allocator() );
 
     set_root_node( rgg.PGNTransferNewRoot() );
   }
@@ -653,7 +653,7 @@ public:
     // Check to ensure that the the passed node is not connected to the root.
 #ifdef __GRAPH_DEBUG_DTOR
     gds.SetCheckNode( get_root() );
-#endif __GRAPH_DEBUG_DTOR
+#endif //__GRAPH_DEBUG_DTOR
     gds.destroy();
   }
 
@@ -681,7 +681,7 @@ public:
               EDumpOptions _edo = e_doNone ) const
   {
     _TyDumpIteratorConst  dit(  _ros, get_root(), 0, false, true, 
-                                get_base_path_allocator() );
+                                _TyBaseGraph::get_base_path_allocator() );
     dit.SetOutputOptions( _edo );
 
     for ( ; !dit.FAtEnd(); ++dit )
@@ -691,7 +691,7 @@ public:
                     EDumpOptions _edo = e_doNone ) const
   {
     _TyDumpIteratorConst  dit(  _ros, _pgn, 0, false, true, 
-                                get_base_path_allocator() );
+                                _TyBaseGraph::get_base_path_allocator() );
     dit.SetOutputOptions( _edo );
 
     for ( ; !dit.FAtEnd(); ++dit )
@@ -703,7 +703,7 @@ public:
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator const & get_node_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
-#endif __DGRAPH_INSTANCED_ALLOCATORS
+#endif //__DGRAPH_INSTANCED_ALLOCATORS
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator &       get_node_allocator_ref() _STLP_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocatorAsPassed get_node_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
@@ -712,7 +712,7 @@ public:
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator const & get_link_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
-#endif __DGRAPH_INSTANCED_ALLOCATORS
+#endif //__DGRAPH_INSTANCED_ALLOCATORS
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator &       get_link_allocator_ref() _STLP_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocatorAsPassed get_link_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
@@ -724,14 +724,14 @@ public:
     _TyGraphNode * pgn = _TyBaseAllocGraphNode::allocate_type();
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesAllocated++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     return pgn;
   }
   __DGRAPH_STATIC_ALLOC_DECL void _deallocate_node( _TyGraphNode * _rpgn )
   {
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesAllocated--;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     _TyBaseAllocGraphNode::deallocate_type( _rpgn );
   }
 
@@ -740,14 +740,14 @@ public:
     _TyGraphLink * pgl = _TyBaseAllocGraphLink::allocate_type();
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksAllocated++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     return pgl;
   }
   __DGRAPH_STATIC_ALLOC_DECL void _deallocate_link( _TyGraphLink * _rpgl )
   {
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksAllocated--;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     _TyBaseAllocGraphLink::deallocate_type( _rpgl );
   }
 
@@ -778,7 +778,7 @@ public:
     new( &( _pgn->RElObject() ) ) _TyNodeEl();
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
   template < class t_TyP1 >
   static void _construct_node_el1(  _TyGraphNode * _pgn, 
@@ -788,7 +788,7 @@ public:
     new( &( _pgn->RElObject() ) ) _TyNodeEl( _p1 );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
   template < class t_TyP1, class t_TyP2 >
   static void _construct_node_el2(  _TyGraphNode * _pgn, 
@@ -798,7 +798,7 @@ public:
     new( &( _pgn->RElObject() ) ) _TyNodeEl( _p1, _p2 );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
 
   static void _construct_link( _TyGraphLink * _pgl )
@@ -827,7 +827,7 @@ public:
     new( &( _pgl->RElObject() ) ) _TyLinkEl();
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
   template < class t_TyP1 >
   static void _construct_link_el1(  _TyGraphLink * _pgl, 
@@ -837,7 +837,7 @@ public:
     new( &( _pgl->RElObject() ) ) _TyLinkEl( _p1 );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
 
   template < class t_TyP1, class t_TyP2 >
@@ -848,37 +848,37 @@ public:
     new( &( _pgl->RElObject() ) ) _TyLinkEl( _p1, _p2 );
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksConstructed++;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
   }
 
   // destruction:
   static void _destruct_node( _TyGraphNode * _pgn )
   {
-    _deinit_node( _pgn );
+    _TyBaseGraph::_deinit_node( _pgn );
     _destruct_node_el( _pgn );
   }
   static void _destruct_node_el( _TyGraphNode * _pgn )
   {
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iNodesConstructed--;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     _pgn->RElObject()._TyNodeEl::~_TyNodeEl();
   }
 
   static void _destruct_link( _TyGraphLink * _pgl )
   {
-    _deinit_link( _pgl );
+    _TyBaseGraph::_deinit_link( _pgl );
     _destruct_link_el( _pgl );
   }
   static void _destruct_link_el( _TyGraphLink * _pgl )
   {
 #ifdef __DGRAPH_COUNT_EL_ALLOC_LIFETIME
     gs_iLinksConstructed--;
-#endif __DGRAPH_COUNT_EL_ALLOC_LIFETIME
+#endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
     _pgl->RElObject()._TyLinkEl::~_TyLinkEl();
   }
 };
 
 __DGRAPH_END_NAMESPACE
 
-#endif __GRAPH_H
+#endif //__GRAPH_H
