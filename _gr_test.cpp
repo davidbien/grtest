@@ -475,13 +475,13 @@ main( int argc, char ** argv )
 			_TyGraph &	gCopy = g;
 #endif //__TEST_COPY
 
-			test_dump( gCopy, "C:\\dv\\dgraph\\graph.txt", &tStart );
+			test_dump( gCopy, "graph.txt", &tStart );
 			typedef dgraph< int, int, true, _TyAllocator > _TyGraphSafe;
 			_TyGraphSafe gsCopyLoaded;
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.reset_hit_once();
 #endif //!__NDEBUG_THROW
-			while ( !test_saveload( gCopy, gsCopyLoaded, "C:\\dv\\dgraph\\graph.bin", &tStart ) )
+			while ( !test_saveload( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
 				;
 
 			// Copy the graph to a graph of doubles:
@@ -490,10 +490,10 @@ main( int argc, char ** argv )
 			_TyGraphDoubleSafe gdCopy;
 			while ( !test_copy( gdCopy, g, &tStart ) )
 				;
-			test_dump( gdCopy, "C:\\dv\\dgraph\\dgraph.txt", &tStart );
+			test_dump( gdCopy, "dgraph.txt", &tStart );
 			typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
 			_TyGraphDouble gdCopyLoaded;
-			while( !test_saveload( gdCopy, gdCopyLoaded, "C:\\dv\\dgraph\\dgraph.bin", &tStart ) )
+			while( !test_saveload( gdCopy, gdCopyLoaded, "dgraph.bin", &tStart ) )
 				;
 #endif //__TEST_COPY
 
