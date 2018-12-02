@@ -200,7 +200,7 @@ public:
   _TyThis &
   operator = ( _TyGraphLink ** _ppgl )
   {
-    SetPPGLBCur( reinterpret_cast< _TyGraphLinkBaseBase ** >( _ppgl ) );
+    _TyBase::SetPPGLBCur( reinterpret_cast< _TyGraphLinkBaseBase ** >( _ppgl ) );
     return *this;
   }
 
@@ -208,7 +208,7 @@ public:
   _TyThis &
   operator = ( _TyGraphLink * _pgl )
   {
-    SetPGLBCur( _pgl );
+    _TyBase::SetPGLBCur( _pgl );
   }
 
   // Initialization from a pass iterator:
