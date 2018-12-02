@@ -151,7 +151,7 @@ struct _istream_object
 
 // Specialize for istream - default version just reads raw memory:
 template < class t_TyRead >
-inline void
+__INLINE void
 _RawReadGraphEl( istream & _ris, t_TyRead & _rEl )
 {	
 	if ( sizeof( _rEl ) )
