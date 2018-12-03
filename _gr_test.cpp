@@ -26,7 +26,7 @@ typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
 #include <time.h>
 #include <fstream>
 #include <iostream>
-//#include <_alloc.c>
+#include <_alloc.c>
 
 __DGRAPH_USING_NAMESPACE
 #include "_gr_tst0.h"
