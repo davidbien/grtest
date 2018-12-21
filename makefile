@@ -12,7 +12,7 @@ gr_test.exe: $(SRCS:.cpp=.o)
 	c++ -L /home/dbien/dv/STLport-5.2.1/build/lib/obj/gcc/so -lstlport -pthread -g -o gr_test.exe $(SRCS:.cpp=.o)
 
 CXX := c++
-CXXFLAGS = -fdelayed-template-parsing -I /home/dbien/dv/STLport-5.2.1/stlport -I /home/dbien/dv/STLport-5.2.1/stlport/stl -I /home/dbien/dv/bienutil -I /home/dbien/dv -I /usr/include/c++/7.3.0 -g 
+CXXFLAGS = -fdelayed-template-parsing -I /home/dbien/dv/STLport-5.2.1/stlport -I /home/dbien/dv/bienutil -I /home/dbien/dv -I /usr/include/c++/7.3.0 -g 
 #-D__NDEBUG_THROW
 
 DEPDIR := .d
