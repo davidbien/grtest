@@ -528,7 +528,7 @@ main( int argc, char ** argv )
       _TyGraph::_TyPathIterConst >::test_path( g );
 #endif //0
 
-#if 1
+#if 0
     test_iterators< 
       _TyGraphSafe, 
       _TyGraphSafe::_TyNodeIterNonConst,
