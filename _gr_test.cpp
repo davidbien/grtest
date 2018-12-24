@@ -28,6 +28,7 @@ typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
 #include <iostream>
 #include <stl/_alloc.c>
 
+__BIENUTIL_USING_NAMESPACE
 __DGRAPH_USING_NAMESPACE
 #include "_gr_tst0.h"
 
@@ -37,6 +38,72 @@ int gs_iLinksAllocated = 0;
 int gs_iNodesConstructed = 0;
 int gs_iLinksConstructed = 0;
 #endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
+
+#pragma push_macro("std")
+#undef std
+typedef std::_t__Named_exception<> vtyNamedException;
+#pragma pop_macro("std")
+
+void 
+TestSubThrow()
+{
+	try
+	{
+    cout << "testexcept: _STLP_VENDOR_EXCEPT_STD:" ppmacroxstr( _STLP_VENDOR_EXCEPT_STD ) "\n";
+    cout << "testexcept: _STLP_VENDOR_STD:" ppmacroxstr( _STLP_VENDOR_STD ) "\n";
+		cout << "testexcept: Throwing in TestSubThrow().\n";
+    //throw std::exception();
+    throw vtyNamedException();
+		//__THROWPTALWAYS( e_ttMemory )
+	}
+	catch( ... )
+	{
+		cout << "testexcept: Caught and rethrowing in TestSubThrow().\n";
+		throw;
+	}
+}
+
+void
+TestThrow()
+{
+  try
+  {
+    try
+    {
+      try
+      {
+        TestSubThrow();
+      }
+      catch( _debug_memory_except & _rexc )
+      {
+        const char * cpWhat = _rexc.what();
+        cout << "testexcept: Caught(1) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+        throw;
+      }
+    }
+    catch( vtyNamedException & _rexc )
+    {
+      const char * cpWhat = _rexc.what();
+      cout << "testexcept: Caught(2) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+      throw;
+    }
+  }
+#pragma push_macro("std")
+#undef std
+  catch( std::exception & _rexc )
+#pragma pop_macro("std")
+  {
+    const char * cpWhat = _rexc.what();
+    cout << "testexcept: Caught(4) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+    throw;
+  }
+  catch( stlp_std::exception & _rexc )
+  {
+    const char * cpWhat = _rexc.what();
+    cout << "testexcept: Caught(5) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+    throw;
+  }
+}
 
 void
 print_time( const char * _cpMesg, time_t * _ptStart )
@@ -129,34 +196,41 @@ template < class t_TyGraph >
 bool
 try_dump( t_TyGraph const & _rg, ostream & _ros )
 {
-	try
-	{
-		typename t_TyGraph::_TyDumpIteratorConst	
-        dit(	_ros, _rg.get_root(), 0, false, true, _rg.get_base_path_allocator() );
-		for ( ; !dit.FAtEnd(); )
-		{
-			try
-			{
-				++dit;
-			}
-			catch( exception & rexc )
-			{
-				const char * cpWhat = rexc.what();
-#ifndef __NDEBUG_THROW
-				_throw_object_base::ms_tsb.handle_throw();
-#endif //!__NDEBUG_THROW
-			}
-		}
+  try
+  {
+    try
+    {
+      typename t_TyGraph::_TyDumpIteratorConst	
+          dit(	_ros, _rg.get_root(), 0, false, true, _rg.get_base_path_allocator() );
+      for ( ; !dit.FAtEnd(); )
+      {
+        try
+        {
+          ++dit;
+        }
+        catch( exception & rexc )
+        {
+          const char * cpWhat = rexc.what();
+  #ifndef __NDEBUG_THROW
+          _throw_object_base::ms_tsb.handle_throw();
+  #endif //!__NDEBUG_THROW
+        }
+      }
 
-		return true;
-	}
-	catch( exception & rexc )
-	{
-		const char * cpWhat = rexc.what();
-#ifndef __NDEBUG_THROW
-		_throw_object_base::ms_tsb.handle_throw();
-#endif //!__NDEBUG_THROW
-	}
+      return true;
+    }
+    catch( exception & rexc )
+    {
+      const char * cpWhat = rexc.what();
+  #ifndef __NDEBUG_THROW
+      _throw_object_base::ms_tsb.handle_throw();
+  #endif //!__NDEBUG_THROW
+    }
+  }
+  catch( ... )
+  {
+    cerr << "try_dump(): Caught exception in ... - unexpected.\n";
+  }
 
 	return false;
 }
@@ -460,6 +534,15 @@ main( int argc, char ** argv )
 
 			sort( rgtobtrSpecial, rgtobtrSpecial + kiNSpecial );
 
+	try
+	{
+		TestThrow();
+	}
+	catch( ... )
+	{
+		cout << "Caught in main().\n";
+	}
+	
 #endif //!__NDEBUG_THROW
 
 #define __TEST_COPY
@@ -471,6 +554,14 @@ main( int argc, char ** argv )
 			_TyGraph gCopy;
 			while ( !test_copy( gCopy, g, &tStart ) )
 				;
+	try
+	{
+		TestThrow();
+	}
+	catch( ... )
+	{
+		cout << "Caught in main().\n";
+	}
 #else //__TEST_COPY
 			_TyGraph &	gCopy = g;
 #endif //__TEST_COPY

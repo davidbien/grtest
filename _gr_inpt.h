@@ -29,12 +29,15 @@
 
 __DGRAPH_BEGIN_NAMESPACE
 
-class bad_graph_stream : public _t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR >
+#pragma push_macro("std")
+#undef std
+class bad_graph_stream : public std::_t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR >
 {
-  typedef _t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR > _TyBase;
+  typedef std::_t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR > _TyBase;
 public:
   bad_graph_stream( const string_type & __s ) : _TyBase( __s ) {}
 };
+#pragma pop_macro("std")
 
 #else //__GR_THROWBADGRAPHSTREAMERRORS
 #error This not currently supported. Need error propagation - not too tough, but...
