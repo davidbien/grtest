@@ -24,12 +24,15 @@ __DGRAPH_BEGIN_NAMESPACE
 
 #ifdef __GR_THROWGRAPHNAVERRORS
 
-class _graph_nav_except : public _t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR >
+#pragma push_macro("std")
+#undef std
+class _graph_nav_except : public std::_t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR >
 {
-  typedef _t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR > _TyBase;
+  typedef std::_t__Named_exception< __DGRAPH_DEFAULT_ALLOCATOR > _TyBase;
 public:
   _graph_nav_except( const string_type & __s ) : _TyBase( __s ) {}
 };
+#pragma pop_macro("std")
 
 #else //__GR_THROWGRAPHNAVERRORS
 #error This not currently supported. Need error propagation - not too tough, but...

@@ -238,7 +238,12 @@ public:
           m_ros._WriteDirectionChange( _TyBase::m_fDirectionDown ); // throws.
           m_fDirectionDownOutput = _TyBase::m_fDirectionDown;
         }
-        _STLP_UNWIND( _Seek( sp ) );
+        catch( ... )
+        {
+          _Seek( sp );
+          throw;
+        }
+//        _STLP_UNWIND( _Seek( sp ) );
         _Tell( sp );
       }
       
@@ -332,8 +337,14 @@ public:
         }
         
       } 
-      _STLP_UNWIND( ( _Seek( sp ), 
-                      ( m_fNewUnfinished = _fNewUnfinished ) ) );
+      catch( ... )
+      {
+        _Seek( sp );
+        m_fNewUnfinished = _fNewUnfinished;
+        throw;
+      }
+//      _STLP_UNWIND( ( _Seek( sp ), 
+//                      ( m_fNewUnfinished = _fNewUnfinished ) ) );
 
       if ( _TyBase::FAtEnd() && !m_fWroteGraphFooter )
       {
