@@ -39,3 +39,15 @@ x64/Debug/gr_test.log
 x64/Debug/gr_test.pdb
 *.tlog
 x64/Debug/vc141.pdb
+Debug/gr_test.log
+Debug/vc141.idb
+Debug/vc141.pdb
+graph.txt
+Release/vc141.pdb
+x64/Debug/gr_test.Build.CppClean.log
+x64/Release/dgraph.bin
+x64/Release/dgraph.txt
+x64/Release/gr_test.Build.CppClean.log
+x64/Release/gr_test.log
+x64/Release/gr_test.pdb
+x64/Release/graph.bin
