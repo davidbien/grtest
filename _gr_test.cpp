@@ -360,7 +360,9 @@ main( int argc, char ** argv )
 {
 #ifdef _MSC_VER
 	_set_error_mode( _OUT_TO_MSGBOX );	// Allow debugging after assert.
+#ifdef _DEBUG
 	_CrtSetDbgFlag( _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG ) | _CRTDBG_LEAK_CHECK_DF );
+#endif
 #endif //_MSC_VER
 
 	// Extract the random graph parameters:
