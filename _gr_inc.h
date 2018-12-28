@@ -19,9 +19,9 @@
 
 #ifndef __DGRAPH_DEFAULT_ALLOCATOR
 #ifndef NDEBUG
-#define __DGRAPH_DEFAULT_ALLOCATOR __STD::_stlallocator< char, __STD::__malloc_alloc >
+#define __DGRAPH_DEFAULT_ALLOCATOR _STL::_stlallocator< char, _STL::__malloc_alloc >
 #else //!NDEBUG
-#define __DGRAPH_DEFAULT_ALLOCATOR __STD::allocator< char >
+#define __DGRAPH_DEFAULT_ALLOCATOR _STL::allocator< char >
 #endif //!NDEBUG
 #endif //__DGRAPH_DEFAULT_ALLOCATOR
 
