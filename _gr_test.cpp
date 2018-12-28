@@ -39,71 +39,14 @@ int gs_iNodesConstructed = 0;
 int gs_iLinksConstructed = 0;
 #endif //__DGRAPH_COUNT_EL_ALLOC_LIFETIME
 
+#ifdef __NAMDDEXC_STDBASE
 #pragma push_macro("std")
 #undef std
+#endif //__NAMDDEXC_STDBASE
 typedef std::_t__Named_exception<> vtyNamedException;
+#ifdef __NAMDDEXC_STDBASE
 #pragma pop_macro("std")
-
-void 
-TestSubThrow()
-{
-	try
-	{
-    cout << "testexcept: _STLP_VENDOR_EXCEPT_STD:" ppmacroxstr( _STLP_VENDOR_EXCEPT_STD ) "\n";
-    cout << "testexcept: _STLP_VENDOR_STD:" ppmacroxstr( _STLP_VENDOR_STD ) "\n";
-		cout << "testexcept: Throwing in TestSubThrow().\n";
-    //throw std::exception();
-    throw vtyNamedException();
-		//__THROWPTALWAYS( e_ttMemory )
-	}
-	catch( ... )
-	{
-		cout << "testexcept: Caught and rethrowing in TestSubThrow().\n";
-		throw;
-	}
-}
-
-void
-TestThrow()
-{
-  try
-  {
-    try
-    {
-      try
-      {
-        TestSubThrow();
-      }
-      catch( _debug_memory_except & _rexc )
-      {
-        const char * cpWhat = _rexc.what();
-        cout << "testexcept: Caught(1) and rethrowing in TestThrow() [" << cpWhat << "].\n";
-        throw;
-      }
-    }
-    catch( vtyNamedException & _rexc )
-    {
-      const char * cpWhat = _rexc.what();
-      cout << "testexcept: Caught(2) and rethrowing in TestThrow() [" << cpWhat << "].\n";
-      throw;
-    }
-  }
-#pragma push_macro("std")
-#undef std
-  catch( std::exception & _rexc )
-#pragma pop_macro("std")
-  {
-    const char * cpWhat = _rexc.what();
-    cout << "testexcept: Caught(4) and rethrowing in TestThrow() [" << cpWhat << "].\n";
-    throw;
-  }
-  catch( stlp_std::exception & _rexc )
-  {
-    const char * cpWhat = _rexc.what();
-    cout << "testexcept: Caught(5) and rethrowing in TestThrow() [" << cpWhat << "].\n";
-    throw;
-  }
-}
+#endif //__NAMDDEXC_STDBASE
 
 void
 print_time( const char * _cpMesg, time_t * _ptStart )
@@ -534,14 +477,16 @@ main( int argc, char ** argv )
 
 			sort( rgtobtrSpecial, rgtobtrSpecial + kiNSpecial );
 
-	try
-	{
-		TestThrow();
-	}
-	catch( ... )
-	{
-		cout << "Caught in main().\n";
-	}
+#if 0
+// 	try
+// 	{
+// 		TestThrow();
+// 	}
+// 	catch( ... )
+// 	{
+// 		cout << "Caught in main().\n";
+// 	}
+#endif //0
 	
 #endif //!__NDEBUG_THROW
 
@@ -554,14 +499,6 @@ main( int argc, char ** argv )
 			_TyGraph gCopy;
 			while ( !test_copy( gCopy, g, &tStart ) )
 				;
-	try
-	{
-		TestThrow();
-	}
-	catch( ... )
-	{
-		cout << "Caught in main().\n";
-	}
 #else //__TEST_COPY
 			_TyGraph &	gCopy = g;
 #endif //__TEST_COPY
@@ -655,4 +592,67 @@ main( int argc, char ** argv )
 	return 0;
 }
 	
+
+#if 0
+// void 
+// TestSubThrow()
+// {
+// 	try
+// 	{
+//     cout << "testexcept: _STLP_VENDOR_EXCEPT_STD:" ppmacroxstr( _STLP_VENDOR_EXCEPT_STD ) "\n";
+//     cout << "testexcept: _STLP_VENDOR_STD:" ppmacroxstr( _STLP_VENDOR_STD ) "\n";
+// 		cout << "testexcept: Throwing in TestSubThrow().\n";
+//     //throw std::exception();
+//     throw vtyNamedException();
+// 		//__THROWPTALWAYS( e_ttMemory )
+// 	}
+// 	catch( ... )
+// 	{
+// 		cout << "testexcept: Caught and rethrowing in TestSubThrow().\n";
+// 		throw;
+// 	}
+// }
+// 
+// void
+// TestThrow()
+// {
+//   try
+//   {
+//     try
+//     {
+//       try
+//       {
+//         TestSubThrow();
+//       }
+//       catch( _debug_memory_except & _rexc )
+//       {
+//         const char * cpWhat = _rexc.what();
+//         cout << "testexcept: Caught(1) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+//         throw;
+//       }
+//     }
+//     catch( vtyNamedException & _rexc )
+//     {
+//       const char * cpWhat = _rexc.what();
+//       cout << "testexcept: Caught(2) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+//       throw;
+//     }
+//   }
+// #pragma push_macro("std")
+// #undef std
+//   catch( std::exception & _rexc )
+// #pragma pop_macro("std")
+//   {
+//     const char * cpWhat = _rexc.what();
+//     cout << "testexcept: Caught(4) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+//     throw;
+//   }
+//   catch( stlp_std::exception & _rexc )
+//   {
+//     const char * cpWhat = _rexc.what();
+//     cout << "testexcept: Caught(5) and rethrowing in TestThrow() [" << cpWhat << "].\n";
+//     throw;
+//   }
+// }
+#endif //0
 
