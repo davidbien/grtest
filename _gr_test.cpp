@@ -30,10 +30,9 @@ typedef std::allocator< char >	_TyDefaultAllocator;
 #include <time.h>
 #include <fstream>
 #include <iostream>
-#include <memory_resource>
 #ifdef __DGRAPH_USE_STLPORT
 #include <stl/_alloc.c>
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 
 __BIENUTIL_USING_NAMESPACE
 __DGRAPH_USING_NAMESPACE

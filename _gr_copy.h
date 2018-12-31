@@ -4,7 +4,11 @@
 #include "_gr_disn.h"
 
 #ifdef __GR_DSIN_USEHASH
+#ifdef __DGRAPH_USE_STLPORT
 #include <hash_map>
+#else
+#include <unordered_map>
+#endif
 #else //__GR_DSIN_USEHASH
 #include <map>
 #endif //__GR_DSIN_USEHASH
@@ -83,7 +87,7 @@ public:
                     equal_to< const _TyGraphNodeBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedNodes;
   typedef hash_map< const _TyGraphLinkBaseBaseSrc*, _TyUnconnectedLink, _gr_hash_ptr< const _TyGraphLinkBaseBaseSrc* >,
                     equal_to< const _TyGraphLinkBaseBaseSrc* >, t_TyAllocator > _TyUnconnectedLinks;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   // Use most base classes for lookup - conserve code:
   typedef typename _Alloc_traits< typename unordered_map< const _TyGraphNodeBaseBaseSrc*, _TyUnconnectedNode >::value_type, _TyAllocator >::allocator_type _TyAllocatorGraphNodeMap;
   typedef unordered_map< const _TyGraphNodeBaseBaseSrc*, _TyUnconnectedNode, hash< const _TyGraphNodeBaseBaseSrc* >,
@@ -91,7 +95,7 @@ public:
   typedef typename _Alloc_traits< typename unordered_map< const _TyGraphLinkBaseBaseSrc*, _TyUnconnectedLink >::value_type, _TyAllocator >::allocator_type _TyAllocatorGraphLinkMap;
   typedef unordered_map< const _TyGraphLinkBaseBaseSrc*, _TyUnconnectedLink, hash< const _TyGraphLinkBaseBaseSrc* >,
 	  equal_to< const _TyGraphLinkBaseBaseSrc* >, _TyAllocatorGraphLinkMap > _TyUnconnectedLinks;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   static const typename _TyUnconnectedNodes::size_type ms_stInitSizeNodes = __GR_COPY_INITSIZENODES;
   static const typename _TyUnconnectedLinks::size_type ms_stInitSizeLinks = __GR_COPY_INITSIZELINKS;
 #else //__GR_DSIN_USEHASH
@@ -134,10 +138,10 @@ public:
   typedef _gc_context< _TyGraphLinkBaseBaseSrc, _TyGraphLinkBaseBaseDst > _TyContext;
 #ifdef __DGRAPH_USE_STLPORT
   typedef slist< _TyContext, t_TyAllocator >                              _TyContexts;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename forward_list< _TyContext >::value_type, t_TyAllocator >::allocator_type _TyAllocatorListContexts;
   typedef forward_list< _TyContext, _TyAllocatorListContexts > _TyContexts;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   _TyContexts m_lContexts;
   int         m_iContexts;
 
