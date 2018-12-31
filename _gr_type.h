@@ -45,124 +45,124 @@ public:
   //  the _graph_link. This allows implementations to override this 
   //  implementation class to support different types for the 
   //  constructable object and the link element - see "_gr_shwr.h":
-  _TyLinkEl & RElObject() _STLP_NOTHROW
+  _TyLinkEl & RElObject() _BIEN_NOTHROW
   {
     return m_tEl;
   }
 
   // Element access:
-  _TyLinkEl & REl() _STLP_NOTHROW
+  _TyLinkEl & REl() _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  const _TyLinkEl & REl() const _STLP_NOTHROW
+  const _TyLinkEl & REl() const _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  _TyLinkEl & RElNonConst() _STLP_NOTHROW
+  _TyLinkEl & RElNonConst() _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  const _TyLinkEl & RElConst() const _STLP_NOTHROW
+  const _TyLinkEl & RElConst() const _BIEN_NOTHROW
   {
     return m_tEl;
   }
 
-  operator _TyLinkEl & () _STLP_NOTHROW 
+  operator _TyLinkEl & () _BIEN_NOTHROW 
   { 
     return m_tEl; 
   }
-  operator const _TyLinkEl & () const _STLP_NOTHROW 
+  operator const _TyLinkEl & () const _BIEN_NOTHROW 
   { 
     return m_tEl; 
   }
 
   // typed child/parent node access:
-  _TyGraphNode * PGNChild() _STLP_NOTHROW
+  _TyGraphNode * PGNChild() _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode* >( _TyBase::PGNBChild() );
   }
-  _TyGraphNode * PGNParent() _STLP_NOTHROW
+  _TyGraphNode * PGNParent() _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode* >( _TyBase::PGNBParent() );
   }
 
-  const _TyGraphNode * PGNChild() const _STLP_NOTHROW
+  const _TyGraphNode * PGNChild() const _BIEN_NOTHROW
   {
     return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( _TyBase::PGNBChild() ) );
   }
-  const _TyGraphNode * PGNParent() const _STLP_NOTHROW
+  const _TyGraphNode * PGNParent() const _BIEN_NOTHROW
   {
     return const_cast< const _TyGraphNode* >( static_cast< _TyGraphNode* >( _TyBase::PGNBParent() ) );
   }
 
-  _TyThis ** PPGLGetNextChild() _STLP_NOTHROW
+  _TyThis ** PPGLGetNextChild() _BIEN_NOTHROW
   {
     return (_TyThis**)_TyBase::PPGLBGetNextChild();
   }
-  const _TyThis * const * PPGLGetNextChild() const _STLP_NOTHROW
+  const _TyThis * const * PPGLGetNextChild() const _BIEN_NOTHROW
   {
     return (const _TyThis* const *)_TyBase::PPGLBGetNextChild();
   }
 
-  _TyThis ** PPGLGetNextParent() _STLP_NOTHROW
+  _TyThis ** PPGLGetNextParent() _BIEN_NOTHROW
   {
     return (_TyThis**)_TyBase::PPGLBGetNextParent();
   }
-  const _TyThis * const * PPGLGetNextParent() const _STLP_NOTHROW
+  const _TyThis * const * PPGLGetNextParent() const _BIEN_NOTHROW
   {
     return (const _TyThis* const *)_TyBase::PPGLBGetNextParent();
   }
 
-  _TyThis ** PPGLGetThisChild() _STLP_NOTHROW
+  _TyThis ** PPGLGetThisChild() _BIEN_NOTHROW
   {
     return (_TyThis**)_TyBase::PPGLBGetThisChild();
   }
-  const _TyThis * const * PPGLGetThisChild() const _STLP_NOTHROW
+  const _TyThis * const * PPGLGetThisChild() const _BIEN_NOTHROW
   {
     return (const _TyThis* const *)_TyBase::PPGLBGetThisChild();
   }
 
-  _TyThis ** PPGLGetThisParent() _STLP_NOTHROW
+  _TyThis ** PPGLGetThisParent() _BIEN_NOTHROW
   {
     return (_TyThis**)_TyBase::PPGLBGetThisParent();
   }
-  const _TyThis * const * PPGLGetThisParent() const _STLP_NOTHROW
+  const _TyThis * const * PPGLGetThisParent() const _BIEN_NOTHROW
   {
     return (const _TyThis* const *)_TyBase::PPGLBGetThisParent();
   }
 
-  _TyThis * PGLGetPrevChild() _STLP_NOTHROW
+  _TyThis * PGLGetPrevChild() _BIEN_NOTHROW
   {
     return (_TyThis*)_TyBase::PGLBGetPrevChild();
   }
-  const _TyThis * PGLGetPrevChild() const _STLP_NOTHROW
+  const _TyThis * PGLGetPrevChild() const _BIEN_NOTHROW
   {
     return (const _TyThis*)_TyBase::PGLBGetPrevChild();
   }
 
-  _TyThis * PGLGetPrevParent() _STLP_NOTHROW
+  _TyThis * PGLGetPrevParent() _BIEN_NOTHROW
   {
     return (_TyThis*)_TyBase::PGLBGetPrevParent();
   }
-  const _TyThis * PGLGetPrevParent() const _STLP_NOTHROW
+  const _TyThis * PGLGetPrevParent() const _BIEN_NOTHROW
   {
     return (const _TyThis*)_TyBase::PGLBGetPrevParent();
   }
 
-  void InsertParent( _TyThis ** _ppgl ) _STLP_NOTHROW
+  void InsertParent( _TyThis ** _ppgl ) _BIEN_NOTHROW
   {
     _TyGraphLinkBase::InsertParent( (_TyGraphLinkBase**)_ppgl );
   }
-  void InsertChild( _TyThis ** _ppgl ) _STLP_NOTHROW
+  void InsertChild( _TyThis ** _ppgl ) _BIEN_NOTHROW
   {
     _TyGraphLinkBase::InsertChild( (_TyGraphLinkBase**)_ppgl );
   }
-  void InsertParentAssume( _TyThis ** _ppgl ) _STLP_NOTHROW
+  void InsertParentAssume( _TyThis ** _ppgl ) _BIEN_NOTHROW
   {
     _TyGraphLinkBase::InsertParentAssume( (_TyGraphLinkBase**)_ppgl );
   }
-  void InsertChildAssume( _TyThis ** _ppgl ) _STLP_NOTHROW
+  void InsertChildAssume( _TyThis ** _ppgl ) _BIEN_NOTHROW
   {
     _TyGraphLinkBase::InsertChildAssume( (_TyGraphLinkBase**)_ppgl );
   }
@@ -200,62 +200,62 @@ public:
   //  the _graph_node. This allows implementations to override this 
   //  implementation class to support different types for the 
   //  constructable object and the node element - see "_gr_shwr.h":
-  _TyNodeEl & RElObject() _STLP_NOTHROW
+  _TyNodeEl & RElObject() _BIEN_NOTHROW
   {
     return m_tEl;
   }
 
   // Element access:
-  _TyNodeEl & REl() _STLP_NOTHROW
+  _TyNodeEl & REl() _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  const _TyNodeEl & REl() const _STLP_NOTHROW
+  const _TyNodeEl & REl() const _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  _TyNodeEl & RElNonConst() _STLP_NOTHROW
+  _TyNodeEl & RElNonConst() _BIEN_NOTHROW
   {
     return m_tEl;
   }
-  const _TyNodeEl & RElConst() const _STLP_NOTHROW
+  const _TyNodeEl & RElConst() const _BIEN_NOTHROW
   {
     return m_tEl;
   }
 
-  operator _TyNodeEl & () _STLP_NOTHROW 
+  operator _TyNodeEl & () _BIEN_NOTHROW 
   { 
     return m_tEl; 
   }
-  operator const _TyNodeEl & () const _STLP_NOTHROW 
+  operator const _TyNodeEl & () const _BIEN_NOTHROW 
   { 
     return m_tEl; 
   }
 
   // child/parent typed link list access:
-  _TyGraphLink **           PPGLChildHead() _STLP_NOTHROW
+  _TyGraphLink **           PPGLChildHead() _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyBase::PPGLBChildHead();
   }
-  const _TyGraphLink * const *    PPGLChildHead() const _STLP_NOTHROW
+  const _TyGraphLink * const *    PPGLChildHead() const _BIEN_NOTHROW
   {
     return (const _TyGraphLink* const *)_TyBase::PPGLBChildHead();
   }
 
-  _TyGraphLink **     PPGLParentHead() _STLP_NOTHROW
+  _TyGraphLink **     PPGLParentHead() _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyBase::PPGLBParentHead();
   }
-  const _TyGraphLink * const *  PPGLParentHead() const _STLP_NOTHROW
+  const _TyGraphLink * const *  PPGLParentHead() const _BIEN_NOTHROW
   {
     return (const _TyGraphLink* const *)_TyBase::PPGLBParentHead();
   }
 
-  _TyGraphLink **     PPGLRelationHead( bool _fChild ) _STLP_NOTHROW
+  _TyGraphLink **     PPGLRelationHead( bool _fChild ) _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyBase::PPGLBRelationHead( _fChild );
   }
-  const _TyGraphLink * const *      PPGLRelationHead( bool _fChild ) const _STLP_NOTHROW
+  const _TyGraphLink * const *      PPGLRelationHead( bool _fChild ) const _BIEN_NOTHROW
   {
     return (const _TyGraphLink* const *)_TyBase::PPGLBRelationHead( _fChild );  
   }

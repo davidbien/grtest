@@ -5,7 +5,7 @@
 
 // This module defines the graph binary output iterator.
 
-#if defined( _STLP_USE_EXCEPTIONS )
+#if !defined( __DGRAPH_USE_STLPORT ) || defined( _BIEN_USE_EXCEPTIONS )
 //    !defined( __GR_DONTTHROWBADGRAPHERRORS )
 #define __GR_THROWBADGRAPHERRORS
 #endif

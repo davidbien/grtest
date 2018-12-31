@@ -30,7 +30,7 @@ private:
   typedef _dump_object_base<  t_TyGraphNodeBase, t_TyGraphLinkBase, 
                               t_TyStreamObject, t_TyAllocator >     _TyThis;
 public:
-
+  typedef t_TyAllocator _TyAllocator;
   typedef t_TyGraphLinkBase _TyGraphLinkBase;
   typedef t_TyGraphNodeBase _TyGraphNodeBase;
 
@@ -50,7 +50,8 @@ public:
   typedef size_t  _TyObjectId;
   _TyObjectId       m_idNodeCur;   // Current node id.
   _TyObjectId       m_idLinkCur;   // Current link id.
-  typedef map< void *, _TyObjectId, less< void * >, t_TyAllocator >  _TyMapToIds;
+  typedef typename _Alloc_traits< typename map< void *, _TyObjectId, less< void * > >::value_type, _TyAllocator >::allocator_type _TyAllocatorMapPv;
+  typedef map< void *, _TyObjectId, less< void * >, _TyAllocatorMapPv > _TyMapToIds;
   _TyMapToIds       m_mapNodeIds;
   _TyMapToIds       m_mapLinkIds;
 

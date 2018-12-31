@@ -151,17 +151,17 @@ public:
   void  _element_deinit()
   {
     // We copy the element as if a write:
-    _STLP_TRY
+    _BIEN_TRY
     {
       _CopyOnWrite();
     }
-#ifdef _STLP_USE_EXCEPTIONS
+#ifdef _BIEN_USE_EXCEPTIONS
     catch( ... )
     {
       // This graph is inconsistent - throw an inconsistent graph exception:
       throw inconsistent_graph( "_cpwt_graph_element::_element_deinit(): Throw during copy-on-write." );
     }
-#endif //_STLP_USE_EXCEPTIONS
+#endif //_BIEN_USE_EXCEPTIONS
   }
 
 protected:
@@ -173,11 +173,11 @@ protected:
   {
     assert( m_psos );
     m_gcl.remove_link();  // Disconnect from graph element - we are overwriting {m_gcl}.
-    _STLP_TRY
+    _BIEN_TRY
     {
       _RElInt()._TyShadowElement::_TyShadowElement( RElConst() );
     }
-    _STLP_UNWIND( _TyBase::_TyBase( m_psos ) ); // Re-connect if we throw while copying.
+    _BIEN_UNWIND( _TyBase::_TyBase( m_psos ) ); // Re-connect if we throw while copying.
     m_psos = 0;
   }
 };

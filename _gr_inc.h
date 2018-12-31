@@ -18,14 +18,28 @@
 #include "_dbgthrw.h"
 
 #ifndef __DGRAPH_DEFAULT_ALLOCATOR
-#ifndef NDEBUG
-#define __DGRAPH_DEFAULT_ALLOCATOR _STL::_stlallocator< char, _STL::__malloc_alloc >
-#else //!NDEBUG
-#define __DGRAPH_DEFAULT_ALLOCATOR _STL::allocator< char >
-#endif //!NDEBUG
+#if defined(_USE_STLPORT) && !defined(NDEBUG)
+#define __DGRAPH_DEFAULT_ALLOCATOR __STD::_stlallocator< char, __STD::__debug_alloc< __STD::__malloc_alloc > >
+#define __DGRAPH_GET_ALLOCATOR(t) __STD::_stlallocator< t, __STD::__debug_alloc< __STD::__malloc_alloc > >
+#else // defined(_USE_STLPORT) && !defined(NDEBUG)
+#define __DGRAPH_DEFAULT_ALLOCATOR __STD::allocator< char >
+#define __DGRAPH_GET_ALLOCATOR(t) __STD::allocator< t >
+#endif // defined(_USE_STLPORT) && !defined(NDEBUG)
 #endif //__DGRAPH_DEFAULT_ALLOCATOR
 
+#ifndef __DBGTHROW_DEFAULT_ALLOCATOR
+#if defined(_USE_STLPORT) && !defined(NDEBUG)
+#define __DBGTHROW_DEFAULT_ALLOCATOR __STD::_stlallocator< char, __STD::__debug_alloc< __STD::__malloc_alloc > >
+#define __DBGTHROW_GET_ALLOCATOR(t) __STD::_stlallocator< t, __STD::__debug_alloc< __STD::__malloc_alloc > >
+#else // defined(_USE_STLPORT) && defined(NDEBUG)
+#define __DBGTHROW_DEFAULT_ALLOCATOR __STD::allocator< char >
+#define __DBGTHROW_GET_ALLOCATOR(t) __STD::allocator< t >
+#endif //defined(_USE_STLPORT) && defined(NDEBUG)
+#endif //!__DBGTHROW_DEFAULT_ALLOCATOR
+
+
 // Choose namespace:
+#define __DGRAPH_USE_NAMESPACE ns_dgraph // always use namespaces.
 #if !defined( _STLP_USE_NAMESPACES ) && !defined( __DGRAPH_USE_NAMESPACE )
 #define __DGRAPH_GLOBALNAMESPACE
 #endif
@@ -39,7 +53,7 @@
 #ifndef __DGRAPH_USE_NAMESPACE
 #define __DGRAPH_USE_NAMESPACE ns_dgraph
 #endif //__DGRAPH_USE_NAMESPACE
-#define __DGRAPH_BEGIN_NAMESPACE namespace __DGRAPH_USE_NAMESPACE { __BIENUTIL_USING_NAMESPACE
+#define __DGRAPH_BEGIN_NAMESPACE namespace __DGRAPH_USE_NAMESPACE { __BIENUTIL_USING_NAMESPACE using namespace std;
 #define __DGRAPH_END_NAMESPACE }
 #define __DGRAPH_USING_NAMESPACE using namespace __DGRAPH_USE_NAMESPACE;
 #define __DGRAPH_NAMESPACE __DGRAPH_USE_NAMESPACE::
@@ -58,7 +72,7 @@ struct __gr_const_cast_iter
 template < class t_TyP >
 struct _gr_hash_ptr
 {
-  size_t operator()( const t_TyP & __s ) const _STLP_NOTHROW
+  size_t operator()( const t_TyP & __s ) const _BIEN_NOTHROW
   { 
     return reinterpret_cast< size_t >( __s ); 
   }

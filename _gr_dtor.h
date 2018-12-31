@@ -97,7 +97,7 @@ public:
 // These are created in some algorithms ( by design ). These links' elements have already been 
 //  destructed and certainly don't need to be again.
 void
-destroy( ) _STLP_NOTHROW
+destroy( ) _BIEN_NOTHROW
 {
   // Design Goals:
   //  1) Don't allocate any memory - even using _alloca() - since this maps to free store
@@ -153,7 +153,7 @@ private:
 #endif //__GRAPH_DEBUG_DTOR
 
 void
-_destroy_children() _STLP_NOTHROW
+_destroy_children() _BIEN_NOTHROW
 {
   while( m_pgnbDestroy->FChildren() )
   {
@@ -208,7 +208,7 @@ _destroy_children() _STLP_NOTHROW
 }
 
 void
-_destroy_parents() _STLP_NOTHROW
+_destroy_parents() _BIEN_NOTHROW
 {
   // *** Code copied from _destroy_children(), juxtapose ( Children, Parents ), 
   //  ( children, parents ), ( child, parent ), ( Child, Parent ).
@@ -266,7 +266,7 @@ _destroy_parents() _STLP_NOTHROW
 }
 
 void
-_append_relations() _STLP_NOTHROW
+_append_relations() _BIEN_NOTHROW
 {
   // Append the parent list to <m_pgnbDestroy>'s parent list:
   if ( m_pgnbRelation->FParents() )
@@ -280,7 +280,7 @@ _append_relations() _STLP_NOTHROW
 }
 
 void
-_append_children() _STLP_NOTHROW
+_append_children() _BIEN_NOTHROW
 {
   (*( m_pgnbRelation->PPGLBChildHead() ))->AppendChildListToTail( m_ppglbTailChildren );
 
@@ -327,7 +327,7 @@ _append_children() _STLP_NOTHROW
 }
 
 void
-_append_parents() _STLP_NOTHROW
+_append_parents() _BIEN_NOTHROW
 {
   // *** Code copied from _append_children(), juxtapose ( Children, Parents ), 
   //  ( children, parents ), ( child, parent ), ( Child, Parent ).

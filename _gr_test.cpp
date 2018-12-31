@@ -12,7 +12,11 @@
 
 #include <memory>
 
-typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
+#ifdef __DGRAPH_USE_STLPORT
+typedef std::_stlallocator< char, std::__malloc_alloc >	_TyDefaultAllocator;
+#else 
+typedef std::allocator< char >	_TyDefaultAllocator;
+#endif
 
 // A NOTE ON MEMORY LEAKS:
 // I attempted to make everything use the malloc allocator, which coupled
@@ -26,7 +30,10 @@ typedef std::_stlallocator< char, std::__malloc_alloc >	_TyMallocAllocator;
 #include <time.h>
 #include <fstream>
 #include <iostream>
+#include <memory_resource>
+#ifdef __DGRAPH_USE_STLPORT
 #include <stl/_alloc.c>
+#endif __DGRAPH_USE_STLPORT
 
 __BIENUTIL_USING_NAMESPACE
 __DGRAPH_USING_NAMESPACE
@@ -397,7 +404,7 @@ main( int argc, char ** argv )
 
 	try
 		{
-      typedef _TyMallocAllocator _TyAllocator;
+      typedef _TyDefaultAllocator _TyAllocator;
 			typedef dgraph< int, int, false, _TyAllocator > _TyGraph;
 			_TyGraph g;
 			g.replace_random( iNumNodes, iNumExtraLinks, iRandSeed );

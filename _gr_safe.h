@@ -120,19 +120,19 @@ public:
   _TyPositionType             m_ptNextChildType;  // The type information for the next child pointer.
   _TyGraphConnectionLink *    m_pgclHead;     // Head of graph path nodes connection link linked list.
 
-  void      PushConnection( _TyGraphConnectionLink * _pglclgp ) _STLP_NOTHROW
+  void      PushConnection( _TyGraphConnectionLink * _pglclgp ) _BIEN_NOTHROW
   {
     _pglclgp->insert_link( m_pgclHead );
   }
 
-  void      Init() _STLP_NOTHROW
+  void      Init() _BIEN_NOTHROW
   {
     m_pgclHead = 0;
     _InitPositionTypes();
   }
 
 private:
-  void  _InitPositionTypes( ) _STLP_NOTHROW
+  void  _InitPositionTypes( ) _BIEN_NOTHROW
   {
     m_ptNextParentType = _TyPositionType( s_egptParentPosition );
     m_ptNextChildType = _TyPositionType( s_egptChildPosition );
@@ -153,7 +153,7 @@ public:
 #endif //__GNUC__
   }
 
-  static void AssertValidPT( const _TyPositionType & _rpt ) _STLP_NOTHROW
+  static void AssertValidPT( const _TyPositionType & _rpt ) _BIEN_NOTHROW
   {
     // should be no garbage:
     assert( !( _rpt & ~( s_egptHeadPosition | s_egptParentPosition ) ) );
@@ -162,7 +162,7 @@ public:
   // Return the pointer to the appropriate graph object from the address of the next pointer:
   static void PGrObjFromPPGLB(  _TyGraphLinkBase ** _ppglb, 
                                 _TyGraphLinkSafe *& _pgls, 
-                                _TyGraphNodeSafe *& _pgns ) _STLP_NOTHROW
+                                _TyGraphNodeSafe *& _pgns ) _BIEN_NOTHROW
   {
     // Structs must be set up appropriately - may need to push some packing pragmas if these assert(s) fail.
 #ifdef __GNUC__
@@ -232,7 +232,7 @@ class _graph_node_safe_base : public _graph_node_base
   _TyPositionType             m_ptNextChildType;  // The type information for the next child pointer.
   _TyGraphConnectionLink  *   m_pgclHead;         // Head of graph node connection link linked list.
 
-  __INLINE void _InitPositionTypes( ) _STLP_NOTHROW
+  __INLINE void _InitPositionTypes( ) _BIEN_NOTHROW
   {
     m_ptNextParentType = _TyPositionType( s_egptHeadPosition | s_egptParentPosition );
     m_ptNextChildType = _TyPositionType( s_egptHeadPosition | s_egptChildPosition );
@@ -247,14 +247,14 @@ public:
   typedef _TyGraphLinkSafe                    _TyGraphLinkBase;
   typedef _TyGraphLinkSafe::_TyGraphLinkBase  _TyGraphLinkBaseBase;
 
-  __INLINE void Init() _STLP_NOTHROW
+  __INLINE void Init() _BIEN_NOTHROW
   { 
     _TyBase::Init();
     m_pgclHead = 0;
     _InitPositionTypes();
   }
 
-  __INLINE void     PushConnection( _TyGraphConnectionLink * _pgnclgp ) _STLP_NOTHROW
+  __INLINE void     PushConnection( _TyGraphConnectionLink * _pgnclgp ) _BIEN_NOTHROW
   {
     _pgnclgp->insert_link( m_pgclHead );
   }
@@ -276,14 +276,14 @@ class _graph_path_node_safe_base
 
   // The graph node to which this iterator is connected is being deinitialized.
   // We don't need to unlink the connection link.
-  void  _node_deinit() _STLP_NOTHROW
+  void  _node_deinit() _BIEN_NOTHROW
   {
     _TyBase::m_pgnbNode = 0;
   }
 
   // The graph link to which this iterator is connected is being deinitialized.
   // We don't need to unlink the connection link.
-  void  _link_deinit() _STLP_NOTHROW
+  void  _link_deinit() _BIEN_NOTHROW
   {
     _TyBase::m_pglbLink = 0;
   }
@@ -446,9 +446,9 @@ public:
   }
 
   // Allocation stuff:
-  _TyPathNodeSafeAllocator const &  get_safe_path_allocator_ref() const _STLP_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator_ref(); }
-  _TyPathNodeSafeAllocator &        get_safe_path_allocator_ref() _STLP_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator_ref(); }
-  _TyPathNodeSafeAllocatorAsPassed  get_safe_path_allocator() const _STLP_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator(); }
+  _TyPathNodeSafeAllocator const &  get_safe_path_allocator_ref() const _BIEN_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator_ref(); }
+  _TyPathNodeSafeAllocator &        get_safe_path_allocator_ref() _BIEN_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator_ref(); }
+  _TyPathNodeSafeAllocatorAsPassed  get_safe_path_allocator() const _BIEN_NOTHROW { return _TyBaseAllocPathNodeSafe::get_allocator(); }
 
   // iterator access:
   _TyGraphNodeIterSafePassNonConst  get_safe_node_iterator( _TyGraphNodeBase * _pgnb = 0 )
@@ -489,23 +489,23 @@ protected:
   // This is the connection link for the root node:
   _TyGraphConnectionLink  m_gclRoot;
 
-  void  _init() _STLP_NOTHROW
+  void  _init() _BIEN_NOTHROW
   {
     m_gclRoot.m_pvConnection = (void*)this;
     m_gclRoot.m_egclType = s_egclGraph;
   }
 
-  _TyGraphNodeSafe * _GetRootNode() _STLP_NOTHROW
+  _TyGraphNodeSafe * _GetRootNode() _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNodeSafe * >( _TyBaseGraph::_GetRootNode() );
   }
-  const _TyGraphNodeSafe * _GetRootNode() const _STLP_NOTHROW
+  const _TyGraphNodeSafe * _GetRootNode() const _BIEN_NOTHROW
   {
     return static_cast< const _TyGraphNodeSafe * >( _TyBaseGraph::_GetRootNode() );
   }
 
 
-  void _SetRootNode( _TyGraphNodeSafe * _pgnsRoot ) _STLP_NOTHROW
+  void _SetRootNode( _TyGraphNodeSafe * _pgnsRoot ) _BIEN_NOTHROW
   {
     _DereferenceRoot();
     _TyBaseGraph::_SetRootNode( _pgnsRoot );
@@ -515,7 +515,7 @@ protected:
     }
   }
 
-  void _DereferenceRoot() _STLP_NOTHROW
+  void _DereferenceRoot() _BIEN_NOTHROW
   {
     if ( _GetRootNode() )
     {
@@ -524,14 +524,14 @@ protected:
   }
 
   // The node which this graph is viewing ( i.e. the root ) is going away:
-  void  _node_deinit() _STLP_NOTHROW
+  void  _node_deinit() _BIEN_NOTHROW
   {
     // just nullify our node reference:
     _TyBaseGraph::_SetRootNode( 0 );
   }
 
   // This method called when any safe node is being destroyed:
-  static void _deinit_node( _TyGraphNodeBase * _pgnbDeinit ) _STLP_NOTHROW
+  static void _deinit_node( _TyGraphNodeBase * _pgnbDeinit ) _BIEN_NOTHROW
   {
     // The node may have objects connected to it - need to inform them of object destruction.
     // Move through all the connection links - no need to waste time unlinking - just
@@ -600,7 +600,7 @@ protected:
   }
 
   // This method called when any safe link is being destroyed:
-  static void _deinit_link( _TyGraphLinkBase * _pgnbDeinit ) _STLP_NOTHROW
+  static void _deinit_link( _TyGraphLinkBase * _pgnbDeinit ) _BIEN_NOTHROW
   {
     // The link may have objects connected to it - need to inform them of object destruction.
     // Move through all the connection links - no need to waste time unlinking - just

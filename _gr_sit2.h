@@ -912,7 +912,7 @@ protected:
 
 			// Save the position of the old tail - we will revert if we throw:
 			_TyPathNodeBase **	_pppnbTailOld = m_pppnbTail;
-			_STLP_TRY
+			_BIEN_TRY
 			{
 				// Special case the last element - we won't be allocating a link.
 				__SDP( t_TyPathNodeSafe, _TyPathNodeSafeAllocator, GetPNSAllocator(), _ppnsNew );
@@ -921,13 +921,13 @@ protected:
 							_ppnbAppend = _ppnbAppend->m_ppnbNext )
 				{
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef _STLP_USE_EXCEPTIONS
+#ifndef _BIEN_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif //!_STLP_USE_EXCEPTIONS
+#endif //!_BIEN_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( *_ppnbAppend );
 					_InitConnLink( _ppnsNew );
 
@@ -937,13 +937,13 @@ protected:
 					__SDP_TRANSFER(_ppnsNew)->m_pglbLink->PushConnection( &( _ppnsNew->m_gclLink ) );
 				}
 				_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef _STLP_USE_EXCEPTIONS
+#ifndef _BIEN_USE_EXCEPTIONS
 				if ( !_ppnsNew )
 				{
 					_DestroyPath( _pppnbTailOld );
 					return;
 				}
-#endif //!_STLP_USE_EXCEPTIONS
+#endif //!_BIEN_USE_EXCEPTIONS
 				new ( _ppnsNew ) t_TyPathNodeSafe( *_ppnbAppend );
 				_InitConnLink( _ppnsNew );
 				assert( !_ppnsNew->m_pglbLink );
@@ -951,7 +951,7 @@ protected:
 				_ppnsNew->push_back_node( m_pppnbTail );
 				__SDP_TRANSFER(_ppnsNew)->m_pgnbNode->PushConnection( &( _ppnsNew->m_gclNode ) );
 			}
-			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )
+			_BIEN_UNWIND( _DestroyPath( _pppnbTailOld ) )
 
 			// If we had an old tail then update by removing now - for throw-safety:
 			if ( _ppnbTailOld )
@@ -974,7 +974,7 @@ protected:
 
 			// Save the old tail - we will revert if we throw:
 			_TyPathNodeBase **	_pppnbTailOld = m_pppnbTail;
-			_STLP_TRY
+			_BIEN_TRY
 			{
 				__SDP( t_TyPathNodeSafe, _TyPathNodeSafeAllocator, GetPNSAllocator(), _ppnsNew );
 				_TyBaseAllocPathNode::allocate_type( _ppnsNew );
@@ -993,13 +993,13 @@ protected:
 						)
 				{
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef _STLP_USE_EXCEPTIONS
+#ifndef _BIEN_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif //!_STLP_USE_EXCEPTIONS
+#endif //!_BIEN_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( _ppnbAppend->m_pgnbNode, _pglbNext );
 					_InitConnLink( _ppnsNew );
 
@@ -1011,7 +1011,7 @@ protected:
 				}
 				assert( !_pglbNext );
 			}
-			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )
+			_BIEN_UNWIND( _DestroyPath( _pppnbTailOld ) )
 
 			// We succeeded - if we had an old tail then remove it now:
 			if ( _ppnbTailOld )
@@ -1055,7 +1055,7 @@ protected:
 		{
 			// Then we need to create some nodes - copy as we allocate:
 			const _TyPathNodeBase ** _pppnbTailOld = m_pppnbTail; // Save the old tail - in case we throw:
-			_STLP_TRY
+			_BIEN_TRY
 			{
 				// Insert the first one normally - this one updates the tail - the rest we know
 				//	won't touch the tail so we can use the faster method:
@@ -1079,13 +1079,13 @@ protected:
 				{
 					_pppnbCopyUntil = _TyPathNodeBase::PPGNBGetPrevPrevNext( _pppnbCopyUntil );
 					_TyBaseAllocPathNode::allocate_type( _ppnsNew );
-#ifndef _STLP_USE_EXCEPTIONS
+#ifndef _BIEN_USE_EXCEPTIONS
 					if ( !_ppnsNew )
 					{
 						_DestroyPath( _pppnbTailOld );
 						return;
 					}
-#endif //!_STLP_USE_EXCEPTIONS
+#endif //!_BIEN_USE_EXCEPTIONS
 					new ( _ppnsNew ) t_TyPathNodeSafe( **_pppnbCopyUntil );
 					_InitConnLink( _ppnsNew );
 
@@ -1098,7 +1098,7 @@ protected:
 					__SDP_TRANSFER(_ppnsNew)->insert_node_in_middle( *_pppnbTailOld );
 				}
 			}
-			_STLP_UNWIND( _DestroyPath( _pppnbTailOld ) )	// revert and rethrow.
+			_BIEN_UNWIND( _DestroyPath( _pppnbTailOld ) )	// revert and rethrow.
 		}
 
 		// Now overwrite the already existing nodes in the path - as no allocation occurs we need not try:
@@ -1194,7 +1194,7 @@ protected:
 		assert( !m_uCount );
 		_TyPathNodeBase ** _pppnbOldTail = m_pppnbTail;
 		_TyGNIndex _uOldCount;
-		_STLP_TRY
+		_BIEN_TRY
 		{
 			if ( _r.PGLBCur() )
 			{
@@ -1212,7 +1212,7 @@ protected:
 				}
 			}
 		}
-		_STLP_UNWIND( _DestroyPath( _pppnbOldTail ), m_uCount = _uOldCount )
+		_BIEN_UNWIND( _DestroyPath( _pppnbOldTail ), m_uCount = _uOldCount )
 	}
 
 	// Re-reference each path node to be connected to <_pvReference>:

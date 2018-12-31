@@ -38,38 +38,38 @@ public:
       m_punk = 0; // In case of throw.
       IPersistStream *  ppsSrc;
       __QI( _r.m_punk, ppsSrc );
-      _STLP_TRY
+      _BIEN_TRY
       {
         CLSID clsid;
         __ThrowOLEFAIL( pps->GetClassID( &clsid ) );
         IUnknown *  punk;
         __CoCreateLocal( clsid, punk );
 
-        _STLP_TRY
+        _BIEN_TRY
         {
           IPersistStream *  ppsDst;
           __QI( punk, ppsDst );
 
-          _STLP_TRY
+          _BIEN_TRY
           {
             IStream * ps;
             CreateStreamOnHGlobal( NULL, TRUE, &ps );
-            _STLP_TRY
+            _BIEN_TRY
             {
               __ThrowOLEFAIL( ppsSrc->Save( ps, FALSE ) );
               __ThrowOLEFAIL( ps->Seek( 0ll, STREAM_SEEK_SET, 0 ) );
               __ThrowOLEFAIL( ppsDst->Load( ps ) );
             }
-            _STLP_UNWIND( ps->Release() );
+            _BIEN_UNWIND( ps->Release() );
             ps->Release();
           }
-          _STLP_UNWIND( ppsDst->Release() );
+          _BIEN_UNWIND( ppsDst->Release() );
           ppsDst->Release();
         }
-        _STLP_UNWIND( punk->Release() );
+        _BIEN_UNWIND( punk->Release() );
         m_punk = punk;
       }
-      _STLP_UNWIND( ppsSrc->Release() );
+      _BIEN_UNWIND( ppsSrc->Release() );
       ppsSrc->Release();
     }
     else
@@ -88,14 +88,14 @@ public:
   {
     IPersistStream *  pps;
     __QI( m_punk, pps );
-    _STLP_TRY
+    _BIEN_TRY
     {
       CLSID clsid;
       __TOF( pps->GetClassID( &clsid ) );
       __TOF( WriteClassStm( _ps, clsid ) );
       __TOF( pps->Save( _ps, _fClearDirty ) );
     }
-    _STLP_UNWIND( pps->Release() );
+    _BIEN_UNWIND( pps->Release() );
     pps->Release();
   }
 

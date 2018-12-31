@@ -118,14 +118,14 @@ public:
 
   // Specialize the versions that take a "pass" path - we will take posession from the pass path object.
   _graph_typed_iterator(  _TyPassIterConst & _r, 
-                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
+                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _BIEN_NOTHROW
   : _TyIterBase( _allocPathNode )
   {
     __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase& >( *this ) );
   }
   _graph_typed_iterator(  _TyPassIterNonConst & _r, 
-                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
+                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _BIEN_NOTHROW
     : _TyIterBase( _allocPathNode )
   {
     __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
@@ -161,14 +161,14 @@ public:
   }
 
   // specialize construction with a "pass" path iterator:
-  explicit _graph_typed_iterator( _TyPassIterConst & _r ) _STLP_NOTHROW
+  explicit _graph_typed_iterator( _TyPassIterConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), 
                    __false_type() )
   {
     __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
-  explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _STLP_NOTHROW
+  explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), 
                    __false_type() )
   {
@@ -213,7 +213,7 @@ public:
 
   // Initialization from a pass iterator:
   _TyThis &
-  operator = ( _TyPassIterConst & _r ) _STLP_NOTHROW
+  operator = ( _TyPassIterConst & _r ) _BIEN_NOTHROW
   {
     // We swap our existence with the pass iterator:
     __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
@@ -221,18 +221,18 @@ public:
   }
 
   _TyThis &
-  operator = ( _TyPassIterNonConst & _r ) _STLP_NOTHROW
+  operator = ( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
   {
     // We swap our existence with the pass iterator:
     __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
 
-  reference operator* ( ) const _STLP_NOTHROW
+  reference operator* ( ) const _BIEN_NOTHROW
   { 
     return static_cast< _TyGraphValue* >( _TyIterBase::PBObjCur() )->RElNonConst(); 
   }
-  pointer operator-> ( ) const _STLP_NOTHROW
+  pointer operator-> ( ) const _BIEN_NOTHROW
   { 
     return &(operator*()); 
   }
@@ -243,13 +243,13 @@ public:
 //  If an compile error results then you are using the method on the wrong iterator type.
 
   // Current node access:
-  node_reference    GetCurNode() const _STLP_NOTHROW
+  node_reference    GetCurNode() const _BIEN_NOTHROW
   { 
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBCur() )->RElNonConst();
   }
 
   // Accessors to parent and child nodes:
-  node_reference    GetParentNode() const _STLP_NOTHROW
+  node_reference    GetParentNode() const _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() )->RElNonConst(); 
   }
@@ -257,28 +257,28 @@ public:
   {
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() )->RElNonConst(); 
   }
-  _TyGraphNode * PGNParent() const _STLP_NOTHROW
+  _TyGraphNode * PGNParent() const _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() );
   }
-  _TyGraphNode * PGNChild() const _STLP_NOTHROW
+  _TyGraphNode * PGNChild() const _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() );
   }
 
   // Accessor to current link:
-  link_reference    GetCurLink() const _STLP_NOTHROW
+  link_reference    GetCurLink() const _BIEN_NOTHROW
   { 
     return static_cast< _TyGraphLink* >( _TyIterBase::PGNBCur() )->RElNonConst();
   }
 
   // Typed graph object accessors:
-  _TyInitArg PObjCur() const _STLP_NOTHROW
+  _TyInitArg PObjCur() const _BIEN_NOTHROW
   {
     return (_TyInitArg)_TyIterBase::PBObjCur();
   }
 
-  _TyGraphLink ** PPGLCur() const _STLP_NOTHROW
+  _TyGraphLink ** PPGLCur() const _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyIterBase::PPGLBCur();
   }
@@ -287,7 +287,7 @@ public:
     _TyIterBase::SetPPGLBCur( (_TyGraphLinkBase**)_ppglCur );
   }
 
-  _TyGraphLink * PGLCur() const _STLP_NOTHROW
+  _TyGraphLink * PGLCur() const _BIEN_NOTHROW
   {
     return (_TyGraphLink*)_TyIterBase::PGLBCur();
   }
@@ -296,7 +296,7 @@ public:
     _TyIterBase::SetPGLBCur( (_TyGraphLinkBase*)_pglCur );
   }
 
-  _TyGraphNode * PGNCur() const _STLP_NOTHROW
+  _TyGraphNode * PGNCur() const _BIEN_NOTHROW
   {
     return (_TyGraphNode*)_TyIterBase::PGNBCur();
   }
@@ -305,11 +305,11 @@ public:
     _TyIterBase::SetPGNBCur( _pgnCur );
   }
 
-  _TyGraphLink ** FirstParent() const _STLP_NOTHROW
+  _TyGraphLink ** FirstParent() const _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyBase::FirstParent();
   }
-  _TyGraphLink ** FirstChild() const _STLP_NOTHROW
+  _TyGraphLink ** FirstChild() const _BIEN_NOTHROW
   {
     return (_TyGraphLink**)_TyBase::FirstChild();
   }
@@ -465,13 +465,13 @@ public:
 
   // Specialize the versions that take a "pass" path - we will take posession from the pass path object.
   _graph_typed_iterator(  _TyPassIterConst & _r, 
-                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
+                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _BIEN_NOTHROW
     : _TyIterBase( _allocPathNode )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
   _graph_typed_iterator(  _TyPassIterNonConst & _r, 
-                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _STLP_NOTHROW
+                          _TyPathNodeAllocatorAsPassed const & _allocPathNode ) _BIEN_NOTHROW
     : _TyIterBase( _allocPathNode )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
@@ -488,12 +488,12 @@ public:
   }
 
   // specialize construction with a "pass" path iterator:
-  explicit _graph_typed_iterator( _TyPassIterConst & _r ) _STLP_NOTHROW
+  explicit _graph_typed_iterator( _TyPassIterConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), __false_type() )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
-  explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _STLP_NOTHROW
+  explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), __false_type() )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
@@ -515,57 +515,57 @@ public:
 
   // Initialization from a pass iterator:
   _TyThis &
-  operator = ( _TyPassIterConst & _r ) _STLP_NOTHROW
+  operator = ( _TyPassIterConst & _r ) _BIEN_NOTHROW
   {
     // We swap our existence with the pass iterator:
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
   _TyThis &
-  operator = ( _TyPassIterNonConst & _r ) _STLP_NOTHROW
+  operator = ( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
 
-  reference operator* ( ) const _STLP_NOTHROW
+  reference operator* ( ) const _BIEN_NOTHROW
   { 
     return static_cast< const _TyGraphValue* >( _TyIterBase::PBObjCur() )->RElConst(); 
   }
-  pointer operator-> ( ) const _STLP_NOTHROW
+  pointer operator-> ( ) const _BIEN_NOTHROW
   { 
     return &(operator*()); 
   }
 
   // Accessors to parent and child nodes:
-  node_reference    GetParentNode() const _STLP_NOTHROW
+  node_reference    GetParentNode() const _BIEN_NOTHROW
   { 
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() )->RElConst(); 
   }
-  node_reference    GetChildNode() const _STLP_NOTHROW
+  node_reference    GetChildNode() const _BIEN_NOTHROW
   { 
     return static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() )->RElConst(); 
   }
-  const _TyGraphNode * PGNParent() const _STLP_NOTHROW
+  const _TyGraphNode * PGNParent() const _BIEN_NOTHROW
   {
     return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( _TyIterBase::PGNBParent() ) );
   }
-  const _TyGraphNode * PGNChild() const _STLP_NOTHROW
+  const _TyGraphNode * PGNChild() const _BIEN_NOTHROW
   {
     return const_cast< _TyGraphNode const *>( static_cast< _TyGraphNode* >( _TyIterBase::PGNBChild() ) );
   }
 
   // Accessor to current link ( if any ):
-  link_reference GetCurLink() const _STLP_NOTHROW
+  link_reference GetCurLink() const _BIEN_NOTHROW
   {
     return static_cast< _TyGraphLink* >( _TyIterBase::PGLBCur() )->RElConst(); 
   }
 
   // Typed graph object accessors:
-  _TyInitArgConst PObjCur() const _STLP_NOTHROW
+  _TyInitArgConst PObjCur() const _BIEN_NOTHROW
   {
     return (_TyInitArgConst)_TyIterBase::PBObjCur();
   }
 
-  const _TyGraphLink * const * PPGLCur() const _STLP_NOTHROW
+  const _TyGraphLink * const * PPGLCur() const _BIEN_NOTHROW
   {
     return (const _TyGraphLink* const *)_TyIterBase::PPGLBCur();
   }
@@ -574,7 +574,7 @@ public:
     _TyIterBase::SetPPGLBCur( (_TyGraphLinkBase**)_ppglCur );
   }
 
-  const _TyGraphLink * PGLCur() const _STLP_NOTHROW
+  const _TyGraphLink * PGLCur() const _BIEN_NOTHROW
   {
     return (const _TyGraphLink*)_TyIterBase::PGLBCur();
   }
@@ -583,7 +583,7 @@ public:
     SetPGLBCur( (_TyGraphLinkBase*)_pglCur );
   }
 
-  const _TyGraphNode * PGNCur() const _STLP_NOTHROW
+  const _TyGraphNode * PGNCur() const _BIEN_NOTHROW
   {
     return (const _TyGraphNode*)_TyIterBase::PGNBCur();
   }
