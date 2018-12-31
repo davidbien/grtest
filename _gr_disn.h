@@ -33,7 +33,7 @@ public:
   t_TyGraphNodeBase * m_pgnbUnfinished;
   int                 m_iVisitOrder;  // This is only here for the sorting step.
 
-  bool  operator < ( _TyThis const & _r ) const _STLP_NOTHROW
+  bool  operator < ( _TyThis const & _r ) const _BIEN_NOTHROW
   {
     return m_iVisitOrder < _r.m_iVisitOrder;
   }

@@ -7,6 +7,10 @@
 
 __DGRAPH_BEGIN_NAMESPACE
 
+#ifndef __DGRAPH_USE_STLPORT
+#define __DGRAPH_INSTANCED_ALLOCATORS // Only STLport supports instanceless allocators for its STL.
+#endif
+
 // need a define to allow instanced allocators ( they are rare ).
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
 #define __DGRAPH_STATIC_ALLOC_DECL  
@@ -125,7 +129,7 @@ private:
 
 public:
 
-  explicit dgraph( _TyAllocatorSet const & _rAllocSet = _TyAllocatorSet() ) _STLP_NOTHROW
+  explicit dgraph( _TyAllocatorSet const & _rAllocSet = _TyAllocatorSet() ) _BIEN_NOTHROW
     : _TyBaseAllocGraphNode( _rAllocSet.m_allocGraphNode ),
       _TyBaseAllocGraphLink( _rAllocSet.m_allocGraphLink ),
       _TyBaseGraph( static_cast< typename _TyAllocatorSet::_TyBaseAllocatorSetSafety const & >( _rAllocSet ) )
@@ -173,15 +177,15 @@ public:
   }
 
  // root node:
-  _TyGraphNode *  get_root() _STLP_NOTHROW
+  _TyGraphNode *  get_root() _BIEN_NOTHROW
   {
     return static_cast< _TyGraphNode * >( _TyBaseGraph::_GetRootNode() );
   }
-  const _TyGraphNode *  get_root() const _STLP_NOTHROW
+  const _TyGraphNode *  get_root() const _BIEN_NOTHROW
   {
     return static_cast< const _TyGraphNode * >( _TyBaseGraph::_GetRootNode() );
   }
-  void set_root_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
+  void set_root_node( _TyGraphNode * _pgn ) _BIEN_NOTHROW
   {
     _TyBaseGraph::_SetRootNode( _pgn );
   }
@@ -191,11 +195,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node()
   {
     _TyGraphNode * pgn = _allocate_node();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _construct_node( pgn );
     }
-    _STLP_UNWIND( _deallocate_node( pgn ) );
+    _BIEN_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
 
@@ -203,11 +207,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node1( t_TyP1 _p1 )
   {
     _TyGraphNode * pgn = _allocate_node();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _TyThis::template _construct_node1< t_TyP1 >( pgn, _p1 );
     }
-    _STLP_UNWIND( _deallocate_node( pgn ) );
+    _BIEN_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
   
@@ -215,11 +219,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphNode *  create_node2( t_TyP1 _p1, t_TyP2 _p2 )
   {
     _TyGraphNode * pgn = _allocate_node();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _TyThis::template _construct_node2< t_TyP1, t_TyP2 >( pgn, _p1, _p2 );
     }
-    _STLP_UNWIND( _deallocate_node( pgn ) );
+    _BIEN_UNWIND( _deallocate_node( pgn ) );
     return pgn;
   }
 
@@ -227,11 +231,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link()
   {
     _TyGraphLink * pgl = _allocate_link();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _construct_link( pgl );
     }
-    _STLP_UNWIND( _deallocate_link( pgl ) );
+    _BIEN_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
 
@@ -239,11 +243,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link1( t_TyP1 _p1 )
   {
     _TyGraphLink * pgl = _allocate_link();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _TyThis::template _construct_link1< t_TyP1 >( pgl, _p1 );
     }
-    _STLP_UNWIND( _deallocate_link( pgl ) );
+    _BIEN_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
   
@@ -251,11 +255,11 @@ public:
   __DGRAPH_STATIC_ALLOC_DECL _TyGraphLink *  create_link2( t_TyP1 _p1, t_TyP2 _p2 )
   {
     _TyGraphLink * pgl = _allocate_link();
-    _STLP_TRY
+    _BIEN_TRY
     {
 		  _TyThis::template _construct_link2< t_TyP1, t_TyP2 >( pgl, _p1, _p2 );
     }
-    _STLP_UNWIND( _deallocate_link( pgl ) );
+    _BIEN_UNWIND( _deallocate_link( pgl ) );
     return pgl;
   }
 
@@ -266,12 +270,12 @@ public:
   // NOTE: Forward iterators do not have methods to modify the graph - this is because modification
   //  will result in undefined bahavior ( currently potentially even crashing ).
   // When thread-safety is added is issue will be addressed.
-  _TyGraphFwdIterPosConst begin() const _STLP_NOTHROW
+  _TyGraphFwdIterPosConst begin() const _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, true, 
                                     _TyBaseGraph::get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst begin() _STLP_NOTHROW
+  _TyGraphFwdIterPosNonConst begin() _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, true, 
                                         _TyBaseGraph::get_base_path_allocator() );
@@ -279,33 +283,33 @@ public:
 
   // rbegin() does not iterate the nodes in reverse - it just starts the iteration
   //  in the up ( parent-wise ) direction.
-  _TyGraphFwdIterPosConst rbegin() const _STLP_NOTHROW
+  _TyGraphFwdIterPosConst rbegin() const _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosConst( get_root(), 0, false, false, 
                                     _TyBaseGraph::get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst rbegin() _STLP_NOTHROW
+  _TyGraphFwdIterPosNonConst rbegin() _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  get_root(), 0, false, false, 
                                         _TyBaseGraph::get_base_path_allocator() );
   }
 
-  _TyGraphFwdIterPosConst end() const _STLP_NOTHROW
+  _TyGraphFwdIterPosConst end() const _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosConst( 0, 0, false, true,
                                     _TyBaseGraph::get_base_path_allocator() );
   }
-  _TyGraphFwdIterPosNonConst end() _STLP_NOTHROW
+  _TyGraphFwdIterPosNonConst end() _BIEN_NOTHROW
   {
     return _TyGraphFwdIterPosNonConst(  0, 0, false, true, 
                                         _TyBaseGraph::get_base_path_allocator() );
   }
 
-  _TyGraphFwdIterPosConst rend() const _STLP_NOTHROW
+  _TyGraphFwdIterPosConst rend() const _BIEN_NOTHROW
   {
     return end();
   }
-  _TyGraphFwdIterPosNonConst rend() _STLP_NOTHROW
+  _TyGraphFwdIterPosNonConst rend() _BIEN_NOTHROW
   {
     return end();
   }
@@ -633,7 +637,7 @@ public:
 
   // Destroy the graph nodes starting at the root.
   void
-  destroy() _STLP_NOTHROW
+  destroy() _BIEN_NOTHROW
   {
     if ( get_root() )
     {
@@ -646,7 +650,7 @@ public:
   // Destroy all nodes starting at <_pgn>.
   // Note: <_pgn> should NOT be connected to the root - a debug test ensures this.
   void
-  destroy_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
+  destroy_node( _TyGraphNode * _pgn ) _BIEN_NOTHROW
   {
     assert( _pgn );
     _graph_destroy_struct<_TyThis>  gds( *this, _pgn );
@@ -660,7 +664,7 @@ public:
   // Destroy a single node.
   // If connected then connections are ignored.
   __DGRAPH_STATIC_ALLOC_DECL void
-  destroy_single_node( _TyGraphNode * _pgn ) _STLP_NOTHROW
+  destroy_single_node( _TyGraphNode * _pgn ) _BIEN_NOTHROW
   {
     assert( _pgn );
     _destruct_node( _pgn );
@@ -669,7 +673,7 @@ public:
 
   // Destroy only the link passed ( i.e. not any connect parent/child ).
   __DGRAPH_STATIC_ALLOC_DECL void
-  destroy_link( _TyGraphLink * _pgl ) _STLP_NOTHROW
+  destroy_link( _TyGraphLink * _pgl ) _BIEN_NOTHROW
   {
     assert( _pgl );
     _destruct_link( _pgl );
@@ -701,21 +705,21 @@ public:
 // Allocation stuff:
 // accessors:
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator const & get_node_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator const & get_node_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _BIEN_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
 #endif //__DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator &       get_node_allocator_ref() _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocator &       get_node_allocator_ref() _BIEN_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator_ref(); }
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocatorAsPassed get_node_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphNodeAllocatorAsPassed get_node_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _BIEN_NOTHROW 
   { return _TyBaseAllocGraphNode::get_allocator(); }
 
 #ifdef __DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator const & get_link_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator const & get_link_allocator_ref() __DGRAPH_STATIC_ALLOC_DECL_CONST _BIEN_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
 #endif //__DGRAPH_INSTANCED_ALLOCATORS
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator &       get_link_allocator_ref() _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocator &       get_link_allocator_ref() _BIEN_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator_ref(); }
-  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocatorAsPassed get_link_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _STLP_NOTHROW 
+  __DGRAPH_STATIC_ALLOC_DECL _TyGraphLinkAllocatorAsPassed get_link_allocator() __DGRAPH_STATIC_ALLOC_DECL_CONST _BIEN_NOTHROW 
   { return _TyBaseAllocGraphLink::get_allocator(); }
 
 // allocation of objects:

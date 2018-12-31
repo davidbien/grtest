@@ -154,7 +154,7 @@ public:
     _Init();
   }
 
-  ~_graph_output_iter_base() _STLP_NOTHROW
+  ~_graph_output_iter_base() _BIEN_NOTHROW
   {
   }
 
@@ -220,12 +220,12 @@ public:
       // If we pushed or popped a context since the last check then update stream:
       if ( m_iContextsOutput != _TyBase::m_iContexts )
       {
-        _STLP_TRY
+        _BIEN_TRY
         {
           m_ros._WriteContext( m_iContextsOutput < _TyBase::m_iContexts ); // throws.
           m_iContextsOutput = _TyBase::m_iContexts;
         }
-        _STLP_UNWIND( _Seek( sp ) );
+        _BIEN_UNWIND( _Seek( sp ) );
         _Tell( sp );
       }
       
@@ -233,7 +233,7 @@ public:
       // Take care of any direction change that may have occured since we last checked:
       if ( m_fDirectionDownOutput != _TyBase::m_fDirectionDown )
       {
-        _STLP_TRY
+        _BIEN_TRY
         {
           m_ros._WriteDirectionChange( _TyBase::m_fDirectionDown ); // throws.
           m_fDirectionDownOutput = _TyBase::m_fDirectionDown;
@@ -243,7 +243,7 @@ public:
           _Seek( sp );
           throw;
         }
-//        _STLP_UNWIND( _Seek( sp ) );
+//        _BIEN_UNWIND( _Seek( sp ) );
         _Tell( sp );
       }
       
@@ -251,7 +251,7 @@ public:
       
       _TyGraphLinkBase *  _pglbCheckWriteFooter = 0;
       bool                _fAtUnfinishedNode;
-      _STLP_TRY
+      _BIEN_TRY
       {
         // See where we are right now:
         if ( _TyBase::PGLBCur() )
@@ -343,7 +343,7 @@ public:
         m_fNewUnfinished = _fNewUnfinished;
         throw;
       }
-//      _STLP_UNWIND( ( _Seek( sp ), 
+//      _BIEN_UNWIND( ( _Seek( sp ), 
 //                      ( m_fNewUnfinished = _fNewUnfinished ) ) );
 
       if ( _TyBase::FAtEnd() && !m_fWroteGraphFooter )
@@ -453,19 +453,19 @@ public:
   }
 
   // note: may not has a node ( may be at end of iteration ).
-  node_reference    RNodeEl() const _STLP_NOTHROW
+  node_reference    RNodeEl() const _BIEN_NOTHROW
   {
     return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
-  link_reference    RLinkEl() const _STLP_NOTHROW
+  link_reference    RLinkEl() const _BIEN_NOTHROW
   {
     return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
-  pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
+  pair< link_pointer, node_pointer >  PairCur() const _BIEN_NOTHROW
   {
     return pair< link_pointer, node_pointer >( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
   }

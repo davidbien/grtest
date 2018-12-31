@@ -6,6 +6,10 @@
 // This module implements an input iterator for graphs.
 
 #include <stdio.h>
+#ifndef __DGRAPH_USE_STLPORT
+#include <forward_list>
+#include <unordered_map>
+#endif //__DGRAPH_USE_STLPORT
 
 #define __GR_INPT_INITSIZENODES _GR_HASH_INITSIZENODES
 #define __GR_INPT_INITSIZELINKS _GR_HASH_INITSIZELINKS
@@ -16,7 +20,7 @@
   //  currently using exceptions for error propagation.
   // Seems to make sense when reading streams.
 
-#if defined( _STLP_USE_EXCEPTIONS )
+#if !defined( __DGRAPH_USE_STLPORT ) || defined( _BIEN_USE_EXCEPTIONS )
 //    !defined( __GR_DONTTHROWBADGRAPHERRORS )
 #define __GR_THROWBADGRAPHSTREAMERRORS
 #else
@@ -86,10 +90,19 @@ public:
   typedef _TyGraphLinkBase *                        _TyUnfinishedLink;
 
 #ifdef __GR_DSIN_USEHASH
+#ifdef __DGRAPH_USE_STLPORT
   typedef hash_map< _TyGraphNodeBaseReadPtr, _TyUnfinishedNode, _gr_hash_ptr< _TyGraphNodeBaseReadPtr >,
                     equal_to< _TyGraphNodeBaseReadPtr >, t_TyAllocator > _TyUnfinishedNodes;
   typedef hash_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, _gr_hash_ptr< _TyGraphLinkBaseReadPtr >,
                     equal_to< _TyGraphLinkBaseReadPtr >, t_TyAllocator > _TyUnfinishedLinks;
+#else __DGRAPH_USE_STLPORT
+  typedef typename _Alloc_traits< typename unordered_map< _TyGraphNodeBaseReadPtr, _TyUnfinishedNode >::value_type, _TyAllocatorAsPassed >::allocator_type _TyAllocatorGraphNodeMap;
+  typedef unordered_map< _TyGraphNodeBaseReadPtr, _TyUnfinishedNode, std::hash< _TyGraphNodeBaseReadPtr >,
+	  std::equal_to< _TyGraphNodeBaseReadPtr >, _TyAllocatorGraphNodeMap > _TyUnfinishedNodes;
+  typedef typename _Alloc_traits< typename unordered_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink >::value_type, _TyAllocatorAsPassed >::allocator_type _TyAllocatorGraphLinkMap;
+  typedef unordered_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, std::hash< _TyGraphLinkBaseReadPtr >,
+	  std::equal_to< _TyGraphLinkBaseReadPtr >, _TyAllocatorGraphLinkMap > _TyUnfinishedLinks;
+#endif __DGRAPH_USE_STLPORT
   static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_INPT_INITSIZENODES;
   static const typename _TyUnfinishedLinks::size_type ms_stInitSizeLinks = __GR_INPT_INITSIZELINKS;
 #else //__GR_DSIN_USEHASH
@@ -108,9 +121,14 @@ public:
   _TyUnfinishedLinks  m_linksUnfinishedDown;
   _TyUnfinishedLinks  m_linksUnfinishedUp;
 
-  // This slist shared with the forward iterator ( _gr_gitr.h ) code:
+  // This slist/forward_list shared with the forward iterator ( _gr_gitr.h ) code:
   typedef _TyGraphLinkBase *                        _TyIterationCtxt;
+#ifdef __DGRAPH_USE_STLPORT
   typedef slist< _TyIterationCtxt, t_TyAllocator >  _TyContexts;
+#else __DGRAPH_USE_STLPORT
+  typedef typename _Alloc_traits< typename forward_list< _TyIterationCtxt >::value_type, t_TyAllocator >::allocator_type _TyAllocatorListContexts;
+  typedef forward_list< _TyIterationCtxt, _TyAllocatorListContexts >  _TyContexts;
+#endif __DGRAPH_USE_STLPORT
   typedef typename _TyContexts::iterator            _TyContextIter;
   typedef typename _TyContexts::value_type          _TyContextValType;
 
@@ -268,30 +286,30 @@ public:
     _ClearNodeArray();
   }
   
-  bool FAtBeg() const _STLP_NOTHROW
+  bool FAtBeg() const _BIEN_NOTHROW
     {
       return !PGNBCur() && !PGLBCur() && !m_fProcessedGraphFooter;
     }
-  bool FAtEnd() const _STLP_NOTHROW
+  bool FAtEnd() const _BIEN_NOTHROW
     {
       return !PGNBCur() && !PGLBCur() && m_fProcessedGraphFooter;
     }
 
-  _TyGraphNodeBase *  PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
-  _TyGraphLinkBase *  PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
+  _TyGraphNodeBase *  PGNBCur() const _BIEN_NOTHROW { return m_pgnbCur; }
+  _TyGraphLinkBase *  PGLBCur() const _BIEN_NOTHROW { return m_pglbCur; }
 
 protected:
 
-  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _STLP_NOTHROW
+  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _BIEN_NOTHROW
     {
       m_pgnbCur = _pgnb;
     }
-  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _STLP_NOTHROW
+  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _BIEN_NOTHROW
     {
       m_pglbCur = _pglb;
     }
 
-  void _ClearNodeArray() _STLP_NOTHROW
+  void _ClearNodeArray() _BIEN_NOTHROW
     {
       if ( m_punStart )
       {
@@ -299,7 +317,7 @@ protected:
       }
     }
 
-  _TyUnfinishedLinks &  RULGet( bool _fDirectionDown ) _STLP_NOTHROW
+  _TyUnfinishedLinks &  RULGet( bool _fDirectionDown ) _BIEN_NOTHROW
   {
     return _fDirectionDown ? m_linksUnfinishedDown : m_linksUnfinishedUp;
   }
@@ -313,7 +331,7 @@ protected:
     _TyStreamPos  sp;
     _Tell( sp );
 
-    _STLP_TRY
+    _BIEN_TRY
     {
       // We check for both context and direction switches so that an input iterator can be kept
       //  "inline" with a forward iterator - this could allow some iteresting transformations:
@@ -322,7 +340,7 @@ protected:
         _Tell( sp ); // Each successful read of a context or direction advances the state.
       }
     }
-    _STLP_UNWIND( _Seek( sp ) );
+    _BIEN_UNWIND( _Seek( sp ) );
   }
 
   bool  _FReadOne()
@@ -337,7 +355,7 @@ protected:
       SetPGNBCur( m_pglbPopContext->PGNBRelation( !m_fDirectionDown ) );
       SetPGLBCur( m_pglbPopContext );
     }
-    _STLP_TRY
+    _BIEN_TRY
     {
       typename _binary_rep_tokens< __false_type >::_TyToken uc;
       m_ris._ReadToken( &uc );
@@ -417,7 +435,7 @@ protected:
 
       m_pglbPopContext = 0; // Successful processed the context pop.
     }
-    _STLP_UNWIND( if ( m_pglbPopContext )
+    _BIEN_UNWIND( if ( m_pglbPopContext )
                   {
                     SetPGNBCur( pgnbSave );
                     SetPGLBCur( pglbSave );
@@ -470,7 +488,7 @@ protected:
     _ProcessUnfinishedNodesNoThrow();
   }
 
-  void _ProcessUnfinishedNodesNoThrow() _STLP_NOTHROW
+  void _ProcessUnfinishedNodesNoThrow() _BIEN_NOTHROW
   {
     // NO THROWING WITHIN THIS METHOD - loss of state.
     m_punEnd = m_punStart + m_nodesUnfinished.size();
@@ -600,7 +618,7 @@ protected:
   }
 
   void _InsertNewNodeNoThrow( _TyGraphNodeBase * _pgnbNew,
-                              _TyGraphLinkBase ** _ppglbPos ) _STLP_NOTHROW
+                              _TyGraphLinkBase ** _ppglbPos ) _BIEN_NOTHROW
   {
     if ( !m_pgnbNewRoot )
     {
@@ -805,14 +823,14 @@ protected:
       //  {m_pglbConstructedEl}.
     }
     // Need to protect {m_pglbConstructedEl} - must zero if we throw from here on out.
-    _STLP_TRY
+    _BIEN_TRY
     {
       // Read the footer:
       _ReadLinkFooter( 0 );
     }
     // Since we can throw after constructing the link we need to revert state.
     // Derived should accept zero.
-    _STLP_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
+    _BIEN_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
                     m_pglbConstructedEl = 0 ) );
   }
 
@@ -853,12 +871,12 @@ protected:
         m_pglbConstructedEl = vtUL.second;  // construction now owned by this object.
       }
       // Need to protect {m_pglbConstructedEl} - must zero if we throw from here on out.
-      _STLP_TRY
+      _BIEN_TRY
       {
         _ReadLinkFooter( &vtUL );
       }
       // restore state - must accept null:
-      _STLP_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
+      _BIEN_UNWIND( ( (this->*m_pmfnDestructLinkEl)( m_pglbConstructedEl ),
                       m_pglbConstructedEl = 0 ) );
     }
     

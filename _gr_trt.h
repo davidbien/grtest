@@ -17,6 +17,10 @@
 // Full thread-safety could ( and will ) be implemented as an alternate set of
 //  graph base classes ( as described above ).
 
+#ifndef __DGRAPH_USE_STLPORT
+#include "_aloctrt.h"
+#endif //!__DGRAPH_USE_STLPORT
+
 #include "_gr_alst.h"
 #include "_gr_iter.h"
 #include "_gr_type.h"

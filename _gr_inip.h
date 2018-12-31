@@ -85,25 +85,25 @@ public:
   {
   }
   
-  bool FAtBeg() const _STLP_NOTHROW
+  bool FAtBeg() const _BIEN_NOTHROW
   {
     return !PGNBCur() && !PGLBCur() && !m_fProcessedGraphFooter;
   }
-  bool FAtEnd() const _STLP_NOTHROW
+  bool FAtEnd() const _BIEN_NOTHROW
   {
     return !PGNBCur() && !PGLBCur() && m_fProcessedGraphFooter;
   }
 
-  _TyGraphNodeBase *  PGNBCur() const _STLP_NOTHROW { return m_pgnbCur; }
-  _TyGraphLinkBase *  PGLBCur() const _STLP_NOTHROW { return m_pglbCur; }
+  _TyGraphNodeBase *  PGNBCur() const _BIEN_NOTHROW { return m_pgnbCur; }
+  _TyGraphLinkBase *  PGLBCur() const _BIEN_NOTHROW { return m_pglbCur; }
 
 protected:
 
-  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _STLP_NOTHROW
+  void SetPGNBCur( _TyGraphNodeBase * _pgnb ) _BIEN_NOTHROW
   {
     m_pgnbCur = _pgnb;
   }
-  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _STLP_NOTHROW
+  void SetPGLBCur( _TyGraphLinkBase * _pglb ) _BIEN_NOTHROW
   {
     m_pglbCur = _pglb;
   }
@@ -124,7 +124,7 @@ protected:
     SetPGNBCur( _pgnb );
     SetPGLBCur( _pglb );
 
-    _STLP_TRY
+    _BIEN_TRY
     {
       // We check for both context and direction switches so that an input iterator can be kept
       //  "inline" with a forward iterator - this could allow some iteresting transformations:
@@ -133,7 +133,7 @@ protected:
         _Tell( sp ); // Each successful read of a context or direction advances the state.
       }
     }
-    _STLP_UNWIND( _Seek( sp ) );
+    _BIEN_UNWIND( _Seek( sp ) );
   }
 
   bool  _FReadOne()
@@ -366,29 +366,29 @@ public:
   {
   }
 
-  _TyGraphNodeCQ *  PGNCur() const _STLP_NOTHROW
+  _TyGraphNodeCQ *  PGNCur() const _BIEN_NOTHROW
   {
     return const_cast< _TyGraphNodeCQ * >( static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
-  _TyGraphLinkCQ *  PGLCur() const _STLP_NOTHROW
+  _TyGraphLinkCQ *  PGLCur() const _BIEN_NOTHROW
   {
     return const_cast< _TyGraphLinkCQ * >( static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // note: may not has a node ( may be at end of iteration ).
-  node_reference    RNodeEl() const _STLP_NOTHROW
+  node_reference    RNodeEl() const _BIEN_NOTHROW
   {
     return const_cast< node_reference >( *static_cast< _TyGraphNode * >( _TyBase::PGNBCur() ) );
   }
   // note: may not have a link!
-  link_reference    RLinkEl() const _STLP_NOTHROW
+  link_reference    RLinkEl() const _BIEN_NOTHROW
   {
     return const_cast< link_reference >( *static_cast< _TyGraphLink * >( _TyBase::PGLBCur() ) );
   }
 
   // The way this works: if the link_pointer is non-null then the iteration is currently
   //  at a link. Otherwise the iteration either at node_pointer or at the end() if node_pointer null.
-  pair< link_pointer, node_pointer >  PairCur() const _STLP_NOTHROW
+  pair< link_pointer, node_pointer >  PairCur() const _BIEN_NOTHROW
   {
     return pair< link_pointer, node_pointer >
       ( _TyBase::PGLBCur() ? &RLinkEl() : 0, _TyBase::PGNBCur() ? &RNodeEl() : 0 );
