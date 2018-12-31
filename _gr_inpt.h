@@ -95,14 +95,14 @@ public:
                     equal_to< _TyGraphNodeBaseReadPtr >, t_TyAllocator > _TyUnfinishedNodes;
   typedef hash_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, _gr_hash_ptr< _TyGraphLinkBaseReadPtr >,
                     equal_to< _TyGraphLinkBaseReadPtr >, t_TyAllocator > _TyUnfinishedLinks;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename unordered_map< _TyGraphNodeBaseReadPtr, _TyUnfinishedNode >::value_type, _TyAllocatorAsPassed >::allocator_type _TyAllocatorGraphNodeMap;
   typedef unordered_map< _TyGraphNodeBaseReadPtr, _TyUnfinishedNode, std::hash< _TyGraphNodeBaseReadPtr >,
 	  std::equal_to< _TyGraphNodeBaseReadPtr >, _TyAllocatorGraphNodeMap > _TyUnfinishedNodes;
   typedef typename _Alloc_traits< typename unordered_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink >::value_type, _TyAllocatorAsPassed >::allocator_type _TyAllocatorGraphLinkMap;
   typedef unordered_map< _TyGraphLinkBaseReadPtr, _TyUnfinishedLink, std::hash< _TyGraphLinkBaseReadPtr >,
 	  std::equal_to< _TyGraphLinkBaseReadPtr >, _TyAllocatorGraphLinkMap > _TyUnfinishedLinks;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_INPT_INITSIZENODES;
   static const typename _TyUnfinishedLinks::size_type ms_stInitSizeLinks = __GR_INPT_INITSIZELINKS;
 #else //__GR_DSIN_USEHASH
@@ -125,10 +125,10 @@ public:
   typedef _TyGraphLinkBase *                        _TyIterationCtxt;
 #ifdef __DGRAPH_USE_STLPORT
   typedef slist< _TyIterationCtxt, t_TyAllocator >  _TyContexts;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename forward_list< _TyIterationCtxt >::value_type, t_TyAllocator >::allocator_type _TyAllocatorListContexts;
   typedef forward_list< _TyIterationCtxt, _TyAllocatorListContexts >  _TyContexts;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   typedef typename _TyContexts::iterator            _TyContextIter;
   typedef typename _TyContexts::value_type          _TyContextValType;
 

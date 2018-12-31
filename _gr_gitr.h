@@ -4,17 +4,17 @@
 #include <functional>
 #ifdef __DGRAPH_USE_STLPORT
 #include <slist>
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
 #include <forward_list>
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 #define _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
 #ifdef __DGRAPH_USE_STLPORT
 #include <hash_set>
 #include <hash_map>
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
 #include <unordered_set>
 #include <unordered_map>
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 
 // _gr_gitr.h
 
@@ -135,7 +135,7 @@ template < class t_TyGraphEl >
 struct _gr_select_always 
 #ifdef __DGRAPH_USE_STLPORT
 	: public unary_function< t_TyGraphEl const *, bool >
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 {
   bool  operator () ( t_TyGraphEl const * ) const _BIEN_NOTHROW
   {
@@ -148,7 +148,7 @@ template <  class t_TyGraphEl,
 struct _gr_select_value 
 #ifdef __DGRAPH_USE_STLPORT
 	: public unary_function< t_TyGraphEl const *, bool >
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 {
 private:
   typedef _gr_select_value< t_TyGraphEl, t_TyCompare >  _TyThis;
@@ -183,7 +183,7 @@ template <  class t_TyGraphEl,
 struct _gr_select_value_modifiable 
 #ifdef __DGRAPH_USE_STLPORT
 	: public unary_function< t_TyGraphEl const *, bool >
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 {
 private:
   typedef _gr_select_value_modifiable< t_TyGraphEl, t_TyCompare > _TyThis;
@@ -259,11 +259,11 @@ public:
   #ifdef __DGRAPH_USE_STLPORT
   typedef hash_map< t_TyGraphNodeBase*, _TyUnfinishedNodeHashEl, _gr_hash_ptr< t_TyGraphNodeBase* >,
                     equal_to< t_TyGraphNodeBase* >, _TyAllocator > _TyUnfinishedNodes;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename unordered_map< t_TyGraphNodeBase*, _TyUnfinishedNodeHashEl >::value_type, _TyAllocator >::allocator_type _TyAllocatorGraphNodeMap;
   typedef unordered_map< t_TyGraphNodeBase*, _TyUnfinishedNodeHashEl, std::hash< t_TyGraphNodeBase* >,
 	  std::equal_to< t_TyGraphNodeBase* >, _TyAllocatorGraphNodeMap > _TyUnfinishedNodes;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   static const typename _TyUnfinishedNodes::size_type ms_stInitSizeNodes = __GR_GITR_INITSIZENODES;
   typedef typename _TyUnfinishedNodes::iterator    _TyUNIter;
   typedef typename _TyUnfinishedNodes::value_type  _TyUNValType;
@@ -281,11 +281,11 @@ public:
 #ifdef __DGRAPH_USE_STLPORT
   typedef hash_set< t_TyGraphLinkBase*, _gr_hash_ptr< t_TyGraphLinkBase* >,
                     equal_to< t_TyGraphLinkBase* >, t_TyAllocator > _TyVisitedLinks;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename unordered_set< t_TyGraphLinkBase* >::value_type, _TyAllocator >::allocator_type _TyAllocatorGraphLinkSet;
   typedef unordered_set< t_TyGraphLinkBase*, std::hash< t_TyGraphLinkBase* >,
 	  std::equal_to< t_TyGraphLinkBase* >, _TyAllocatorGraphLinkSet > _TyVisitedLinks;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
   static const typename _TyVisitedLinks::size_type ms_stInitSizeLinks = __GR_GITR_INITSIZELINKS;
   typedef typename _TyVisitedLinks::iterator       _TyVLIter;
   typedef typename _TyVisitedLinks::value_type     _TyVLValType;
@@ -300,10 +300,10 @@ public:
 
 #ifdef __DGRAPH_USE_STLPORT
   typedef slist< _TyIterationCtxt, t_TyAllocator >  _TyContexts;
-#else __DGRAPH_USE_STLPORT
+#else //__DGRAPH_USE_STLPORT
   typedef typename _Alloc_traits< typename forward_list< _TyIterationCtxt >::value_type, t_TyAllocator >::allocator_type _TyAllocatorListContexts;
   typedef forward_list< _TyIterationCtxt, _TyAllocatorListContexts >  _TyContexts;
-#endif __DGRAPH_USE_STLPORT
+#endif //__DGRAPH_USE_STLPORT
 
   typedef typename _TyContexts::iterator    _TyContextIter;
   typedef typename _TyContexts::value_type  _TyContextValType;
