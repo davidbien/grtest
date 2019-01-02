@@ -5,7 +5,7 @@ $(info $(HOME))
 #CXXFLAGS = -ftrack-macro-expansion -fexceptions -fuse-cxa-atexit -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -I /usr/include/c++/7.3.0 -g
 
 CXX := c++
-CXXFLAGS = -frtti -fexceptions -fcxx-exceptions -fuse-cxa-atexit -pthread -D_REENTRANT -fdelayed-template-parsing -I $(HOME)/dv/bienutil -I $(HOME)/dv -I /usr/include/c++/7.3.0 -g
+CXXFLAGS = -std=gnu++17 -pthread -D_REENTRANT -fdelayed-template-parsing -I $(HOME)/dv/bienutil -I $(HOME)/dv -I /usr/include/c++/7.3.0 -g
 #-D__NDEBUG_THROW -D__DEBUG_THROW_VERBOSE 
 
 #CXX := /usr/local/llvm70/bin/clang++
