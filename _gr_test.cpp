@@ -1,5 +1,6 @@
 
 
+
 // _gr_test.cpp
 
 // Graph test stuff.
@@ -377,6 +378,12 @@ main( int argc, char ** argv )
 		usage( argv[0] );
 		return -1;
 	}
+
+#ifdef _GR_TEST_TEST_LEAK_SANITIZER
+	char * cpLeakNew = new char;
+	char * cpLeakNewArray = new char[ 121 ];
+	char * cpLeakMalloc = (char*)malloc( 1 );
+#endif //_GR_TEST_TEST_LEAK_SANITIZER
 
 	int	iNumNodes = atoi( argv[1] );
 	if ( iNumNodes <= 0 )
