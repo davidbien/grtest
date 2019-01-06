@@ -548,7 +548,7 @@ main( int argc, char ** argv )
 			_TyGraphDoubleSafe gdCopy;
 			while ( !test_copy( gdCopy, g, &tStart ) )
 				;
-#ifndef !__GR_TEST_NOIOSTREAMS
+#ifndef __GR_TEST_NOIOSTREAMS
       test_dump( gdCopy, "dgraph.txt", &tStart );
 #endif //!__GR_TEST_NOIOSTREAMS
       typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
