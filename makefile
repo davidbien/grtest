@@ -10,7 +10,8 @@ $(info $(HOME))
 # MSAN_OPTIONS=poison_in_dtor=1
 # ASAN_OPTIONS=detect_leaks=1
 # ASAN_OPTIONS=detect_stack_use_after_return=1
-CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor
+#  -D__GR_TEST_NOIOSTREAMS because the IO streams are apparently offending the MEMSAN a bunch.
+CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
 
 CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
 
