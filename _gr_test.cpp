@@ -59,14 +59,23 @@ print_time( const char * _cpMesg, time_t * _ptStart )
 {
 	time_t	tCur;
 	time( &tCur );
+#ifdef __GR_TEST_NOIOSTREAMS
+  printf("[%d]:%s", (int)ptrdiff_t(tCur - *_ptStart), _cpMesg);
+  fflush(stdout);
+#else //__GR_TEST_NOCOUT
 	cout << "[" << ptrdiff_t( tCur - *_ptStart ) << "]:" << _cpMesg;
 	cout.flush();
+#endif //__GR_TEST_NOCOUT
 }
 
 void
 usage( char * _cpApp )
 {
-	cerr << "main(): usage\n" << _cpApp << " <num nodes> <num extra links> <rand seed>\n";
+#ifdef __GR_TEST_NOIOSTREAMS
+  fprintf(stderr, "main(): usage\n%s <num nodes> <num extra links> <rand seed>\n", _cpApp);
+#else //__GR_TEST_NOIOSTREAMS
+  cerr << "main(): usage\n" << _cpApp << " <num nodes> <num extra links> <rand seed>\n";
+#endif //__GR_TEST_NOIOSTREAMS
 }
 
 template < class t_TyGraphLeft, class t_TyGraphRight >
@@ -95,10 +104,12 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 	else
 	{
 		print_time( "test_compare(): Compare FAILED.\n", _ptStart );
-		fstream fsDumpRight( "right.txt", ios::out );
+#ifndef __GR_TEST_NOIOSTREAMS
+    fstream fsDumpRight( "right.txt", ios::out );
 		_rgRight.dump( fsDumpRight );
 		fstream fsDumpLeft( "left.txt", ios::out );
 		_rgLeft.dump( fsDumpLeft );
+#endif //!__GR_TEST_NOIOSTREAMS
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.set_on( fWasOn );
 #endif //!__NDEBUG_THROW
@@ -141,6 +152,7 @@ test_copy(  t_TyGraphDst & _rgDst,
 	return false;
 }
 
+#ifndef __GR_TEST_NOIOSTREAMS
 template < class t_TyGraph >
 bool
 try_dump( t_TyGraph const & _rg, ostream & _ros )
@@ -202,6 +214,7 @@ test_dump( t_TyGraph const & _rg, const char * _cpFileName, time_t * _ptStart )
 	_throw_object_base::ms_tsb.clear_hit_map();
 #endif //!__NDEBUG_THROW
 }
+#endif //!__GR_TEST_NOIOSTREAMS
 
 template < class t_TyGraph >
 bool
@@ -511,8 +524,10 @@ main( int argc, char ** argv )
 			_TyGraph &	gCopy = g;
 #endif //__TEST_COPY
 
-			test_dump( gCopy, "graph.txt", &tStart );
-			typedef dgraph< int, int, true, _TyAllocator > _TyGraphSafe;
+#ifndef __GR_TEST_NOIOSTREAMS
+      test_dump( gCopy, "graph.txt", &tStart );
+#endif //!__GR_TEST_NOIOSTREAMS
+      typedef dgraph< int, int, true, _TyAllocator > _TyGraphSafe;
 			_TyGraphSafe gsCopyLoaded;
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.reset_hit_once();
@@ -526,8 +541,10 @@ main( int argc, char ** argv )
 			_TyGraphDoubleSafe gdCopy;
 			while ( !test_copy( gdCopy, g, &tStart ) )
 				;
-			test_dump( gdCopy, "dgraph.txt", &tStart );
-			typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
+#ifndef !__GR_TEST_NOIOSTREAMS
+      test_dump( gdCopy, "dgraph.txt", &tStart );
+#endif //!__GR_TEST_NOIOSTREAMS
+      typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
 			_TyGraphDouble gdCopyLoaded;
 			while( !test_saveload( gdCopy, gdCopyLoaded, "dgraph.bin", &tStart ) )
 				;
