@@ -11,16 +11,17 @@ $(info $(HOME))
 # ASAN_OPTIONS=detect_leaks=1
 # ASAN_OPTIONS=detect_stack_use_after_return=1
 #  -D__GR_TEST_NOIOSTREAMS because the IO streams are apparently offending the MEMSAN a bunch.
-CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
 
-CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
+CXXFLAGS_BASE = -std=gnu++17 -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -D_STLP_MEMBER_TEMPLATES
 
 #CXX := g++
-#CXXFLAGS = -std=gnu++17 -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -I /usr/include/c++/7.3.0 -g
+#CXXFLAGS = $(CXXFLAGS_BASE) -I /usr/include/c++/7.3.0 -g
 
-CXX := clang70
+CXX := clang 
 CC := cc
-CXXFLAGS = $(CLANGSANITIZE) -std=gnu++17 -pthread -D_REENTRANT -fdelayed-template-parsing -I $(HOME)/dv/bienutil -I $(HOME)/dv -g 
+CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
+CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
+CXXFLAGS = $(CLANGSANITIZE) $(CXXFLAGS_BASE) -fdelayed-template-parsing -g
 # -D__NDEBUG_THROW 
 # -D__DEBUG_THROW_VERBOSE 
 
