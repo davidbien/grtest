@@ -2,6 +2,13 @@
 
 $(info $(HOME))
 
+CXXFLAGS_BASE = -std=gnu++17 -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -D_STLP_MEMBER_TEMPLATES
+CC := cc
+
+#CXX := g++
+#CXXFLAGS = $(CXXFLAGS_BASE) -I /usr/include/c++/7.3.0 -g
+
+CXX := clang 
 # ASAN_OPTIONS=check_initialization_order=1
 # ASAN_OPTIONS=detect_leaks=1
 # ASAN_OPTIONS=detect_stack_use_after_return=1
@@ -11,14 +18,6 @@ $(info $(HOME))
 # ASAN_OPTIONS=detect_leaks=1
 # ASAN_OPTIONS=detect_stack_use_after_return=1
 #  -D__GR_TEST_NOIOSTREAMS because the IO streams are apparently offending the MEMSAN a bunch.
-
-CXXFLAGS_BASE = -std=gnu++17 -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -D_STLP_MEMBER_TEMPLATES
-
-#CXX := g++
-#CXXFLAGS = $(CXXFLAGS_BASE) -I /usr/include/c++/7.3.0 -g
-
-CXX := clang 
-CC := cc
 CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
 CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
 CXXFLAGS = $(CLANGSANITIZE) $(CXXFLAGS_BASE) -fdelayed-template-parsing -g
