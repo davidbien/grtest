@@ -3,6 +3,8 @@
 $(info $(HOME))
 
 CXXFLAGS_DEFINES = -D_REENTRANT -D_STLP_MEMBER_TEMPLATES -D_STLP_USE_NAMESPACES -D_STLP_CLASS_PARTIAL_SPECIALIZATION -D_STLP_FUNCTION_TMPL_PARTIAL_ORDER
+# -D__NDEBUG_THROW 
+# -D__DEBUG_THROW_VERBOSE 
 CXXFLAGS_INCLUDES = -I $(HOME)/dv/bienutil -I $(HOME)/dv
 CXXFLAGS_BASE = $(CXXFLAGS_DEFINES) $(CXXFLAGS_INCLUDES)
 CXXANDLINKFLAGS_BASE = -std=gnu++17 -pthread -g
@@ -26,8 +28,6 @@ CXX := clang
 #CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
 CXXANDLINKFLAGS = $(CLANGSANITIZE) $(CXXANDLINKFLAGS_BASE)
 CXXFLAGS = $(CXXFLAGS_BASE) -fdelayed-template-parsing $(CXXANDLINKFLAGS)
-# -D__NDEBUG_THROW 
-# -D__DEBUG_THROW_VERBOSE 
 
 #CXX := /usr/local/llvm70/bin/clang++
 #CXXFLAGS = -frtti -fexceptions -fcxx-exceptions -fuse-cxa-atexit -pthread -D_REENTRANT -fdelayed-template-parsing -I $(HOME)/dv/bienutil -I $(HOME)/dv -I /usr/include/c++/7.3.0 -g
