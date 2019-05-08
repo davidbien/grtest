@@ -7,8 +7,10 @@
 # We will use the same compiler for C and CPP files - choose the C and we will choose the CPP and options.
 #CC := gcc
 CC := clang
+#CC := /usr/local/cuda/bin/nvcc
 
-include ../bienutil/makebase.inc
+MAKEBASE = ../bienutil/makebase.mk
+include $(MAKEBASE)
 
 SRCS = _gr_test.cpp dbgthrw.cpp
 
