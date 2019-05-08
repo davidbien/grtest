@@ -29,6 +29,30 @@ struct _iostream_DumpElIO
   }
 };
 
+// Specialize for ostream - default version just writes raw memory:
+template < class t_TyWrite >
+__INLINE void
+_RawWriteGraphEl( ostream & _ros, t_TyWrite const & _rEl )
+{	
+	if ( sizeof( _rEl ) )
+	{
+		_ros.write(	reinterpret_cast< const char* >( &_rEl ), 
+								sizeof( _rEl ) );
+	}
+}
+
+// Specialize for istream - default version just reads raw memory:
+template < class t_TyRead >
+__INLINE void
+_RawReadGraphEl( istream & _ris, t_TyRead & _rEl )
+{	
+	if ( sizeof( _rEl ) )
+	{
+		_ris.read(	reinterpret_cast< char* >( &_rEl ), 
+								sizeof( _rEl ) );
+	}
+}
+
 struct _iostream_RawElIO
 {
   template < class t_TyEl >
@@ -94,18 +118,6 @@ struct _ostream_object
 	}
 };
 
-// Specialize for ostream - default version just writes raw memory:
-template < class t_TyWrite >
-__INLINE void
-_RawWriteGraphEl( ostream & _ros, t_TyWrite const & _rEl )
-{	
-	if ( sizeof( _rEl ) )
-	{
-		_ros.write(	reinterpret_cast< const char* >( &_rEl ), 
-								sizeof( _rEl ) );
-	}
-}
-
 template <  class t_TyInputNodeEl,
             class t_TyInputLinkEl = t_TyInputNodeEl >
 struct _istream_object
@@ -148,18 +160,6 @@ struct _istream_object
     m_ile.Read( m_ris, _rel );
 	}
 };
-
-// Specialize for istream - default version just reads raw memory:
-template < class t_TyRead >
-__INLINE void
-_RawReadGraphEl( istream & _ris, t_TyRead & _rEl )
-{	
-	if ( sizeof( _rEl ) )
-	{
-		_ris.read(	reinterpret_cast< char* >( &_rEl ), 
-								sizeof( _rEl ) );
-	}
-}
 
 __DGRAPH_END_NAMESPACE
 

@@ -14,6 +14,24 @@
 
 __DGRAPH_BEGIN_NAMESPACE
 
+// Specialize for IStream - default version just writes raw memory:
+template < class t_TyWrite >
+__INLINE void
+_RawWriteGraphEl( IStream *& _rs, t_TyWrite const & _rEl )
+{ 
+  // We don't care about partial writes - so no need to check the third param:
+  __ThrowOLEFAIL( _rs->Write( &_rEl, sizeof( _rEl ), 0 ) );
+}
+
+// Specialize for IStream - default version just reads raw memory:
+template < class t_TyRead >
+__INLINE void
+_RawReadGraphEl( IStream *& _rs, t_TyRead & _rEl )
+{ 
+  // We don't care about partial reads - so no need to check the third param:
+  __ThrowOLEFAIL( _rs->Read( &_rEl, sizeof( _rEl ), 0 ) );
+}
+
 struct _IStream_RawElIO
 {
   template < class t_TyEl >
@@ -120,24 +138,6 @@ protected:
     __ThrowOLEFAIL( m_ps->Seek( *(LARGE_INTEGER*)&_sp, STREAM_SEEK_SET, 0 ) );
   }
 };
-
-// Specialize for IStream - default version just writes raw memory:
-template < class t_TyWrite >
-__INLINE void
-_RawWriteGraphEl( IStream *& _rs, t_TyWrite const & _rEl )
-{ 
-  // We don't care about partial writes - so no need to check the third param:
-  __ThrowOLEFAIL( _rs->Write( &_rEl, sizeof( _rEl ), 0 ) );
-}
-
-// Specialize for IStream - default version just reads raw memory:
-template < class t_TyRead >
-__INLINE void
-_RawReadGraphEl( IStream *& _rs, t_TyRead & _rEl )
-{ 
-  // We don't care about partial reads - so no need to check the third param:
-  __ThrowOLEFAIL( _rs->Read( &_rEl, sizeof( _rEl ), 0 ) );
-}
 
 __DGRAPH_END_NAMESPACE
 

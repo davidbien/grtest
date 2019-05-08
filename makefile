@@ -2,11 +2,15 @@
 
 $(info $(HOME))
 
-CXXFLAGS_BASE = -std=gnu++17 -pthread -D_REENTRANT -I $(HOME)/dv/bienutil -I $(HOME)/dv -D_STLP_MEMBER_TEMPLATES
+CXXFLAGS_DEFINES = -D_REENTRANT -D_STLP_MEMBER_TEMPLATES -D_STLP_USE_NAMESPACES -D_STLP_CLASS_PARTIAL_SPECIALIZATION -D_STLP_FUNCTION_TMPL_PARTIAL_ORDER
+CXXFLAGS_INCLUDES = -I $(HOME)/dv/bienutil -I $(HOME)/dv
+CXXFLAGS_BASE = $(CXXFLAGS_DEFINES) $(CXXFLAGS_INCLUDES)
+CXXANDLINKFLAGS_BASE = -std=gnu++17 -pthread -g
 CC := cc
 
 #CXX := g++
-#CXXFLAGS = $(CXXFLAGS_BASE) -I /usr/include/c++/7.3.0 -g
+#CXXANDLINKFLAGS = $(CXXANDLINKFLAGS_BASE)
+#CXXFLAGS = $(CXXFLAGS_BASE) $(CXXANDLINKFLAGS)
 
 CXX := clang 
 # ASAN_OPTIONS=check_initialization_order=1
@@ -18,9 +22,10 @@ CXX := clang
 # ASAN_OPTIONS=detect_leaks=1
 # ASAN_OPTIONS=detect_stack_use_after_return=1
 #  -D__GR_TEST_NOIOSTREAMS because the IO streams are apparently offending the MEMSAN a bunch.
-CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
-CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
-CXXFLAGS = $(CLANGSANITIZE) $(CXXFLAGS_BASE) -fdelayed-template-parsing -g
+#CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor -D__GR_TEST_NOIOSTREAMS
+#CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fsanitize-blacklist=blacklist.txt -fno-omit-frame-pointer
+CXXANDLINKFLAGS = $(CLANGSANITIZE) $(CXXANDLINKFLAGS_BASE)
+CXXFLAGS = $(CXXFLAGS_BASE) -fdelayed-template-parsing $(CXXANDLINKFLAGS)
 # -D__NDEBUG_THROW 
 # -D__DEBUG_THROW_VERBOSE 
 
@@ -31,7 +36,7 @@ CXXFLAGS = $(CLANGSANITIZE) $(CXXFLAGS_BASE) -fdelayed-template-parsing -g
 SRCS = _gr_test.cpp dbgthrw.cpp
 
 gr_test.exe: $(SRCS:.cpp=.o)
-	$(CXX) $(CLANGSANITIZE) -lstdc++ -pthread -g -o gr_test.exe $(SRCS:.cpp=.o)
+	$(CXX) $(CXXANDLINKFLAGS) -lstdc++ -o gr_test.exe $(SRCS:.cpp=.o)
 
 DEPDIR := .d
 $(shell mkdir -p $(DEPDIR) >/dev/null)

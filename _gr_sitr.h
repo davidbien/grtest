@@ -1010,7 +1010,7 @@ protected:
             )
         {
           _ppnsNew.allocate( );
-#ifndef _STLP_USE_EXCEPTIONSPPGPNBGetNth
+#ifndef _STLP_USE_EXCEPTIONS
           if ( !_ppnsNew )
           {
             _DestroyPath( _pppnbTailOld );
