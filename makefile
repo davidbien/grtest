@@ -3,6 +3,7 @@
 # First set MOD_DEFINES to specialized defines for this specific project.
 #MOD_DEFINES = -D__NDEBUG_THROW
 # -D__DEBUG_THROW_VERBOSE 
+#MODTIDYCHECKFLAGS = -modernize-use-using,-performance-unnecessary-copy-initialization,-google-build-using-namespace
 
 # We will use the same compiler for C and CPP files - choose the C and we will choose the CPP and options.
 #CC := gcc
