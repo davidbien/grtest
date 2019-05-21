@@ -14,7 +14,13 @@ include $(MAKEBASE)
 
 SRCS = _gr_test.cpp dbgthrw.cpp
 
+ifeq (1,$(TIDY))
+all: tidy
+# The tidy build will invoke default rules to produce the *.tidy files.
+tidy: $(patsubst %,$(BUILD_DIR)/%.tidy,$(basename $(SRCS)))
+else
+all: $(BUILD_DIR)/gr_test.exe
 $(BUILD_DIR)/gr_test.exe: $(patsubst %,$(BUILD_DIR)/%.o,$(basename $(SRCS)))
 	$(CXX) $(LINKFLAGS) -o $(BUILD_DIR)/gr_test.exe $(patsubst %,$(BUILD_DIR)/%.o,$(basename $(SRCS)))
-
 include $(wildcard $(patsubst %,$(DEPDIR)/%.d,$(basename $(SRCS))))
+endif
