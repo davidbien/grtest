@@ -10,8 +10,31 @@
 CC := clang
 #CC := /usr/local/cuda/bin/nvcc
 
+ifneq (1,$(NDEBUG))
+ASAN_OPTIONS=check_initialization_order=1
+ASAN_OPTIONS=detect_leaks=1
+ASAN_OPTIONS=detect_stack_use_after_return=1
+CLANG_ADDR_SANITIZE = -fsanitize=address -fsanitize-address-use-after-scope
+
+# MSAN_OPTIONS=poison_in_dtor=1
+# ASAN_OPTIONS=detect_leaks=1
+# ASAN_OPTIONS=detect_stack_use_after_return=1
+#CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor
+CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fno-omit-frame-pointer
+#-fsanitize-blacklist=blacklist.txt 
+endif # !NDEBUG
+
 MAKEBASE = ../bienutil/makebase.mk
 include $(MAKEBASE)
+
+# tcmalloc performs about 10% better when running dgraph unit testing. nice.
+ifneq (1,$(NDEBUG))
+MOD_LIBS += -ltcmalloc_debug
+else
+#MOD_LIBS += /usr/lib/x86_64-linux-gnu/libtcmalloc.so.4.3.0
+#MOD_LIBS += /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 -- minimal seems a bit slower.
+MOD_LIBS += -ltcmalloc
+endif
 
 SRCS = _gr_test.cpp dbgthrw.cpp
 
