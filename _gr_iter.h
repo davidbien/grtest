@@ -35,7 +35,7 @@ public:
   { }
 
   template < class _TyNodeIter >
-  _graph_node_iterator_base_notsafe( const _TyNodeIter & _r, __false_type ) _BIEN_NOTHROW
+  _graph_node_iterator_base_notsafe( const _TyNodeIter & _r, std::false_type ) _BIEN_NOTHROW
     : m_pgnbCur( 0 )
   { }
 
@@ -300,7 +300,7 @@ public:
   { }
 
   template < class _TyLinkPosIter >
-  _graph_link_pos_iterator_base_notsafe( const _TyLinkPosIter & _r, __false_type ) _BIEN_NOTHROW
+  _graph_link_pos_iterator_base_notsafe( const _TyLinkPosIter & _r, std::false_type ) _BIEN_NOTHROW
     : m_ppglbCur( 0 )
   { }
 
@@ -649,7 +649,7 @@ public:
   { }
 
   template < class t_TyLinkIter >
-  _graph_link_ident_iterator_base_notsafe( const t_TyLinkIter & _r, __false_type ) _BIEN_NOTHROW
+  _graph_link_ident_iterator_base_notsafe( const t_TyLinkIter & _r, std::false_type ) _BIEN_NOTHROW
     : m_pglbCur( 0 )
   { }
 
@@ -1612,9 +1612,9 @@ public:
   // Obtain the path node allocator from iterator but do not copy the nodes:
 #ifdef _STLP_MEMBER_TEMPLATES
   template < class _TyPathIter >
-  explicit _graph_path_iterator_base_notsafe( _TyPathIter const & _r, __false_type )
+  explicit _graph_path_iterator_base_notsafe( _TyPathIter const & _r, std::false_type )
 #else //_STLP_MEMBER_TEMPLATES
-  explicit _graph_path_iterator_base_notsafe( _TyThis const & _r, __false_type )
+  explicit _graph_path_iterator_base_notsafe( _TyThis const & _r, std::false_type )
 #endif //_STLP_MEMBER_TEMPLATES
     : _TyBaseAllocPathNode( _r._GetPNBAllocatorAsPassed() )
   {

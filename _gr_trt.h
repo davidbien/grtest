@@ -399,18 +399,18 @@ public:
 #if 1
   typedef _graph_iterator_pass2< typename _TyConstBase::_TyFIsConstIterator, typename 
     _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIter;
-  typedef _graph_iterator_pass2< __false_type, typename 
+  typedef _graph_iterator_pass2< std::false_type, typename 
     _TySafetyBase::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIterNonConst;
-  typedef _graph_iterator_pass2< __true_type, typename 
+  typedef _graph_iterator_pass2< std::true_type, typename 
     _graph_iterator_traits_safety_base< t_TyGraphTraits, t_fIsSafeIterator >::template get_iter_base_class<_TyGraphNodeIteratorType>::_TyBaseClass > _TyPassIterConst;
 #else //1
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TySafetyBase::_TyGraphLinkBase, 
     _TyConstBase::_TyFIsConstIterator, _TyIterBase >                _TyPassIter;
   // Const and non-const types - keeps implementation independent:
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __false_type, _TyIterBase >                       _TyPassIterNonConst;
+                                std::false_type, _TyIterBase >                       _TyPassIterNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __true_type, _TyIterBase >                        _TyPassIterConst;
+                                std::true_type, _TyIterBase >                        _TyPassIterConst;
 #endif //0
 
   // rebindability:
@@ -487,9 +487,9 @@ public:
                                 _TyFIsConstIterator, _TyIterBase >                  _TyPassIter;
   // Const and non-const types - keeps implementation independent:
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __false_type, _TyIterBase >                         _TyPassIterNonConst;
+                                std::false_type, _TyIterBase >                         _TyPassIterNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __true_type, _TyIterBase >                          _TyPassIterConst;
+                                std::true_type, _TyIterBase >                          _TyPassIterConst;
 
   // rebindability:
   template < class t__TyIteratorType > struct rebind_type
@@ -552,9 +552,9 @@ public:
                                 _TyFIsConstIterator, _TyIterBase >                  _TyPassIter;
   // Const and non-const types - keeps implementation independent:
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __false_type, _TyIterBase >                         _TyPassIterNonConst;
+                                std::false_type, _TyIterBase >                         _TyPassIterNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeBase, _TyGraphLinkBase, 
-                                __true_type, _TyIterBase >                          _TyPassIterConst;
+                                std::true_type, _TyIterBase >                          _TyPassIterConst;
 
   // re-bindability:
   template < class t__TyIteratorType > struct rebind_type
@@ -618,9 +618,9 @@ public:
                                       _TyFIsConstIterator, _TyIterBase >          _TyPassIter;
   // Const and non-const types - keeps implementation independent:
   typedef _graph_path_iterator_pass<  _TyPathNodeBase, _TyPathNodeAllocatorAsPassed, 
-                                      __false_type, _TyIterBase >                 _TyPassIterNonConst;
+                                      std::false_type, _TyIterBase >                 _TyPassIterNonConst;
   typedef _graph_path_iterator_pass<  _TyPathNodeBase, _TyPathNodeAllocatorAsPassed, 
-                                      __true_type, _TyIterBase >                  _TyPassIterConst;
+                                      std::true_type, _TyIterBase >                  _TyPassIterConst;
 
   // re-bindability:
   template < class t__TyIteratorType > struct rebind_type
@@ -799,15 +799,15 @@ public:
 
   // Iterator position - this identifies a point of iteration for the forward iter ( below ).
   typedef _graph_iter<  _TyGraphNode, _TyGraphLink, 
-                        _TyGraphFwdIterPosBase, __true_type >     _TyGraphFwdIterPosConst;
+                        _TyGraphFwdIterPosBase, std::true_type >     _TyGraphFwdIterPosConst;
   typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                        _TyGraphFwdIterPosBase, __false_type >    _TyGraphFwdIterPosNonConst;
+                        _TyGraphFwdIterPosBase, std::false_type >    _TyGraphFwdIterPosNonConst;
 
   // forward iterator type that iterates entire graph:
   typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                        _TyGraphFwdIterBase, __true_type >        _TyGraphFwdIterConst;
+                        _TyGraphFwdIterBase, std::true_type >        _TyGraphFwdIterConst;
   typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                        _TyGraphFwdIterBase, __false_type >       _TyGraphFwdIterNonConst;
+                        _TyGraphFwdIterBase, std::false_type >       _TyGraphFwdIterNonConst;
 
   // Now a template that allows access to the link selection forward iterator:
   template < class t_TySelectLink >
@@ -815,17 +815,17 @@ public:
   {
     // Selection position types:
     typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                          _TyGraphFwdIterPosBase, __false_type,
+                          _TyGraphFwdIterPosBase, std::false_type,
                           true, t_TySelectLink >                  _TyGraphFwdIterPosSelectNonConst;
     typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                          _TyGraphFwdIterPosBase, __true_type,
+                          _TyGraphFwdIterPosBase, std::true_type,
                           true, t_TySelectLink >                  _TyGraphFwdIterPosSelectConst;
     // Selection iterators:
     typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                          _TyGraphFwdIterSelectBase, __false_type,
+                          _TyGraphFwdIterSelectBase, std::false_type,
                           true, t_TySelectLink >                  _TyGraphFwdIterSelectNonConst;
     typedef _graph_iter<  _TyGraphNode, _TyGraphLink,
-                          _TyGraphFwdIterSelectBase, __true_type,
+                          _TyGraphFwdIterSelectBase, std::true_type,
                           true, t_TySelectLink >                  _TyGraphFwdIterSelectConst;
   };
 
@@ -845,7 +845,7 @@ public:
                                             _TyDumpOstreamIterBase;
 
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyDumpOstreamObject,
-                                  _TyDumpOstreamIterBase, __true_type > _TyDumpOstreamIteratorConst;
+                                  _TyDumpOstreamIterBase, std::true_type > _TyDumpOstreamIteratorConst;
 
   // binary output iterator:
   // Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
@@ -859,7 +859,7 @@ public:
                                     true > /*use seek*/             _TyBinaryOstreamIterBase;
 
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryOstreamOutput,
-                                  _TyBinaryOstreamIterBase, __true_type >   _TyBinaryOstreamIterConst;
+                                  _TyBinaryOstreamIterBase, std::true_type >   _TyBinaryOstreamIterConst;
   // binary input iterator:
   // Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
   typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
@@ -877,10 +877,10 @@ public:
   {
     typedef _graph_input_iterator< t_TyMostDerivedGraph, 
                 t_TyInputObject, t_TyInputIterBase, 
-                __false_type >                                    _TyBinaryInputIterNonConst;
+                std::false_type >                                    _TyBinaryInputIterNonConst;
     typedef _graph_input_iterator< t_TyMostDerivedGraph, 
                 t_TyInputObject, t_TyInputIterBase, 
-                __true_type >                                     _TyBinaryInputIterConst;
+                std::true_type >                                     _TyBinaryInputIterConst;
   
   };
   // Need to have the most derived graph type to declare the input iterator itself.
@@ -897,7 +897,7 @@ public:
                                     true > /*use seek*/             _TyBinaryOLEOutputIterBase;
 
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryOLEOutputObject,
-                                  _TyBinaryOLEOutputIterBase, __true_type >   _TyBinaryOLEOutputIterConst;
+                                  _TyBinaryOLEOutputIterBase, std::true_type >   _TyBinaryOLEOutputIterConst;
   // binary input iterator:
   // Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
   typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 

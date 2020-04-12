@@ -381,22 +381,22 @@ public:
 
   // Passing safe allocator types:
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __true_type, _TyGraphNodeIterBaseSafe >       _TyGraphNodeIterSafePassConst;
+                                std::true_type, _TyGraphNodeIterBaseSafe >       _TyGraphNodeIterSafePassConst;
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __true_type, _TyGraphLinkPosIterBaseSafe >    _TyGraphLinkPosIterSafePassConst;
+                                std::true_type, _TyGraphLinkPosIterBaseSafe >    _TyGraphLinkPosIterSafePassConst;
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __true_type, _TyGraphLinkIdentIterBaseSafe >  _TyGraphLinkIdentIterSafePassConst;
+                                std::true_type, _TyGraphLinkIdentIterBaseSafe >  _TyGraphLinkIdentIterSafePassConst;
   typedef _graph_path_iterator_pass<  t_TyPathNodeSafe, t_TyPathNodeSafeAllocator,
-                                      __true_type, _TyGraphPathIterBaseSafe > _TyGraphPathIterSafePassConst;
+                                      std::true_type, _TyGraphPathIterBaseSafe > _TyGraphPathIterSafePassConst;
 
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __false_type, _TyGraphNodeIterBaseSafe >        _TyGraphNodeIterSafePassNonConst;
+                                std::false_type, _TyGraphNodeIterBaseSafe >        _TyGraphNodeIterSafePassNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __false_type, _TyGraphLinkPosIterBaseSafe >     _TyGraphLinkPosIterSafePassNonConst;
+                                std::false_type, _TyGraphLinkPosIterBaseSafe >     _TyGraphLinkPosIterSafePassNonConst;
   typedef _graph_iterator_pass< _TyGraphNodeSafe, _TyGraphLinkSafe, 
-                                __false_type, _TyGraphLinkIdentIterBaseSafe >   _TyGraphLinkIdentIterSafePassNonConst;
+                                std::false_type, _TyGraphLinkIdentIterBaseSafe >   _TyGraphLinkIdentIterSafePassNonConst;
   typedef _graph_path_iterator_pass<  t_TyPathNodeSafe, t_TyPathNodeSafeAllocator,
-                                      __false_type, _TyGraphPathIterBaseSafe >  _TyGraphPathIterSafePassNonConst;
+                                      std::false_type, _TyGraphPathIterBaseSafe >  _TyGraphPathIterSafePassNonConst;
 
   _graph_safe_base( t_TyPathNodeBaseAllocator const & _allocPathNodeBase,
                     t_TyPathNodeSafeAllocator const & _allocPathNodeSafe ) : 
