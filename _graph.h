@@ -517,7 +517,7 @@ public:
   template < class t_TyIONodeEl, class t_TyIOLinkEl, class t_TyFUseSeek >
   void save( IStream * _pis,  t_TyIONodeEl const & _rione, 
                               t_TyIOLinkEl const & _riole, 
-                              t_TyFUseSeek = __true_type() ) const
+                              t_TyFUseSeek = std::true_type() ) const
   {
     typedef _IStream_object< t_TyIONodeEl, t_TyIOLinkEl > _TyIStreamObject;
     typedef _binary_output_object<  _TyGraphNode, _TyGraphLink, 
@@ -529,7 +529,7 @@ public:
                                       _TyPathNodeBaseAllocatorAsPassed,
                                       __type_to_bool< t_TyFUseSeek >::ms_cfValue >  _TyBinaryOLEOutputIterBase;
     typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryOLEOutputObject,
-                                    _TyBinaryOLEOutputIterBase, __true_type >       _TyBinaryOLEOutputIterConst;
+                                    _TyBinaryOLEOutputIterBase, std::true_type >       _TyBinaryOLEOutputIterConst;
 
     _TyBinaryOLEOutputIterConst boi( _pis, begin(), _rione, _riole );
     __DEBUG_STMT( int _i = 0 )
@@ -560,7 +560,7 @@ public:
   template < class t_TyIONodeEl, class t_TyIOLinkEl, class t_TyFUseSeek >
   void replace_load( IStream * _pis,  t_TyIONodeEl const & _rione, 
                                       t_TyIOLinkEl const & _riole, 
-                                      t_TyFUseSeek = __true_type() )
+                                      t_TyFUseSeek = std::true_type() )
   {
     destroy();
 
@@ -594,7 +594,7 @@ public:
   template < class t_TyIONodeEl, class t_TyIOLinkEl, class t_TyFUseSeek >
   void in_place_load( IStream * _pis, t_TyIONodeEl const & _rione, 
                                       t_TyIOLinkEl const & _riole, 
-                                      t_TyFUseSeek = __true_type() )
+                                      t_TyFUseSeek = std::true_type() )
   {
     typedef _IStream_object< t_TyIONodeEl, t_TyIOLinkEl > _TyIStreamObject;
     typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
@@ -607,7 +607,7 @@ public:
                                     false >                                   _TyBinaryOLEInputIterBase;
     typedef _graph_inplace_input_iterator<  _TyGraphNode, _TyGraphLink,
                                             _TyBinaryOLEInputObject, _TyBinaryOLEInputIterBase,
-                                            __false_type >                    _TyBinaryOLEInPlaceIter;
+                                            std::false_type >                    _TyBinaryOLEInPlaceIter;
 
     // We iterate the current graph and the input stream at the same time.
     _TyBinaryOLEInPlaceIter bipi( _pis, _rione, _riole );

@@ -38,7 +38,7 @@ public:
   typedef typename t_TyStreamObject::_TyStreamPos _TyStreamPos;
   typedef typename t_TyStreamObject::_TyIONodeEl _TyIONodeEl;
   typedef typename t_TyStreamObject::_TyIOLinkEl _TyIOLinkEl;
-  typedef typename _binary_rep_tokens< __false_type >::_TyToken   _TyToken;
+  typedef typename _binary_rep_tokens< std::false_type >::_TyToken   _TyToken;
 
   t_TyStreamObject  m_ris; // The stream from which we are reading.
 
@@ -101,7 +101,7 @@ public:
 #ifdef __GR_BINARY_WRITENODEFOOTER
     _TyToken  uc;
     _ReadToken( &uc );
-    if ( _binary_rep_tokens< __false_type >::ms_ucNodeFooter != uc )
+    if ( _binary_rep_tokens< std::false_type >::ms_ucNodeFooter != uc )
     {
       throw bad_graph_stream( "_ReadNodeFooter(): Expected node footer token." );
     }
@@ -147,13 +147,13 @@ public:
     __THROWPT( e_ttFileInput );
     _TyToken  uc;
     _ReadToken( &uc );
-    if (  _binary_rep_tokens< __false_type >::ms_ucLinkConstructed != uc &&
-          _binary_rep_tokens< __false_type >::ms_ucLinkEmpty != uc )
+    if (  _binary_rep_tokens< std::false_type >::ms_ucLinkConstructed != uc &&
+          _binary_rep_tokens< std::false_type >::ms_ucLinkEmpty != uc )
     {
       throw bad_graph_stream( "_FReadLinkConstructed(): Bad construction token." );
     }
 
-    return _binary_rep_tokens< __false_type >::ms_ucLinkConstructed == uc;
+    return _binary_rep_tokens< std::false_type >::ms_ucLinkConstructed == uc;
   }
 
   void  _ReadLinkFooter( _TyToken * _puc )

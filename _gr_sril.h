@@ -381,9 +381,9 @@ public:
   typedef _TyBase               _TyIterBase;  // This type supported by all graph iterators.
 
   typedef _graph_output_iterator< t_TyGraphNode, t_TyGraphLink, t_TyOutputStream,
-                                  t_TyBaseOutIter, __false_type >   iterator;
+                                  t_TyBaseOutIter, std::false_type >   iterator;
   typedef _graph_output_iterator< t_TyGraphNode, t_TyGraphLink, t_TyOutputStream,
-                                  t_TyBaseOutIter, __true_type >    const_iterator;
+                                  t_TyBaseOutIter, std::true_type >    const_iterator;
 
   typedef t_TyOutputStream                      _TyOutputStream;
   typedef typename _TyOutputStream::_TyInitArg  _TyInitArg;
