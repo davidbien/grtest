@@ -36,8 +36,7 @@ _RawWriteGraphEl( ostream & _ros, t_TyWrite const & _rEl )
 {	
 	if ( sizeof( _rEl ) )
 	{
-		_ros.write(	reinterpret_cast< const char* >( &_rEl ), 
-								sizeof( _rEl ) );
+		_ros.write(	reinterpret_cast< const char* >( &_rEl ), sizeof( _rEl ) );
 	}
 }
 
@@ -48,8 +47,7 @@ _RawReadGraphEl( istream & _ris, t_TyRead & _rEl )
 {	
 	if ( sizeof( _rEl ) )
 	{
-		_ris.read(	reinterpret_cast< char* >( &_rEl ), 
-								sizeof( _rEl ) );
+		_ris.read(	reinterpret_cast< char* >( &_rEl ), sizeof( _rEl ) );
 	}
 }
 
@@ -90,21 +88,27 @@ struct _ostream_object
 	{
 	}
 
-	_TyStreamPos	TellP() const							{ return m_ros.tellp(); }
-	void					SeekP( _TyStreamPos _sp )	{ (void)m_ros.seekp( _sp ); }
+	_TyStreamPos TellP() const
+  { 
+    return m_ros.tellp(); 
+  }
+	void SeekP( _TyStreamPos _sp )	
+  {
+    (void)m_ros.seekp( _sp );
+  }
 
-	void					Write( const void * _pv, size_t _st )
+	void Write( const void * _pv, size_t _st )
 	{
 		m_ros.write( (const char*)_pv, _st );
 	}
 
 	template < class t_TyEl >
-	void					WriteNodeEl( t_TyEl const & _rel )
+	void WriteNodeEl( t_TyEl const & _rel )
 	{
     m_one.Write( m_ros, _rel );
 	}
 	template < class t_TyEl >
-	void					WriteLinkEl( t_TyEl const & _rel )
+	void WriteLinkEl( t_TyEl const & _rel )
 	{
     m_ole.Write( m_ros, _rel );
 	}
@@ -122,10 +126,10 @@ template <  class t_TyInputNodeEl,
             class t_TyInputLinkEl = t_TyInputNodeEl >
 struct _istream_object
 {
-	typedef istream &       _TyInitArg;
-	typedef streampos       _TyStreamPos;
-  typedef t_TyInputNodeEl _TyIONodeEl;
-  typedef t_TyInputLinkEl _TyIOLinkEl;
+	typedef istream & _TyInitArg;
+	typedef streampos _TyStreamPos;
+	typedef t_TyInputNodeEl _TyIONodeEl;
+	typedef t_TyInputLinkEl _TyIOLinkEl;
 
 	istream &	m_ris;
 
@@ -141,23 +145,29 @@ struct _istream_object
 	{
 	}
 
-	_TyStreamPos	TellG() const							{ return m_ris.tellg(); }
-	void					SeekG( _TyStreamPos _sp )	{ (void)m_ris.seekg( _sp ); }
+	_TyStreamPos TellG() const
+	{ 
+		return m_ris.tellg(); 
+	}
+	void SeekG( _TyStreamPos _sp )	
+	{
+		(void)m_ris.seekg( _sp );
+	}
 
-	void					Read( void * _pv, size_t _st )
+	void Read( void * _pv, size_t _st )
 	{
 		m_ris.read( (char*)_pv, _st );
 	}
 
 	template < class t_TyEl >
-	void					ReadNodeEl( t_TyEl & _rel )
+	void ReadNodeEl( t_TyEl & _rel )
 	{
-    m_ine.Read( m_ris, _rel );
+		m_ine.Read( m_ris, _rel );
 	}
 	template < class t_TyEl >
-	void					ReadLinkEl( t_TyEl & _rel )
+	void ReadLinkEl( t_TyEl & _rel )
 	{
-    m_ile.Read( m_ris, _rel );
+    	m_ile.Read( m_ris, _rel );
 	}
 };
 
