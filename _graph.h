@@ -99,12 +99,19 @@ public:
   // Dump iterator - only const currently:
   typedef typename _TyGraphTraits::_TyDumpOstreamIteratorConst    _TyDumpIteratorConst;
 
-  // Binary output iterator - this type supports const output to ostream:
+  // Binary output iterators - this type supports const output to ostream:
   typedef typename _TyGraphTraits::_TyBinaryOstreamIterConst      _TyBinaryOstreamIterConst;
-  // Binary output iterator - this type supports input from istream:
+  // Output to file descriptor:
+  typedef typename _TyGraphTraits::_TyBinaryFiledesOuputIterConst _TyBinaryFiledesOuputIterConst;
+
+  // Binary input iterators - this type supports input from istream:
   typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
     typename _TyGraphTraits::_TyBinaryIstreamInput,
     typename _TyGraphTraits::_TyBinaryIstreamIterBase >::_TyBinaryInputIterNonConst _TyBinaryIstreamIterNonConst;
+  // Input from file descriptor:
+  typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
+    typename _TyGraphTraits::_TyBinaryFiledesInput,
+    typename _TyGraphTraits::_TyBinaryFiledesInputIterBase >::_TyBinaryInputIterNonConst _TyBinaryFiledesInputIterNonConst;
 
 #ifdef __GR_DEFINEOLEIO
   typedef typename _TyGraphTraits::_TyBinaryOLEOutputIterConst      _TyBinaryOLEOutputIterConst;

@@ -39,6 +39,8 @@
 #include "_gr_inip.h"
 
 #include "_gr_stio.h"
+#include "_gr_fdio.h"
+#include "_gr_mmio.h"
 #ifdef __GR_DEFINEOLEIO
 #include "_gr_olio.h"
 #endif //__GR_DEFINEOLEIO
@@ -847,8 +849,8 @@ public:
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyDumpOstreamObject,
                                   _TyDumpOstreamIterBase, std::true_type > _TyDumpOstreamIteratorConst;
 
-  // binary output iterator:
-  // Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
+  // binary output iterators:
+  // ostream iterator: Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
   typedef _binary_output_object<  _TyGraphNode, _TyGraphLink, 
                                   _ostream_object< _iostream_RawElIO >,
                                   t_TyAllocatorPathNodeBase, 
@@ -857,11 +859,24 @@ public:
   typedef _graph_output_iter_base<  _TyBinaryOstreamBase, 
                                     t_TyAllocatorPathNodeBase,
                                     true > /*use seek*/             _TyBinaryOstreamIterBase;
-
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryOstreamOutput,
                                   _TyBinaryOstreamIterBase, std::true_type >   _TyBinaryOstreamIterConst;
-  // binary input iterator:
-  // Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
+  // fd (file descriptor) iterator - faster than ostream iterator:
+  // Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
+  typedef _binary_output_object<  _TyGraphNode, _TyGraphLink, 
+                                  _fdout_object< _fd_RawElIO >,
+                                  t_TyAllocatorPathNodeBase, 
+                                  false, false >                    _TyBinaryFiledesOutput;
+  typedef typename _TyBinaryFiledesOutput::_TyOutputStreamBase      _TyBinaryFiledesOutputBase;
+  typedef _graph_output_iter_base<  _TyBinaryFiledesOutputBase, 
+                                    t_TyAllocatorPathNodeBase,
+                                    true > /*use seek*/             _TyBinaryFiledesOutputIterBase;
+  typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryFiledesOutput,
+                                  _TyBinaryFiledesOutputIterBase, std::true_type >   _TyBinaryFiledesOuputIterConst;
+
+
+  // binary input iterators:
+  // istream iterator: Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
   typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
                                 _istream_object< _iostream_RawElIO >, 
                                 false >                                     _TyBinaryIstreamInput;
@@ -869,7 +884,17 @@ public:
   typedef _graph_input_iter_base< _TyBinaryIstreamBase, _TyGraphBaseBase, 
                                   t_TyAllocatorPathNodeBase,
                                   true, false >                             _TyBinaryIstreamIterBase;
+  // fd (file descriptor) iterator - faster than istream iterator:
+  // Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
+  typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
+                                _fdin_object< _fd_RawElIO >, 
+                                false >                                     _TyBinaryFiledesInput;
+  typedef typename _TyBinaryIstreamInput::_TyInputObjectBase                _TyBinaryFiledesInputBase;
+  typedef _graph_input_iter_base< _TyBinaryFiledesInputBase, _TyGraphBaseBase, 
+                                  t_TyAllocatorPathNodeBase,
+                                  true, false >                             _TyBinaryFiledesInputIterBase;
   // Define a template to access the full type of the input iterator:
+  // Need to have the most derived graph type to declare the input iterator itself.
   template <  class t_TyMostDerivedGraph, 
               class t_TyInputObject, 
               class t_TyInputIterBase >
@@ -878,12 +903,12 @@ public:
     typedef _graph_input_iterator< t_TyMostDerivedGraph, 
                 t_TyInputObject, t_TyInputIterBase, 
                 std::false_type >                                    _TyBinaryInputIterNonConst;
+    // REVIEW:<dbien>: Not sure why I thought this was necessary.
     typedef _graph_input_iterator< t_TyMostDerivedGraph, 
                 t_TyInputObject, t_TyInputIterBase, 
                 std::true_type >                                     _TyBinaryInputIterConst;
   
   };
-  // Need to have the most derived graph type to declare the input iterator itself.
 
 #ifdef __GR_DEFINEOLEIO
   // Define some types for OLE stream binary I/O:

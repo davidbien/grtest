@@ -264,8 +264,7 @@ try_load( t_TyGraph & _rg, istream & _ris )
 	{
 		_rg.destroy();
 
-		typename t_TyGraph::_TyBinaryIstreamIterNonConst 
-      bii( _rg, _ris, _rg.get_base_path_allocator() );
+		typename t_TyGraph::_TyBinaryIstreamIterNonConst bii( _rg, _ris, _rg.get_base_path_allocator() );
 
 		__DEBUG_STMT( int _i = 0 )
 		do
@@ -303,7 +302,7 @@ try_load( t_TyGraph & _rg, istream & _ris )
 template < class t_TyGraphSave, class t_TyGraphLoad >
 bool
 test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad, 
-								const char * _cpFileName, time_t * _ptStart )
+				const char * _cpFileName, time_t * _ptStart )
 {
 	fstream fsOut( _cpFileName, ios::in | ios::out | ios::trunc | ios::binary );
 	fsOut.seekp( 0 );

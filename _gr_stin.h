@@ -50,13 +50,13 @@ public:
   }
 
   _TyStreamPos _Tell()
-    {
-      return m_ris.TellG();
-    }
+  {
+    return m_ris.TellG();
+  }
   void _Seek( _TyStreamPos _sp )
-    {
-      m_ris.SeekG( _sp );
-    }
+  {
+    m_ris.SeekG( _sp );
+  }
 
   void  _ReadToken( _TyToken * _puc )
   {
@@ -64,15 +64,15 @@ public:
     m_ris.Read( _puc, sizeof( _TyToken ) );
   }
   void _ReadNodePtr( _TyGraphNodeBaseReadPtr * _pgnbr )
-    {
-      __THROWPT( e_ttFileInput );
-      m_ris.Read( _pgnbr, sizeof *_pgnbr );
-    }
+  {
+    __THROWPT( e_ttFileInput );
+    m_ris.Read( _pgnbr, sizeof *_pgnbr );
+  }
   void _ReadLinkPtr( _TyGraphLinkBaseReadPtr * _pglbr )
-    {
-      __THROWPT( e_ttFileInput );
-      m_ris.Read( _pglbr, sizeof *_pglbr );
-    }
+  {
+    __THROWPT( e_ttFileInput );
+    m_ris.Read( _pglbr, sizeof *_pglbr );
+  }
 
   void  _ReadNodeHeaderData( _TyGraphNodeBaseReadPtr * _pgnbr )
   {
