@@ -177,7 +177,10 @@ protected:
     size_t stGrowBy = ( ( ( _stByAtLeast - 1 ) / s_knGrowFileByBytes ) + 1 ) * s_knGrowFileByBytes;
     size_t stMapped = m_pbyMappedEnd - m_pbyMappedBegin;
     uint8_t * pbyOldMapping = m_pbyMappedBegin;
+    uint8_t * pbyOldMapCur = m_pbyMappedCur;
     m_pbyMappedBegin = (uint8_t*)MAP_FAILED;
+    m_pbyMappedCur = (uint8_t*)MAP_FAILED;
+    m_pbyMappedEnd = (uint8_t*)MAP_FAILED;
     int iRet = ::munmap( pbyOldMapping, stMapped );
     assert( !iRet ); // not much to do about this.
     stMapped += stGrowBy;
@@ -194,7 +197,7 @@ protected:
     if ( m_pbyMappedBegin == MAP_FAILED )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_GrowMap(): mmap() failed for m_fd[%d].", m_fd );
     m_pbyMappedEnd = m_pbyMappedBegin + stMapped;
-    m_pbyMappedCur = m_pbyMappedBegin + ( m_pbyMappedCur - pbyOldMapping );
+    m_pbyMappedCur = m_pbyMappedBegin + ( pbyOldMapCur - pbyOldMapping );
   }
 };
 
