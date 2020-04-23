@@ -23,18 +23,10 @@ CLANG_ADDR_SANITIZE = -fsanitize=address -fsanitize-address-use-after-scope
 CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fno-omit-frame-pointer
 #-fsanitize-blacklist=blacklist.txt 
 endif # !NDEBUG
+MOD_TCMALLOC := 1
 
 MAKEBASE = ../bienutil/makebase.mk
 include $(MAKEBASE)
-
-# tcmalloc performs about 10% better when running dgraph unit testing. nice.
-ifneq (1,$(NDEBUG))
-MOD_LIBS += -ltcmalloc_debug
-else
-#MOD_LIBS += /usr/lib/x86_64-linux-gnu/libtcmalloc.so.4.3.0
-#MOD_LIBS += /usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4 -- minimal seems a bit slower.
-MOD_LIBS += -ltcmalloc
-endif
 
 SRCS = _gr_test.cpp dbgthrw.cpp
 

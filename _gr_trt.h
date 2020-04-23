@@ -861,7 +861,7 @@ public:
                                     true > /*use seek*/             _TyBinaryOstreamIterBase;
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryOstreamOutput,
                                   _TyBinaryOstreamIterBase, std::true_type >   _TyBinaryOstreamIterConst;
-  // fd (file descriptor) iterator - faster than ostream iterator:
+  // fd (file descriptor) iterator - faster than ostream iterator - at least a bit:
   // Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
   typedef _binary_output_object<  _TyGraphNode, _TyGraphLink, 
                                   _fdout_object< _fd_RawElIO >,
@@ -873,7 +873,18 @@ public:
                                     true > /*use seek*/             _TyBinaryFiledesOutputIterBase;
   typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryFiledesOutput,
                                   _TyBinaryFiledesOutputIterBase, std::true_type >   _TyBinaryFiledesOuputIterConst;
-
+  // Memory mapped fd (file descriptor) iterator - fastest iterator:
+  // Default is const and doesn't allow unconstructed ( unconnected ) links to be written:
+  typedef _binary_output_object<  _TyGraphNode, _TyGraphLink, 
+                                  _mmout_object< _mm_RawElIO >,
+                                  t_TyAllocatorPathNodeBase, 
+                                  false, false >                    _TyBinaryMemMappedOutput;
+  typedef typename _TyBinaryMemMappedOutput::_TyOutputStreamBase      _TyBinaryMemMappedOutputBase;
+  typedef _graph_output_iter_base<  _TyBinaryMemMappedOutputBase, 
+                                    t_TyAllocatorPathNodeBase,
+                                    true > /*use seek*/             _TyBinaryMemMappedOutputIterBase;
+  typedef _graph_output_iterator< _TyGraphNode, _TyGraphLink, _TyBinaryMemMappedOutput,
+                                  _TyBinaryMemMappedOutputIterBase, std::true_type >   _TyBinaryMemMappedOuputIterConst;
 
   // binary input iterators:
   // istream iterator: Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
@@ -889,10 +900,19 @@ public:
   typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
                                 _fdin_object< _fd_RawElIO >, 
                                 false >                                     _TyBinaryFiledesInput;
-  typedef typename _TyBinaryIstreamInput::_TyInputObjectBase                _TyBinaryFiledesInputBase;
+  typedef typename _TyBinaryFiledesInput::_TyInputObjectBase                _TyBinaryFiledesInputBase;
   typedef _graph_input_iter_base< _TyBinaryFiledesInputBase, _TyGraphBaseBase, 
                                   t_TyAllocatorPathNodeBase,
                                   true, false >                             _TyBinaryFiledesInputIterBase;
+  // Memory mapped fd (file descriptor) iterator - fastest iterator:
+  // Default is const and doesn't allow unconstructed ( unconnected ) links to be read:
+  typedef _binary_input_object< _TyGraphNode, _TyGraphLink, 
+                                _mmin_object< _mm_RawElIO >, 
+                                false >                                     _TyBinaryMemMappedInput;
+  typedef typename _TyBinaryMemMappedInput::_TyInputObjectBase              _TyBinaryMemMappedInputBase;
+  typedef _graph_input_iter_base< _TyBinaryMemMappedInputBase, _TyGraphBaseBase, 
+                                  t_TyAllocatorPathNodeBase,
+                                  true, false >                             _TyBinaryMemMappedInputIterBase;
   // Define a template to access the full type of the input iterator:
   // Need to have the most derived graph type to declare the input iterator itself.
   template <  class t_TyMostDerivedGraph, 

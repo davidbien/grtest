@@ -103,6 +103,8 @@ public:
   typedef typename _TyGraphTraits::_TyBinaryOstreamIterConst      _TyBinaryOstreamIterConst;
   // Output to file descriptor:
   typedef typename _TyGraphTraits::_TyBinaryFiledesOuputIterConst _TyBinaryFiledesOuputIterConst;
+  // Output to memory mapped file descriptor:
+  typedef typename _TyGraphTraits::_TyBinaryMemMappedOuputIterConst _TyBinaryMemMappedOuputIterConst;
 
   // Binary input iterators - this type supports input from istream:
   typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
@@ -112,6 +114,10 @@ public:
   typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
     typename _TyGraphTraits::_TyBinaryFiledesInput,
     typename _TyGraphTraits::_TyBinaryFiledesInputIterBase >::_TyBinaryInputIterNonConst _TyBinaryFiledesInputIterNonConst;
+  // Input from memory mapped file descriptor:
+  typedef typename _TyGraphTraits:: template _get_input_iterator< _TyThis,
+    typename _TyGraphTraits::_TyBinaryMemMappedInput,
+    typename _TyGraphTraits::_TyBinaryMemMappedInputIterBase >::_TyBinaryInputIterNonConst _TyBinaryMemMappedInputIterNonConst;
 
 #ifdef __GR_DEFINEOLEIO
   typedef typename _TyGraphTraits::_TyBinaryOLEOutputIterConst      _TyBinaryOLEOutputIterConst;

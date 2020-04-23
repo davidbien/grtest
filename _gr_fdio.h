@@ -19,6 +19,7 @@ _RawWriteGraphEl( int _fd, t_TyWrite const & _rEl )
 	if ( sizeof( _rEl ) )
 	{
     ssize_t sstWrit = ::write( _fd, (const void*)&_rEl, sizeof( _rEl ) );
+    __THROWPT( e_ttFileOutput );
     if ( sstWrit != sizeof( _rEl ) )
       THROWNAMEDEXCEPTIONERRNO( errno, "_RawWriteGraphEl(fd): failed to write entire element." );
 	}
@@ -32,6 +33,7 @@ _RawReadGraphEl( int _fd, t_TyRead & _rEl )
 	if ( sizeof( _rEl ) )
 	{
     ssize_t sstRead = ::read( _fd, (void*)&_rEl, sizeof( _rEl ) );
+    __THROWPT( e_ttFileInput );
     if ( sstRead != sizeof( _rEl ) )
       THROWNAMEDEXCEPTIONERRNO( errno, "_RawReadGraphEl(fd): failed to read entire element." );
 	}
@@ -73,6 +75,7 @@ struct _fdout_object
       m_one( _rone ),
       m_ole( _role )
 	{
+      __THROWPT( e_ttMemory ); // in the cases where where are dynamic members within m_one or m_ole.
 	}
 	_fdout_object(  int _fd,
                   t_TyOutputNodeEl && _rrone,
@@ -86,6 +89,7 @@ struct _fdout_object
 	_TyStreamPos TellP() const
   {
     off_t off = lseek( m_fd, 0, SEEK_CUR );
+    __THROWPT( e_ttFileOutput );
     if ( -1 == off )
       THROWNAMEDEXCEPTIONERRNO( errno, "_fdout_object::TellP(): lseek() failed." );
     return off;
@@ -93,6 +97,7 @@ struct _fdout_object
 	void SeekP( _TyStreamPos _sp )	
   {
     off_t off = lseek( m_fd, _sp, SEEK_SET );
+    __THROWPT( e_ttFileOutput );
     if ( -1 == off )
       THROWNAMEDEXCEPTIONERRNO( errno, "_fdout_object::SeekP(): lseek() failed." );
   }
@@ -102,6 +107,7 @@ struct _fdout_object
     if ( _st )
     {
       ssize_t sstWrit = ::write( m_fd, _pv, _st );
+      __THROWPT( e_ttFileOutput );
       if ( sstWrit != _st )
         THROWNAMEDEXCEPTIONERRNO( errno, "_fdout_object::Write(): ::write() failed." );
     }
@@ -140,6 +146,7 @@ struct _fdin_object
       m_ine( _rine ),
       m_ile( _rile )
 	{
+      __THROWPT( e_ttMemory ); // in the cases where where are dynamic members within m_ine or m_ile.
 	}
 	_fdin_object(  int _fd,
                 t_TyInputNodeEl && _rrine,
@@ -153,6 +160,7 @@ struct _fdin_object
 	_TyStreamPos TellG() const
 	{ 
     off_t off = lseek( m_fd, 0, SEEK_CUR );
+    __THROWPT( e_ttFileInput | e_ttFatal );
     if ( -1 == off )
       THROWNAMEDEXCEPTIONERRNO( errno, "_fdin_object::TellG(): lseek() failed." );
     return off;
@@ -160,6 +168,7 @@ struct _fdin_object
 	void SeekG( _TyStreamPos _sp )	
   {
     off_t off = lseek( m_fd, _sp, SEEK_SET );
+    __THROWPT( e_ttFileInput | e_ttFatal );
     if ( -1 == off )
       THROWNAMEDEXCEPTIONERRNO( errno, "_fdin_object::SeekG(): lseek() failed." );
 	}
@@ -167,8 +176,9 @@ struct _fdin_object
 	void Read( void * _pv, size_t _st )
 	{
     ssize_t sstRead = ::read( m_fd, _pv, _st );
+    __THROWPT( e_ttFileInput );
     if ( sstRead != _st )
-      THROWNAMEDEXCEPTIONERRNO( errno, "_fdin_object::Read(): read() failed.")
+      THROWNAMEDEXCEPTIONERRNO( errno, "_fdin_object::Read(): read() failed.");
 	}
 
 	template < class t_TyEl >
