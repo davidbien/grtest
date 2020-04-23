@@ -8,7 +8,8 @@
 __DGRAPH_BEGIN_NAMESPACE
 
 // When !t_fUseSeek we don't attempt to tell/seek the stream - this is not throw-safe -
-//  i.e. state may not be restored appropriately.
+//  i.e. state may not be restored appropriately. It is throw-safe - put it is not state-safe
+//  upon throw.
 
 template <  class t_TyOutputStreamBase,
             class t_TyAllocator,

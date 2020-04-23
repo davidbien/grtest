@@ -15,11 +15,11 @@ __DGRAPH_BEGIN_NAMESPACE
 // Specialize for mmout - default version just writes raw memory:
 template < class t_TyWrite >
 __INLINE size_t
-_StRawWriteGraphEl( void * _pvWrite, size_t _stLeft, t_TyWrite const & _rEl )
+_StRawWriteGraphEl( void * _pvWrite, ssize_t _sstLeft, t_TyWrite const & _rEl )
 {
 	if ( sizeof( _rEl ) )
 	{
-    if ( sizeof( _rEl ) <= _stLeft )
+    if ( sizeof( _rEl ) <= _sstLeft )
       memcpy( _pvWrite, &_rEl, sizeof( _rEl ) );
     return sizeof( _rEl );
   }
@@ -28,11 +28,12 @@ _StRawWriteGraphEl( void * _pvWrite, size_t _stLeft, t_TyWrite const & _rEl )
 // Specialize for mmin - default version just reads raw memory:
 template < class t_TyRead >
 __INLINE size_t
-_StRawReadGraphEl( const void * _pvRead, size_t _stLeft, t_TyRead & _rEl )
+_StRawReadGraphEl( const void * _pvRead, ssize_t _sstLeft, t_TyRead & _rEl )
 {
 	if ( sizeof( _rEl ) )
 	{
-    if ( _stLeft < sizeof( _rEl ) )
+    __THROWPT( e_ttFileInput );
+    if ( _sstLeft < sizeof( _rEl ) )
       THROWNAMEDEXCEPTION( "_RawReadGraphEl(pv,st): EOF reading element." );
     memcpy( &_rEl, _pvRead, sizeof( _rEl ) );
     return sizeof( _rEl );
@@ -42,14 +43,14 @@ _StRawReadGraphEl( const void * _pvRead, size_t _stLeft, t_TyRead & _rEl )
 struct _mm_RawElIO
 {
   template < class t_TyEl >
-  size_t StWrite( void * _pvWrite, size_t _stLeft, t_TyEl const & _rel )
+  size_t StWrite( void * _pvWrite, ssize_t _sstLeft, t_TyEl const & _rel )
   {
-    return _StRawWriteGraphEl( _pvWrite, _stLeft, _rel );
+    return _StRawWriteGraphEl( _pvWrite, _sstLeft, _rel );
   }
   template < class t_TyEl >
-  size_t StRead( const void * _pvRead, size_t _stLeft, t_TyEl & _rel )
+  size_t StRead( const void * _pvRead, ssize_t _sstLeft, t_TyEl & _rel )
   {
-    return _StRawReadGraphEl( _pvRead, _stLeft, _rel );
+    return _StRawReadGraphEl( _pvRead, _sstLeft, _rel );
   }
 };
 
@@ -92,18 +93,20 @@ struct _mmout_object
 	{
     _OpenMap();
 	}
-  ~_mmout_object()
+  ~_mmout_object() noexcept(false)
   {
     bool fInUnwinding = !!std::uncaught_exceptions();
     // We need to truncate the file to m_pbyMappedCur - m_pbyMappedBegin bytes.
-    iCloseRet = ftruncate( m_fd, m_pbyMappedCur - m_pbyMappedBegin );
-    if ( ( -1 == iCloseRet ) && !fInUnwinding )
-        THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::~_mmout_object(): failed to ftruncate m_fd[%d]", m_fd );
+    int iTruncRet = ftruncate( m_fd, m_pbyMappedCur - m_pbyMappedBegin );
+    int errnoSaved = errno;
     size_t stMapped = m_pbyMappedEnd - m_pbyMappedBegin;
     uint8_t * pbyMapped = m_pbyMappedBegin;
     m_pbyMappedBegin = (uint8_t*)MAP_FAILED;
-    int iUnmap = _Unmap( pbyMapped, stMapped ); // We don't care if this fails pretty much.
+    int iUnmap = ::munmap( pbyMapped, stMapped ); // We don't care if this fails pretty much.
     assert( !iUnmap );
+    __THROWPT_DTOR( e_ttFileOutput | e_ttFatal, fInUnwinding );
+    if ( ( -1 == iTruncRet ) && !fInUnwinding ) // This is the only failure we care about really since it results in the file being the wrong size.
+        THROWNAMEDEXCEPTIONERRNO( errnoSaved, "_mmout_object::~_mmout_object(): failed to ftruncate m_fd[%d]", m_fd );
   }
 
 	_TyStreamPos TellP() const
@@ -118,8 +121,8 @@ struct _mmout_object
 
 	void Write( const void * _pv, size_t _st )
 	{
-    if ( _st > ( m_pbyMappedEnd - m_pbyMappedCur ) )
-      _GrowMap( _st - ( m_pbyMappedEnd - m_pbyMappedCur ) );
+    if ( ssize_t( _st ) > ( m_pbyMappedEnd - m_pbyMappedCur ) )
+      _GrowMap( ssize_t(_st) - ( m_pbyMappedEnd - m_pbyMappedCur ) );
     memcpy( m_pbyMappedCur, _pv, _st );
     m_pbyMappedCur += _st;
 	}
@@ -127,38 +130,43 @@ struct _mmout_object
 	template < class t_TyEl >
 	void WriteNodeEl( t_TyEl const & _rel )
 	{
-    size_t stLeft = ( m_pbyMappedEnd - m_pbyMappedCur );
-    size_t stNeed = m_one.StWrite( m_pbyMappedCur, stLeft, _rel );
-    if ( stNeed > stLeft )
+    ssize_t sstLeft = ( m_pbyMappedEnd - m_pbyMappedCur );
+    size_t stNeed = m_one.StWrite( m_pbyMappedCur, sstLeft, _rel );
+    if ( stNeed > sstLeft )
     {
-      _GrowMap( stNeed - stLeft );
+      _GrowMap( stNeed - sstLeft );
       size_t stNeed2 = m_one.StWrite( m_pbyMappedCur, ( m_pbyMappedEnd - m_pbyMappedCur ), _rel );
       assert( stNeed == stNeed2 );
     }
+    m_pbyMappedCur += stNeed;
 	}
 	template < class t_TyEl >
 	void WriteLinkEl( t_TyEl const & _rel )
 	{
-    size_t stLeft = ( m_pbyMappedEnd - m_pbyMappedCur );
-    size_t stNeed = m_ole.StWrite( m_pbyMappedCur, stLeft, _rel );
-    if ( stNeed > stLeft )
+    ssize_t sstLeft = ( m_pbyMappedEnd - m_pbyMappedCur );
+    size_t stNeed = m_ole.StWrite( m_pbyMappedCur, sstLeft, _rel );
+    if ( stNeed > sstLeft )
     {
-      _GrowMap( stNeed - stLeft );
+      _GrowMap( stNeed - sstLeft );
       size_t stNeed2 = m_ole.StWrite( m_pbyMappedCur, ( m_pbyMappedEnd - m_pbyMappedCur ), _rel );
       assert( stNeed == stNeed2 );
     }
+    m_pbyMappedCur += stNeed;
 	}
 protected:
   void _OpenMap()
   {
-    _tyFilePos posEnd = ::lseek( m_fd, s_knGrowFileByBytes-1, SEEK_SET );
-    if ( -1 == posEnd )
+    off_t offEnd = ::lseek( m_fd, s_knGrowFileByBytes-1, SEEK_SET );
+    __THROWPT( e_ttFileOutput | e_ttFatal );
+    if ( -1 == offEnd )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_OpenMap(): Attempting to lseek() failed m_fd[%d].", m_fd );
-    ssize_t stRet = ::write( m_fd, "Z", 1 ); // write a single byte to grow the file to s_knGrowFileByBytes.
-    if ( -1 == stRet )
+    ssize_t sstRet = ::write( m_fd, "Z", 1 ); // write a single byte to grow the file to s_knGrowFileByBytes.
+    __THROWPT( e_ttFileOutput | e_ttFatal );
+    if ( -1 == sstRet )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_OpenMap(): Attempting to write() failed for m_fd[%d]", m_fd );
     // No need to reset the file pointer to the beginning - and in fact we like it at the end in case someone were to actually try to write to it.
     m_pbyMappedBegin = (uint8_t*)::mmap( 0, s_knGrowFileByBytes, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0 );
+    __THROWPT( e_ttFileOutput | e_ttFatal );
     if ( m_pbyMappedBegin == MAP_FAILED )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_OpenMap(): mmap() failed for m_fd[%d]", m_fd );
     m_pbyMappedCur = m_pbyMappedBegin;
@@ -174,12 +182,15 @@ protected:
     assert( !iRet ); // not much to do about this.
     stMapped += stGrowBy;
     iRet = ::lseek( m_fd, stMapped - 1, SEEK_SET );
+    __THROWPT( e_ttFileOutput | e_ttFatal );
     if ( -1 == iRet )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_GrowMap(): lseek() failed for m_fd[%d].", m_fd );
     iRet = ::write( m_fd, "Z", 1 ); // just write a single byte to grow the file.
+    __THROWPT( e_ttFileOutput | e_ttFatal );
     if ( -1 == iRet )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_GrowMap(): write() failed for m_fd[%d].", m_fd );
     m_pbyMappedBegin = (uint8_t*)::mmap( 0, stMapped, PROT_READ | PROT_WRITE, MAP_SHARED, m_fd, 0 );
+    __THROWPT( e_ttFileOutput | e_ttFatal );
     if ( m_pbyMappedBegin == MAP_FAILED )
       THROWNAMEDEXCEPTIONERRNO( errno, "_mmout_object::_GrowMap(): mmap() failed for m_fd[%d].", m_fd );
     m_pbyMappedEnd = m_pbyMappedBegin + stMapped;
@@ -231,13 +242,15 @@ struct _mmin_object
   }
 	void SeekG( _TyStreamPos _sp )	
   {
+    // We allow seeking beyond the end - but Read will throw if we try to read there.
     m_pbyMappedCur = m_pbyMappedBegin + _sp;
 	}
 
 	void Read( void * _pv, size_t _st )
 	{
-    if ( _st > ( m_pbyMappedEnd - m_pbyMappedCur ) )
-      THROWNAMEDEXCEPTIONERRNO( errno, "_mmin_object::Read(): EOF.")
+    __THROWPT( e_ttFileInput ); // should be able to recover from this.
+    if ( ssize_t(_st) > ( m_pbyMappedEnd - m_pbyMappedCur ) )
+      THROWNAMEDEXCEPTIONERRNO( errno, "_mmin_object::Read(): EOF.");
     memcpy( _pv, m_pbyMappedCur, _st );
     m_pbyMappedCur += _st;
 	}
@@ -245,28 +258,32 @@ struct _mmin_object
 	template < class t_TyEl >
 	void ReadNodeEl( t_TyEl & _rel )
 	{
-		size_t stRead = m_ine.StRead( m_fd, _rel ); // throws on EOF.
+    ssize_t sstLeft = m_pbyMappedEnd - m_pbyMappedCur;
+		size_t stRead = m_ine.StRead( m_pbyMappedCur, sstLeft, _rel ); // throws on EOF.
     m_pbyMappedCur += stRead;
 	}
 	template < class t_TyEl >
 	void ReadLinkEl( t_TyEl & _rel )
 	{
-		size_t stRead = m_ile.StRead( m_fd, _rel ); // throws on EOF.
+    ssize_t sstLeft = m_pbyMappedEnd - m_pbyMappedCur;
+		size_t stRead = m_ile.StRead( m_pbyMappedCur, sstLeft, _rel ); // throws on EOF.
     m_pbyMappedCur += stRead;
 	}
 protected:
   void _OpenMap()
   {
     // Now get the size of the file and then map it.
-    off_t posEnd = lseek( m_fd, 0, SEEK_END );
-    if ( -1 == posEnd )
+    off_t offEnd = ::lseek( m_fd, 0, SEEK_END );
+    __THROWPT( e_ttFileInput | e_ttFatal );
+    if ( -1 == offEnd )
         THROWNAMEDEXCEPTIONERRNO( errno, "_mmin_object::Open(): Attempting to seek to EOF failed for m_fd[%d]", m_fd );
     // No need to reset the file pointer to the beginning - and in fact we like it at the end in case someone were to actually try to read from it.
-    m_pbyMappedBegin = (uint8_t*)mmap( 0, posEnd, PROT_READ, MAP_SHARED, m_fd, 0 );
+    m_pbyMappedBegin = (uint8_t*)mmap( 0, offEnd, PROT_READ, MAP_SHARED, m_fd, 0 );
+    __THROWPT( e_ttFileInput | e_ttFatal );
     if ( m_pbyMappedBegin == (uint8_t*)MAP_FAILED )
         THROWNAMEDEXCEPTIONERRNO( errno, "_mmin_object::Open(): mmap() failed for m_fd[%d]", m_fd );
     m_pbyMappedCur = m_pbyMappedBegin;
-    m_pbyMappedEnd = m_pbyMappedCur + posEnd;
+    m_pbyMappedEnd = m_pbyMappedCur + offEnd;
   }
 };
 
