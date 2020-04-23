@@ -12,7 +12,6 @@
 #endif //_MSC_VER
 
 #include <memory>
-#include "_fdobjs.h"
 
 #ifdef __DGRAPH_USE_STLPORT
 typedef std::_stlallocator< char, std::__malloc_alloc >	_TyDefaultAllocator;
@@ -35,6 +34,7 @@ typedef std::allocator< char >	_TyDefaultAllocator;
 #ifdef __DGRAPH_USE_STLPORT
 #include <stl/_alloc.c>
 #endif //__DGRAPH_USE_STLPORT
+#include "_fdobjs.h"
 
 __BIENUTIL_USING_NAMESPACE
 __DGRAPH_USING_NAMESPACE

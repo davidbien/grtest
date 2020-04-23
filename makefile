@@ -24,8 +24,9 @@ CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fno-omit-frame-poi
 #-fsanitize-blacklist=blacklist.txt 
 endif # !NDEBUG
 MOD_TCMALLOC := 1
+MOD_INCLUDES := -I./bienutil/
 
-MAKEBASE = ../bienutil/makebase.mk
+MAKEBASE = bienutil/makebase.mk
 include $(MAKEBASE)
 
 SRCS = _gr_test.cpp dbgthrw.cpp
