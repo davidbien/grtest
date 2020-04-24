@@ -159,7 +159,6 @@ public:
   // Set to value of passed non-NULL node - assume currently populated link.
   void      SetPGNBCur_Populated( _TyGraphNodeBase * _pgnb ) _BIEN_NOTHROW
   {
-    assert( m_gclNode );
     assert( _pgnb );
     m_gclNode.remove_link();
     (_TyIterBase::m_pgnbCur = _pgnb)->PushConnection( &m_gclNode );
