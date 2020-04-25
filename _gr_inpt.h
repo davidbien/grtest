@@ -357,69 +357,69 @@ protected:
     }
     _BIEN_TRY
     {
-      typename _binary_rep_tokens< __false_type >::_TyToken uc;
+      typename _binary_rep_tokens< std::false_type >::_TyToken uc;
       m_ris._ReadToken( &uc );
 
       switch( uc )
       {
-        case  _binary_rep_tokens< __false_type >::ms_ucDirectionUp:
-        case  _binary_rep_tokens< __false_type >::ms_ucDirectionDown:
+        case  _binary_rep_tokens< std::false_type >::ms_ucDirectionUp:
+        case  _binary_rep_tokens< std::false_type >::ms_ucDirectionDown:
         {
-          _ChangeDirection( uc == _binary_rep_tokens< __false_type >::ms_ucDirectionDown );
+          _ChangeDirection( uc == _binary_rep_tokens< std::false_type >::ms_ucDirectionDown );
           return true;
         }
         break;
-        case  _binary_rep_tokens< __false_type >::ms_ucContextPush:
-        case  _binary_rep_tokens< __false_type >::ms_ucContextPop:
+        case  _binary_rep_tokens< std::false_type >::ms_ucContextPush:
+        case  _binary_rep_tokens< std::false_type >::ms_ucContextPop:
         {
-          _ChangeContext( uc == _binary_rep_tokens< __false_type >::ms_ucContextPush );
+          _ChangeContext( uc == _binary_rep_tokens< std::false_type >::ms_ucContextPush );
           return true;
         }
         break;
 
-        case  _binary_rep_tokens< __false_type >::ms_ucNode:
+        case  _binary_rep_tokens< std::false_type >::ms_ucNode:
         {
           _ReadNode();
         }
         break;
 
-        case  _binary_rep_tokens< __false_type >::ms_ucUnfinishedNode:
+        case  _binary_rep_tokens< std::false_type >::ms_ucUnfinishedNode:
         {
           _ReadUnfinishedNode();
         }
         break;
 
   #ifdef __GR_BINARY_WRITENODEFOOTER
-        case  _binary_rep_tokens< __false_type >::ms_ucNodeFooter:
+        case  _binary_rep_tokens< std::false_type >::ms_ucNodeFooter:
         {
           throw bad_graph_stream( "_FReadOne(): Encountered a node footer token at top level." );
         }
         break;
   #endif //__GR_BINARY_WRITENODEFOOTER
 
-        case  _binary_rep_tokens< __false_type >::ms_ucLink:
+        case  _binary_rep_tokens< std::false_type >::ms_ucLink:
         {
           _ReadLink();
         }
         break;
 
-        case  _binary_rep_tokens< __false_type >::ms_ucLinkFromUnfinished:
+        case  _binary_rep_tokens< std::false_type >::ms_ucLinkFromUnfinished:
         {
           _ReadLinkFromUnfinished();
         }
         break;
 
-        case  _binary_rep_tokens< __false_type >::ms_ucNormalLinkFooter:
+        case  _binary_rep_tokens< std::false_type >::ms_ucNormalLinkFooter:
         {
           throw bad_graph_stream( "_FReadOne(): Encountered a normal link footer token at top level." );
         }
         break;
-        case  _binary_rep_tokens< __false_type >::ms_ucUnfinishedLinkFooter:
+        case  _binary_rep_tokens< std::false_type >::ms_ucUnfinishedLinkFooter:
         {
           throw bad_graph_stream( "_FReadOne(): Encountered an unfinished link footer token at top level." );
         }
         break;
-        case _binary_rep_tokens< __false_type >::ms_ucGraphFooter:
+        case _binary_rep_tokens< std::false_type >::ms_ucGraphFooter:
         {
           _ProcessGraphFooter();
         }
@@ -884,9 +884,9 @@ protected:
 
   void  _ReadLinkFooter( _TyULValueType * _pvtUnfinished )
   {
-    _binary_rep_tokens< __false_type >::_TyToken  uc;
+    _binary_rep_tokens< std::false_type >::_TyToken  uc;
     m_ris._ReadLinkFooter( &uc );
-    if ( _binary_rep_tokens< __false_type >::ms_ucNormalLinkFooter == uc )
+    if ( _binary_rep_tokens< std::false_type >::ms_ucNormalLinkFooter == uc )
     {
       if ( PGLBCur() )
       {
@@ -924,7 +924,7 @@ protected:
     }
     else
     {
-      if ( _binary_rep_tokens< __false_type >::ms_ucUnfinishedLinkFooter != uc )
+      if ( _binary_rep_tokens< std::false_type >::ms_ucUnfinishedLinkFooter != uc )
       {
         throw bad_graph_stream( "_ReadLinkFooter(): Found bad link footer token." );
       }

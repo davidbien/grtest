@@ -145,8 +145,8 @@ public:
   // Construction that just obtains the allocator - if any - this doesn't check const-correctness
   //  as we are not transferring graph information:
   template < class t_TyIter >
-  _graph_typed_iterator( t_TyIter const & _r, __false_type )
-    : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), __false_type() )
+  _graph_typed_iterator( t_TyIter const & _r, std::false_type )
+    : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), std::false_type() )
   {
     __ASSERT_SAME_TYPE3( _TyGraphNode, typename t_TyIter::_TyGraphNode, _TyAssertNode );
     __ASSERT_SAME_TYPE3( _TyGraphLink, typename t_TyIter::_TyGraphLink, _TyAssertLink );
@@ -163,14 +163,14 @@ public:
   // specialize construction with a "pass" path iterator:
   explicit _graph_typed_iterator( _TyPassIterConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), 
-                   __false_type() )
+                   std::false_type() )
   {
     __TRANSFER_CONST( typename _TyPassIterConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
   explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
     : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), 
-                   __false_type() )
+                   std::false_type() )
   {
     __TRANSFER_CONST( typename _TyPassIterNonConst::_TyFIsConstIterator, _TyFIsConstIterator );
     _r.swap( static_cast< _TyIterBase & >( *this ) );
@@ -336,7 +336,7 @@ public:
 //  and introduction of compile-time error upon access.
 
 template < class t_TyIterTraits >
-class _graph_typed_iterator< t_TyIterTraits, __true_type >
+class _graph_typed_iterator< t_TyIterTraits, std::true_type >
   : public t_TyIterTraits::_TyIterBase
 {
   // All typed iterators are friends:
@@ -380,13 +380,13 @@ protected:
 
 private:
   typedef typename t_TyIterTraits::_TyIterBase                  _TyBase;
-  typedef _graph_typed_iterator< t_TyIterTraits, __true_type >  _TyThis;
+  typedef _graph_typed_iterator< t_TyIterTraits, std::true_type >  _TyThis;
 
 public:
 
   typedef typename t_TyIterTraits::_TyIterBase          _TyIterBase;
   typedef t_TyIterTraits                                _TyIterTraits;
-  typedef __true_type                                   _TyFIsConstIterator;
+  typedef std::true_type                                   _TyFIsConstIterator;
 
   // Access to const/non-const iterator types:
   typedef _graph_typed_iterator< typename t_TyIterTraits::
@@ -456,8 +456,8 @@ public:
   // Construction that just obtains the allocator - if any - this doesn't check const-correctness
   //  as we are not transferring graph information:
   template < class t_TyIter >
-  explicit _graph_typed_iterator( t_TyIter const & _r, __false_type )
-    : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), __false_type() )
+  explicit _graph_typed_iterator( t_TyIter const & _r, std::false_type )
+    : _TyIterBase( static_cast< typename t_TyIter::_TyIterBase const & >( _r ), std::false_type() )
   {
     __ASSERT_SAME_TYPE3( _TyGraphNode, typename t_TyIter::_TyGraphNode, _TyAssertNode );
     __ASSERT_SAME_TYPE3( _TyGraphLink, typename t_TyIter::_TyGraphLink, _TyAssertLink );
@@ -489,12 +489,12 @@ public:
 
   // specialize construction with a "pass" path iterator:
   explicit _graph_typed_iterator( _TyPassIterConst & _r ) _BIEN_NOTHROW
-    : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), __false_type() )
+    : _TyIterBase( static_cast< typename _TyPassIterConst::_TyIterBase const & >( _r ), std::false_type() )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }
   explicit _graph_typed_iterator( _TyPassIterNonConst & _r ) _BIEN_NOTHROW
-    : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), __false_type() )
+    : _TyIterBase( static_cast< typename _TyPassIterNonConst::_TyIterBase const & >( _r ), std::false_type() )
   {
     _r.swap( static_cast< _TyIterBase & >( *this ) );
   }

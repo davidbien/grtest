@@ -10,7 +10,23 @@
 CC := clang
 #CC := /usr/local/cuda/bin/nvcc
 
-MAKEBASE = ../bienutil/makebase.mk
+ifneq (1,$(NDEBUG))
+ASAN_OPTIONS=check_initialization_order=1
+ASAN_OPTIONS=detect_leaks=1
+ASAN_OPTIONS=detect_stack_use_after_return=1
+CLANG_ADDR_SANITIZE = -fsanitize=address -fsanitize-address-use-after-scope
+
+# MSAN_OPTIONS=poison_in_dtor=1
+# ASAN_OPTIONS=detect_leaks=1
+# ASAN_OPTIONS=detect_stack_use_after_return=1
+#CLANG_MEM_SANITIZE = -fsanitize=memory -fsanitize-memory-track-origins -fsanitize-memory-use-after-dtor
+CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fno-omit-frame-pointer
+#-fsanitize-blacklist=blacklist.txt 
+endif # !NDEBUG
+MOD_TCMALLOC := 1
+MOD_INCLUDES := -I./bienutil/
+
+MAKEBASE = bienutil/makebase.mk
 include $(MAKEBASE)
 
 SRCS = _gr_test.cpp dbgthrw.cpp

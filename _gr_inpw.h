@@ -27,9 +27,9 @@ public:
   typedef _TyBase               _TyIterBase;  // This type supported by all graph iterators.
 
   typedef _graph_input_iterator<  t_TyGraph, t_TyInputStream,
-                                  t_TyBaseInputIter, __false_type >   iterator;
+                                  t_TyBaseInputIter, std::false_type >   iterator;
   typedef _graph_input_iterator<  t_TyGraph, t_TyInputStream,
-                                  t_TyBaseInputIter, __true_type >    const_iterator;
+                                  t_TyBaseInputIter, std::true_type >    const_iterator;
 
   typedef t_TyInputStream                     _TyInputStream;
   typedef typename _TyInputStream::_TyInitArg _TyInitArg;

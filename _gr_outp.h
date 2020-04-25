@@ -45,7 +45,7 @@ _RawWriteGraphEl( t_TyOutputStream & _ros, t_TyWrite const & _rel )
 }
 
 // Tokens for the binary representation:
-template < class t_TyDummy = __false_type > // make a template so that constants link.
+template < class t_TyDummy = std::false_type > // make a template so that constants link.
 struct _binary_rep_tokens
 {
   typedef unsigned char _TyToken;
@@ -172,7 +172,7 @@ public:
   _TyStreamPos  _Tell()                   { return m_ros.TellP(); }
   void          _Seek( _TyStreamPos _sp ) { m_ros.SeekP( _sp ); }
 
-  typedef typename _binary_rep_tokens< __false_type >::_TyToken _TyToken;
+  typedef typename _binary_rep_tokens< std::false_type >::_TyToken _TyToken;
   void _WriteToken( _TyToken const & uc )
   {
     __THROWPT( e_ttFileOutput );
@@ -190,8 +190,8 @@ public:
     {
       __THROWPT( e_ttFileOutput );
       _WriteToken( _fPush ? 
-                      _binary_rep_tokens< __false_type >::ms_ucContextPush : 
-                      _binary_rep_tokens< __false_type >::ms_ucContextPop );
+                      _binary_rep_tokens< std::false_type >::ms_ucContextPush : 
+                      _binary_rep_tokens< std::false_type >::ms_ucContextPop );
     }
   }
   void _WriteDirectionChange( bool _fDirectionDown )
@@ -202,8 +202,8 @@ public:
     {
       __THROWPT( e_ttFileOutput );
       _WriteToken( _fDirectionDown ? 
-                      _binary_rep_tokens< __false_type >::ms_ucDirectionDown : 
-                      _binary_rep_tokens< __false_type >::ms_ucDirectionUp );
+                      _binary_rep_tokens< std::false_type >::ms_ucDirectionDown : 
+                      _binary_rep_tokens< std::false_type >::ms_ucDirectionUp );
     }
     __DEBUG_STMT( m_fSetDirection  = 1 )
     m_fDirectionDown = _fDirectionDown; // Change here in case of throw.
@@ -216,7 +216,7 @@ public:
     {
       __THROWPT( e_ttFileOutput );
       // Write the token, the node and the link:
-      _WriteToken( _binary_rep_tokens< __false_type >::ms_ucUnfinishedNode );
+      _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucUnfinishedNode );
       _WritePtr( _pgnb );
       _WritePtr( _pglb );
     }
@@ -254,7 +254,7 @@ public:
     if ( m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput );
-      _WriteToken( _binary_rep_tokens< __false_type >::ms_ucNode );
+      _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucNode );
       if ( t_fWriteExtraInformation )
       {
         _WritePtr( _pgnb );
@@ -284,7 +284,7 @@ public:
       if ( _pgnbUnfinished )
       {
         // Then we need to write the node name ( pointer ):
-        _WriteToken( _binary_rep_tokens< __false_type >::ms_ucLinkFromUnfinished );
+        _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucLinkFromUnfinished );
         _WritePtr( _pglb );
         if ( t_fWriteExtraInformation )
         {
@@ -294,7 +294,7 @@ public:
       }
       else
       {
-        _WriteToken( _binary_rep_tokens< __false_type >::ms_ucLink );
+        _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucLink );
         if ( t_fWriteExtraInformation )
         {
           _WritePtr( _pglb );
@@ -304,8 +304,8 @@ public:
       {
         // Write whether or not the link is constructed:
         _WriteToken( _pglb->FIsConstructed() ? 
-                        _binary_rep_tokens< __false_type >::ms_ucLinkConstructed : 
-                        _binary_rep_tokens< __false_type >::ms_ucLinkEmpty );
+                        _binary_rep_tokens< std::false_type >::ms_ucLinkConstructed : 
+                        _binary_rep_tokens< std::false_type >::ms_ucLinkEmpty );
       }
       else
       {
@@ -325,7 +325,7 @@ public:
       if ( _pgnbUnfinished )
       {
         // Write a footer record - the link and the node.
-        _WriteToken( _binary_rep_tokens< __false_type >::ms_ucUnfinishedLinkFooter );
+        _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucUnfinishedLinkFooter );
         _WritePtr( _pgnbUnfinished );
         if ( !t_fWriteExtraInformation && _pglb ) // If zero then we already wrote it in the header.
         {
@@ -336,7 +336,7 @@ public:
       else
       {
         // Normal link footer
-        _WriteToken( _binary_rep_tokens< __false_type >::ms_ucNormalLinkFooter );
+        _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucNormalLinkFooter );
       }
     }
   }
@@ -346,7 +346,7 @@ public:
     if ( m_fOutputOn )
     {
       __THROWPT( e_ttFileOutput );
-      _WriteToken( _binary_rep_tokens< __false_type >::ms_ucGraphFooter );
+      _WriteToken( _binary_rep_tokens< std::false_type >::ms_ucGraphFooter );
     }
   }
 };

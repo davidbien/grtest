@@ -34,6 +34,7 @@ typedef std::allocator< char >	_TyDefaultAllocator;
 #ifdef __DGRAPH_USE_STLPORT
 #include <stl/_alloc.c>
 #endif //__DGRAPH_USE_STLPORT
+#include "_fdobjs.h"
 
 __BIENUTIL_USING_NAMESPACE
 __DGRAPH_USING_NAMESPACE
@@ -87,8 +88,8 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 {
 	// Turn off throw testing while comparing:
 #ifndef __NDEBUG_THROW
-	bool	fWasOn = _throw_object_base::ms_tsb.m_fOn;
-	_throw_object_base::ms_tsb.set_on( false );
+	unsigned long grfWasOn = _throw_object_base::ms_tsb.m_grfOn;
+	_throw_object_base::ms_tsb.set_on( 0 );
 #endif //!__NDEBUG_THROW
 
 	pair< typename t_TyGraphLeft::const_iterator_pos, 
@@ -98,7 +99,7 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 	{
 		print_time( "test_compare(): Compare succeeded.\n", _ptStart );
 #ifndef __NDEBUG_THROW
-		_throw_object_base::ms_tsb.set_on( fWasOn );
+		_throw_object_base::ms_tsb.set_on( grfWasOn );
 #endif //!__NDEBUG_THROW
 		return true;
 	}
@@ -112,7 +113,7 @@ test_compare( t_TyGraphLeft const & _rgLeft,
 		_rgLeft.dump( fsDumpLeft );
 #endif //!__GR_TEST_NOIOSTREAMS
 #ifndef __NDEBUG_THROW
-		_throw_object_base::ms_tsb.set_on( fWasOn );
+		_throw_object_base::ms_tsb.set_on( grfWasOn );
 #endif //!__NDEBUG_THROW
 		return false;
 	}
@@ -127,15 +128,15 @@ test_copy(  t_TyGraphDst & _rgDst,
 	try
 	{
 #ifndef __NDEBUG_THROW
-	bool	fWasOn = _throw_object_base::ms_tsb.m_fOn;
-	_throw_object_base::ms_tsb.set_on( false );
+	unsigned long grfWasOn = _throw_object_base::ms_tsb.m_grfOn;
+	_throw_object_base::ms_tsb.set_on( 0 );
 #endif //!__NDEBUG_THROW
 
 		_rgDst.replace_copy( _rgSrc );
 		print_time( "test_copy(): After copy.\n", _ptStart );
 
 #ifndef __NDEBUG_THROW
-	_throw_object_base::ms_tsb.set_on( fWasOn );
+	_throw_object_base::ms_tsb.set_on( grfWasOn );
 #endif //!__NDEBUG_THROW
 
 		bool	fComp1 = test_compare( _rgDst, _rgSrc, _ptStart );
@@ -219,7 +220,7 @@ test_dump( t_TyGraph const & _rg, const char * _cpFileName, time_t * _ptStart )
 
 template < class t_TyGraph >
 bool
-try_save( t_TyGraph const & _rg, ostream & _ros )
+try_save_iostream( t_TyGraph const & _rg, ostream & _ros )
 {
 	bool	fSuccess = false;
 	try
@@ -257,15 +258,14 @@ try_save( t_TyGraph const & _rg, ostream & _ros )
 
 template < class t_TyGraph >
 bool
-try_load( t_TyGraph & _rg, istream & _ris )
+try_load_iostream( t_TyGraph & _rg, istream & _ris )
 {
 	bool	fSuccess = false;
 	try
 	{
 		_rg.destroy();
 
-		typename t_TyGraph::_TyBinaryIstreamIterNonConst 
-      bii( _rg, _ris, _rg.get_base_path_allocator() );
+		typename t_TyGraph::_TyBinaryIstreamIterNonConst bii( _rg, _ris, _rg.get_base_path_allocator() );
 
 		__DEBUG_STMT( int _i = 0 )
 		do
@@ -302,15 +302,15 @@ try_load( t_TyGraph & _rg, istream & _ris )
 
 template < class t_TyGraphSave, class t_TyGraphLoad >
 bool
-test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad, 
-								const char * _cpFileName, time_t * _ptStart )
+test_saveload_iostream(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad, 
+				const char * _cpFileName, time_t * _ptStart )
 {
 	fstream fsOut( _cpFileName, ios::in | ios::out | ios::trunc | ios::binary );
 	fsOut.seekp( 0 );
 
-	if ( try_save( _rgSave, fsOut ) )
+	if ( try_save_iostream( _rgSave, fsOut ) )
 	{
-		print_time( "test_saveload(): Save succeeded.\n", _ptStart );
+		print_time( "test_saveload_iostream(): Save succeeded.\n", _ptStart );
 
 #ifndef __NDEBUG_THROW
 		unsigned uHit;
@@ -324,12 +324,12 @@ test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad,
 #endif //!__NDEBUG_THROW
 
 		fsOut.seekg( 0 );
-		while ( !try_load( _rgLoad, fsOut ) )
+		while ( !try_load_iostream( _rgLoad, fsOut ) )
 		{
 			fsOut.seekg( 0 );
 		}
 
-		print_time( "test_saveload(): After load.\n", _ptStart );
+		print_time( "test_saveload_iostream(): After load.\n", _ptStart );
 
 #ifndef __NDEBUG_THROW
 		_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
@@ -346,6 +346,138 @@ test_saveload(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad,
 	}
 }
 
+
+template < class t_TyGraph, class t_tyBinaryOutputIter >
+bool
+try_save_filedes( t_TyGraph const & _rg, int _fd )
+{
+	bool	fSuccess = false;
+	try
+	{
+		t_tyBinaryOutputIter boi( _fd, _rg.begin() );
+		__DEBUG_STMT( int _i = 0 )
+		while ( !boi.FAtEnd() )
+		{
+			try
+			{
+				++boi;
+				__DEBUG_STMT( ++_i )
+			}
+			catch( exception & rexc )
+			{
+				const char * cpWhat = rexc.what();
+		#ifndef __NDEBUG_THROW
+				_throw_object_base::ms_tsb.handle_throw();
+		#endif //!__NDEBUG_THROW
+			}
+		}
+
+		fSuccess = true;
+	}
+	catch( exception & rexc )
+	{
+		const char * cpWhat = rexc.what();
+#ifndef __NDEBUG_THROW
+		_throw_object_base::ms_tsb.handle_throw();
+#endif //!__NDEBUG_THROW
+	}
+
+	return fSuccess;
+}
+
+template < class t_TyGraph, class t_tyBinaryInputIter >
+bool
+try_load_filedes( t_TyGraph & _rg, int _fd )
+{
+	bool	fSuccess = false;
+	try
+	{
+		_rg.destroy();
+
+		t_tyBinaryInputIter bii( _rg, _fd, _rg.get_base_path_allocator() );
+
+		__DEBUG_STMT( int _i = 0 )
+		do
+		{
+			try
+			{
+				++bii;
+				__DEBUG_STMT( ++_i )
+			}
+			catch( exception & rexc )
+			{
+				const char * cpWhat = rexc.what();
+		#ifndef __NDEBUG_THROW
+				_throw_object_base::ms_tsb.handle_throw();
+		#endif //!__NDEBUG_THROW
+			}
+		}
+		while( !bii.FAtEnd() );
+
+		_rg.set_root_node( bii.PGNTransferNewRoot() );
+
+		fSuccess = true;
+	}
+	catch( exception & rexc )
+	{
+		const char * cpWhat = rexc.what();
+#ifndef __NDEBUG_THROW
+		_throw_object_base::ms_tsb.handle_throw();
+#endif //!__NDEBUG_THROW
+	}
+
+	return fSuccess;
+}
+
+template < class t_TyGraphSave, class t_TyGraphLoad, class t_tyBinaryOutputIter, class t_tyBinaryInputIter >
+bool
+test_saveload_filedes(	t_TyGraphSave const & _rgSave, t_TyGraphLoad & _rgLoad, 
+						const char * _cpFileName, time_t * _ptStart )
+{
+	FdObj fdo( ::open( _cpFileName, O_RDWR | O_CREAT | O_TRUNC, 0666 ) );
+	if ( !fdo.FIsOpen() )
+	{
+		fprintf( stderr, "test_saveload_filedes(): Unable to open file [%s].\n", _cpFileName );
+		return false;
+	}
+
+	if ( try_save_filedes< t_TyGraphSave, t_tyBinaryOutputIter >( _rgSave, fdo.FdGet() ) )
+	{
+		print_time( "test_saveload_filedes(): Save succeeded.\n", _ptStart );
+
+#ifndef __NDEBUG_THROW
+		unsigned uHit;
+		size_t uPossible;
+		_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
+		cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
+		_throw_object_base::ms_tsb.report_unhit( cout );
+		_throw_object_base::ms_tsb.clear_hit_map();
+		
+		_throw_object_base::ms_tsb.reset_hit_once();
+#endif //!__NDEBUG_THROW
+
+		fdo.Seek( 0 );
+		while ( !try_load_filedes< t_TyGraphLoad, t_tyBinaryInputIter >( _rgLoad, fdo.FdGet() ) )
+		{
+			fdo.Seek( 0 );
+		}
+
+		print_time( "test_saveload_filedes(): After load.\n", _ptStart );
+
+#ifndef __NDEBUG_THROW
+		_throw_object_base::ms_tsb.get_hit_stats( uHit, uPossible );
+		cout << "Hit [" << uHit << "] out of [" << uPossible << "].\n";
+		_throw_object_base::ms_tsb.report_unhit( cout );
+		_throw_object_base::ms_tsb.clear_hit_map();
+#endif //!__NDEBUG_THROW
+
+		return test_compare( _rgSave, _rgLoad, _ptStart );
+	}
+	else
+	{
+		return false;
+	}
+}
 
 template <  class t_TyGraph, 
             class t_TyNodeIterator,
@@ -440,7 +572,7 @@ main( int argc, char ** argv )
 #ifndef __NDEBUG_THROW
 			// Set the seed at this point:
 			_throw_object_base::ms_tsb.set_seed( iRandSeed );
-			_throw_object_base::ms_tsb.set_on( true );
+			_throw_object_base::ms_tsb.set_on( (unsigned long)(-1) & ~e_ttFatal ); // Turn on all exceptions except for fatal ones by default.
 			if ( iThrowOneOnly > 0 )
 			{
 				_throw_object_base::ms_tsb.throw_one_only( iThrowOneOnly );
@@ -539,7 +671,11 @@ main( int argc, char ** argv )
 #ifndef __NDEBUG_THROW
 			_throw_object_base::ms_tsb.reset_hit_once();
 #endif //!__NDEBUG_THROW
-			while ( !test_saveload( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
+			while ( !test_saveload_iostream( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
+				;
+			while ( !test_saveload_filedes< _TyGraph, _TyGraphSafe, _TyGraph::_TyBinaryFiledesOuputIterConst, _TyGraphSafe::_TyBinaryFiledesInputIterNonConst >( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
+				;
+			while ( !test_saveload_filedes< _TyGraph, _TyGraphSafe, _TyGraph::_TyBinaryMemMappedOuputIterConst, _TyGraphSafe::_TyBinaryMemMappedInputIterNonConst >( gCopy, gsCopyLoaded, "graph.bin", &tStart ) )
 				;
 
 			// Copy the graph to a graph of doubles:
@@ -553,7 +689,7 @@ main( int argc, char ** argv )
 #endif //!__GR_TEST_NOIOSTREAMS
       typedef dgraph< double, double, false, _TyAllocator > _TyGraphDouble;
 			_TyGraphDouble gdCopyLoaded;
-			while( !test_saveload( gdCopy, gdCopyLoaded, "dgraph.bin", &tStart ) )
+			while( !test_saveload_iostream( gdCopy, gdCopyLoaded, "dgraph.bin", &tStart ) )
 				;
 #endif //__TEST_COPY
 
@@ -562,7 +698,7 @@ main( int argc, char ** argv )
 #ifdef __GR_DEFINEOLEIO
 
 #ifndef __NDEBUG_THROW
-			_throw_object_base::ms_tsb.set_on( false );
+			_throw_object_base::ms_tsb.set_on( 0 );
 #endif //!__NDEBUG_THROW
 
 			IStream *	pis;
