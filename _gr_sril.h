@@ -8,7 +8,8 @@
 __DGRAPH_BEGIN_NAMESPACE
 
 // When !t_fUseSeek we don't attempt to tell/seek the stream - this is not throw-safe -
-//  i.e. state may not be restored appropriately.
+//  i.e. state may not be restored appropriately. It is throw-safe - put it is not state-safe
+//  upon throw.
 
 template <  class t_TyOutputStreamBase,
             class t_TyAllocator,
@@ -63,8 +64,7 @@ public:
   _TyPMFnWriteLink    m_pmfnWriteLink;
 
 protected:
-  void
-  _Init()
+  void _Init()
   {
     // Set up callback:
     _TyBase::m_pmfnNotifyUnfinished = static_cast< _TyPMFnNotifyUnfinished >( &_TyThis::_NotifyUnfinished );
@@ -136,10 +136,10 @@ public:
       m_ros( _ros ),
       m_iContextsOutput( _r.m_iContexts ),
       m_fDirectionDownOutput( !_r.m_fDirectionDown ),// Force a direction record to be written immediately.
-    m_fWroteGraphFooter( false )
-  {
-    _Init();
-  }
+      m_fWroteGraphFooter( false )
+    {
+      _Init();
+    }
 
   // Initialization with the base's base class - this allows us to initialize the
   //  output iterator with a iterator_pos ( i.e. dgraph::begin() ).
@@ -352,7 +352,7 @@ public:
       }
     }
 
-  void _WriteGraphFooter()
+    void _WriteGraphFooter()
     {
       m_ros._WriteGraphFooter();
       m_fWroteGraphFooter = true;
@@ -370,23 +370,19 @@ struct _graph_output_iterator
     public _graph_iter_const_base< t_TyGraphNode, t_TyGraphLink, t_TyFIsConstIterator >
 {
 private:
-  typedef t_TyBaseOutIter                                                 _TyBase;
-  typedef _graph_iter_const_base<	t_TyGraphNode,
-	  t_TyGraphLink,
-	  t_TyFIsConstIterator >	_tyConstIterBase;
-  typedef _graph_output_iterator< t_TyGraphNode, t_TyGraphLink, t_TyOutputStream,
-                                  t_TyBaseOutIter, t_TyFIsConstIterator > _TyThis;
+  typedef t_TyBaseOutIter _TyBase;
+  typedef _graph_iter_const_base<	t_TyGraphNode, t_TyGraphLink, t_TyFIsConstIterator > _tyConstIterBase;
+  typedef _graph_output_iterator _TyThis;
 public:
-
-  typedef _TyBase               _TyIterBase;  // This type supported by all graph iterators.
+  typedef _TyBase _TyIterBase;  // This type supported by all graph iterators.
 
   typedef _graph_output_iterator< t_TyGraphNode, t_TyGraphLink, t_TyOutputStream,
-                                  t_TyBaseOutIter, __false_type >   iterator;
+                                  t_TyBaseOutIter, std::false_type >   iterator;
   typedef _graph_output_iterator< t_TyGraphNode, t_TyGraphLink, t_TyOutputStream,
-                                  t_TyBaseOutIter, __true_type >    const_iterator;
+                                  t_TyBaseOutIter, std::true_type >    const_iterator;
 
-  typedef t_TyOutputStream                      _TyOutputStream;
-  typedef typename _TyOutputStream::_TyInitArg  _TyInitArg;
+  typedef t_TyOutputStream _TyOutputStream;
+  typedef typename _TyOutputStream::_TyInitArg _TyInitArg;
   typedef typename _TyOutputStream::_TyIONodeEl _TyIONodeEl;
   typedef typename _TyOutputStream::_TyIOLinkEl _TyIOLinkEl;
 

@@ -102,9 +102,9 @@ public:
 
 #ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TySafeNodeIter >
-	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, __false_type )
+	explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, std::false_type )
 #else //_STLP_MEMBER_TEMPLATES
-	explicit _graph_node_iterator_base_safe( const _TyThis & _r, __false_type )
+	explicit _graph_node_iterator_base_safe( const _TyThis & _r, std::false_type )
 #endif //_STLP_MEMBER_TEMPLATES
 		:	_TyAllocConnLinkBase( _r._GetCLAllocatorAsPassed() ),
 			_TyIterBase( 0 )	// In case of throw.
@@ -399,9 +399,9 @@ protected:
 // Init with an iterator that has an allocator:
 #ifdef _STLP_MEMBER_TEMPLATES
 	template < class t_TyLinkPosIter >
-	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, __false_type )
+	explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, std::false_type )
 #else //_STLP_MEMBER_TEMPLATES
-	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, __false_type )
+	explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, std::false_type )
 #endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( )
@@ -779,9 +779,9 @@ public:
 
 #ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyLinkIdentIter >
-	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r, __false_type )
+	explicit _graph_link_ident_iterator_base_safe( const _TyLinkIdentIter & _r, std::false_type )
 #else //_STLP_MEMBER_TEMPLATES
-	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, __false_type )
+	explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, std::false_type )
 #endif //_STLP_MEMBER_TEMPLATES
 		: _TyAllocConnLinkBase( _r ),
 			_TyIterBase( 0 )
@@ -1599,9 +1599,9 @@ public:
 
 #ifdef _STLP_MEMBER_TEMPLATES
 	template < class _TyPathIter >
-	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r, __false_type ) __STLP_NOTHROW
+	explicit _graph_path_iterator_base_safe( _TyPathIter const & _r, std::false_type ) __STLP_NOTHROW
 #else //_STLP_MEMBER_TEMPLATES
-	explicit _graph_path_iterator_base_safe( _TyThis const & _r, __false_type ) __STLP_NOTHROW
+	explicit _graph_path_iterator_base_safe( _TyThis const & _r, std::false_type ) __STLP_NOTHROW
 #endif //_STLP_MEMBER_TEMPLATES
 		: _TyBaseAllocPathNode( _r._GetPNAllocatorAsPassed() ),
 			_TyBaseAllocConnLink( _r._GetCLAllocatorAsPassed() ),

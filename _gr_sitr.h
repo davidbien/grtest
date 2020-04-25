@@ -102,9 +102,9 @@ public:
   // Non-copying copy constructor - this for allocator passing - allows generic wrapper.
 #ifdef _STLP_MEMBER_TEMPLATES
   template < class t_TySafeNodeIter >
-  explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_node_iterator_base_safe( const t_TySafeNodeIter & _r, std::false_type ) _BIEN_NOTHROW
 #else //_STLP_MEMBER_TEMPLATES
-  explicit _graph_node_iterator_base_safe( const _TyThis & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_node_iterator_base_safe( const _TyThis & _r, std::false_type ) _BIEN_NOTHROW
 #endif //_STLP_MEMBER_TEMPLATES
     : _TyIterBase( static_cast< _TyGraphNodeBase * >( 0 ) )
   {
@@ -159,7 +159,6 @@ public:
   // Set to value of passed non-NULL node - assume currently populated link.
   void      SetPGNBCur_Populated( _TyGraphNodeBase * _pgnb ) _BIEN_NOTHROW
   {
-    assert( m_gclNode );
     assert( _pgnb );
     m_gclNode.remove_link();
     (_TyIterBase::m_pgnbCur = _pgnb)->PushConnection( &m_gclNode );
@@ -357,9 +356,9 @@ protected:
 
 #ifdef _STLP_MEMBER_TEMPLATES
   template < class t_TyLinkPosIter >
-  explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_link_pos_iterator_base_safe( const t_TyLinkPosIter & _r, std::false_type ) _BIEN_NOTHROW
 #else //_STLP_MEMBER_TEMPLATES
-  explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_link_pos_iterator_base_safe( const _TyThis & _r, std::false_type ) _BIEN_NOTHROW
 #endif //_STLP_MEMBER_TEMPLATES
     : _TyIterBase( (_TyGraphLinkBase **)0 )
   {
@@ -718,9 +717,9 @@ public:
 
 #ifdef _STLP_MEMBER_TEMPLATES
   template < class t_TyLinkIdentIter >
-  explicit _graph_link_ident_iterator_base_safe( const t_TyLinkIdentIter & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_link_ident_iterator_base_safe( const t_TyLinkIdentIter & _r, std::false_type ) _BIEN_NOTHROW
 #else //_STLP_MEMBER_TEMPLATES
-  explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, __false_type ) _BIEN_NOTHROW
+  explicit _graph_link_ident_iterator_base_safe( const _TyThis & _r, std::false_type ) _BIEN_NOTHROW
 #endif //_STLP_MEMBER_TEMPLATES
     : _TyIterBase( static_cast< _TyGraphLinkBase * >( 0 ) )
   { 
@@ -1354,10 +1353,10 @@ public:
 #ifdef _STLP_MEMBER_TEMPLATES
   template < class _TyPathIter >
   explicit _graph_path_iterator_base_safe( 
-    _TyPathIter const & _r, __false_type ) _BIEN_NOTHROW
+    _TyPathIter const & _r, std::false_type ) _BIEN_NOTHROW
 #else //_STLP_MEMBER_TEMPLATES
   explicit _graph_path_iterator_base_safe( 
-    _TyThis const & _r, __false_type ) _BIEN_NOTHROW
+    _TyThis const & _r, std::false_type ) _BIEN_NOTHROW
 #endif //_STLP_MEMBER_TEMPLATES
     : _TyBaseAllocPathNodeSafe( _r._GetPNSAllocatorAsPassed() )
   {

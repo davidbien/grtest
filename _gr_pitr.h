@@ -114,7 +114,7 @@ public:
   // Only the copy constructor is public:
   template < class t_TyPathPass >
   _graph_path_iterator_pass( t_TyPathPass & _r ) __STLP_NOTHROW
-    : _TyBase( _r, __false_type() ) // We are initially empty.
+    : _TyBase( _r, std::false_type() ) // We are initially empty.
   {
     __TRANSFER_CONST( typename t_TyPathPass::_TyFIsConstIterator, 
                       _TyFIsConstIterator );

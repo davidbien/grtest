@@ -1252,9 +1252,9 @@ struct _graph_iter_const_base
 };
 
 template < class t_TyGraphNode, class t_TyGraphLink >
-struct _graph_iter_const_base< t_TyGraphNode, t_TyGraphLink, __true_type >
+struct _graph_iter_const_base< t_TyGraphNode, t_TyGraphLink, std::true_type >
 {
-  typedef __true_type _TyFIsConstIterator;
+  typedef std::true_type _TyFIsConstIterator;
 
   typedef t_TyGraphNode _TyGraphNode;
   typedef t_TyGraphLink _TyGraphLink;
@@ -1306,10 +1306,10 @@ public:
   typedef t_TyLinkSelect  _TyLinkSelect;
 
   typedef _graph_iter<  t_TyGraphNode, t_TyGraphLink, 
-                        t_TyBaseClass, __false_type,
+                        t_TyBaseClass, std::false_type,
                         t_fControlledLinkIteration, t_TyLinkSelect >    iterator;
   typedef _graph_iter<  t_TyGraphNode, t_TyGraphLink, 
-                        t_TyBaseClass, __true_type,
+                        t_TyBaseClass, std::true_type,
                         t_fControlledLinkIteration, t_TyLinkSelect >    const_iterator;
 
   _TyLinkSelect   m_lsSelectLink;

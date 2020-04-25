@@ -1,7 +1,7 @@
 #ifndef __GR_INC_H
 #define __GR_INC_H
 
-// _dgr_inc.h
+// _gr_inc.h
 
 // Include file for directed graph implementation.
 
