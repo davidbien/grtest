@@ -23,7 +23,13 @@ CLANG_ADDR_SANITIZE = -fsanitize=address -fsanitize-address-use-after-scope
 CLANGSANITIZE = $(CLANG_ADDR_SANITIZE) $(CLANG_MEM_SANITIZE) -fno-omit-frame-pointer
 #-fsanitize-blacklist=blacklist.txt 
 endif # !NDEBUG
+
+LOCAL_MACHINE_OS = $(shell uname)
+ifneq (Darwin,$(LOCAL_MACHINE_OS))
 MOD_TCMALLOC := 1
+else
+MOD_CPPVER := -std=c++17
+endif
 MOD_INCLUDES := -I./bienutil/
 
 MAKEBASE = bienutil/makebase.mk
