@@ -83,14 +83,14 @@ public:
     m_doOptions = _o;
   }
 
-  void          _SetDirection( bool _fDirectionDown )
+  void _SetDirection( bool _fDirectionDown )
   {
     __DEBUG_STMT( m_fSetDirection = 0 )
     m_fDirectionDown = _fDirectionDown;
   }
 
-  _TyStreamPos  _Tell() { return m_ros.TellP(); }
-  void          _Seek( _TyStreamPos _sp ) { (void)m_ros.SeekP( _sp ); }
+  _TyStreamPos _Tell() { return m_ros.TellP(); }
+  void _Seek( _TyStreamPos _sp ) { (void)m_ros.SeekP( _sp ); }
 
   void _WriteStateNumber()
   {
