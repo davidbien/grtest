@@ -165,6 +165,7 @@ try_dump( t_TyGraph const & _rg, ostream & _ros )
     {
       typename t_TyGraph::_TyDumpIteratorConst	
           dit(	_ros, _rg.get_root(), 0, false, true, _rg.get_base_path_allocator() );
+	    //dit.SetOutputOptions( e_doMapPointers );
       for ( ; !dit.FAtEnd(); )
       {
         try
