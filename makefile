@@ -30,7 +30,7 @@ MOD_TCMALLOC := 1
 else
 MOD_CPPVER := -std=c++17
 endif
-MOD_INCLUDES := -I./bienutil/
+MOD_INCLUDES := -I./bienutil/ -I./dgraph/
 
 MAKEBASE = bienutil/makebase.mk
 include $(MAKEBASE)
