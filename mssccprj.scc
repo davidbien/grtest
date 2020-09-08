@@ -1,9 +1,0 @@
-SCC = This is a Source Code Control file
-
-[gr_test.dsp]
-SCC_Aux_Path = "C:\dvss"
-SCC_Project_Name = "$/dvroot/DV/dgraph", YCDAAAAA
-
-[gr_test.mak]
-SCC_Aux_Path = "C:\dvss"
-SCC_Project_Name = "$/dvroot/DV/dgraph", YCDAAAAA
