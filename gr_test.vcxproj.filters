@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{9ed4f10b-2a5b-48a6-abed-2d5e447f517f}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{6169510e-bb9d-4f3a-8d9f-d5f21c883c6e}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{a502e8bb-a197-4590-b627-853baac2ec0c}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="_gr_outp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_gr_test.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_gr_todo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bienutil\dbgthrw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\_allbase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\memlib\_aloctrt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_basemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_bitutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_booltyp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_booltyp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_dbgthrw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_debug.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_dtorp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_fcdtor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_garcoll.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_alst.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_copy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_cpwt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_def.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_disn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_dtor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_dump.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_gitr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_inc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_inpt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_inpw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_iter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_ole.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_olio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_outp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_pitr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_rndm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_safe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_shdo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_shwr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_sitr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_sril.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_stin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_stio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_titr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_trt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_tst0.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_gr_type.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_oleutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_sdp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_sdpd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_sdpn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\_sdpv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_simpbv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_swapobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_ticont.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\stdlib\_typemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bienutil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="makefile" />
+    <None Include="makendbg" />
+  </ItemGroup>
+</Project>
