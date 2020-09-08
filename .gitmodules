@@ -2,3 +2,7 @@
 	path = dgraph
 	url = git@github.com:davidbien/dgraph.git
 	update = merge
+[submodule "bienutil"]
+	path = bienutil
+	url = git@github.com:davidbien/bienutil.git
+	update = merge
