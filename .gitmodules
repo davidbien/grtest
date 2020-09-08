@@ -1,7 +1,3 @@
-[submodule "bienutil"]
-	path = bienutil
-	url = git@github.com:davidbien/bienutil.git
-	update = merge
 [submodule "dgraph"]
 	path = dgraph
 	url = git@github.com:davidbien/dgraph.git
