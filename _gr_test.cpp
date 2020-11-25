@@ -34,6 +34,8 @@ typedef std::allocator< char >	_TyDefaultAllocator;
 #ifdef __DGRAPH_USE_STLPORT
 #include <stl/_alloc.c>
 #endif //__DGRAPH_USE_STLPORT
+#include "_assert.h"
+#include "syslogmgr.inl"
 #include "_fdobjs.h"
 
 __BIENUTIL_USING_NAMESPACE
@@ -508,8 +510,27 @@ struct test_iterators
   }
 };
 
+std::string g_strProgramName;
+
+int TryMain( int argc, char ** argv );
+
 int
-main( int argc, char ** argv )
+main( int argc, char **argv )
+{
+    try
+    {
+        return TryMain( argc, argv );
+    }
+    catch ( const std::exception & rexc )
+    {
+        n_SysLog::Log( eslmtError, "%s: *** Exception: [%s]", g_strProgramName.c_str(), rexc.what() );
+        fprintf( stderr, "%s: *** Exception: [%s]\n", g_strProgramName.c_str(), rexc.what() );
+        return -123;
+    }
+}
+
+int
+TryMain( int argc, char ** argv )
 {
 #ifdef _MSC_VER
 	_set_error_mode( _OUT_TO_MSGBOX );	// Allow debugging after assert.
@@ -517,6 +538,7 @@ main( int argc, char ** argv )
 	_CrtSetDbgFlag( _CrtSetDbgFlag( _CRTDBG_REPORT_FLAG ) | _CRTDBG_LEAK_CHECK_DF );
 #endif
 #endif //_MSC_VER
+    g_strProgramName = *argv;
 
 	// Extract the random graph parameters:
 	if ( argc < 4 )
@@ -550,6 +572,15 @@ main( int argc, char ** argv )
 	{
 		iThrowOneOnly = atoi( argv[4] );
 	}
+
+	{//B
+    typedef JsoValue< char > _tyJsoValue;
+		_tyJsoValue jvLog( ejvtObject );
+		jvLog("iNumNodes").SetValue( iNumNodes );
+		jvLog("iNumExtraLinks").SetValue( iNumExtraLinks );
+		jvLog("iRandSeed").SetValue( iRandSeed );
+		n_SysLog::InitSysLog( argv[0], LOG_PERROR, LOG_USER, &jvLog );
+	}//EB
 
 	time_t	tStart;
 	time( &tStart );

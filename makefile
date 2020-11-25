@@ -27,6 +27,7 @@ endif # !NDEBUG
 LOCAL_MACHINE_OS = $(shell uname)
 ifneq (Darwin,$(LOCAL_MACHINE_OS))
 MOD_TCMALLOC := 1
+MOD_LIBS := -luuid
 else
 MOD_CPPVER := -std=c++17
 endif

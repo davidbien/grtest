@@ -1,0 +1,22 @@
+{
+  "SysLogThreadHeader": {
+    "ProgName": "./gr_test.exe",
+    "uuid": "bc24b09c-ef9d-460f-a429-e40a89312147",
+    "TimeStarted": "20201124-205921",
+    "msSinceProgramStart": 0,
+    "ThreadId": 78167,
+    "ThreadSpecificData": {
+      "iNumExtraLinks": 100000,
+      "iNumNodes": 1000000,
+      "iRandSeed": 24
+    }
+  },
+  "SysLog": [
+    {
+      "msec": 0,
+      "Time": "20201124-205921",
+      "Type": 0,
+      "Mesg": "<Info>: SysLogMgr: Created thread-specific JSON log file at [./gr_test.exe.bc24b09c-ef9d-460f-a429-e40a89312147.log.json]."
+    }
+  ]
+}
